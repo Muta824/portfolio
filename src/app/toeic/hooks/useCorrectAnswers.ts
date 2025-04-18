@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Question, Answer } from '../types/data';
 
 interface UseCorrectAnswersReturn {
   answers: Record<number, string>;
@@ -12,7 +11,7 @@ interface UseCorrectAnswersReturn {
   handleEdit: (name: string) => void;
 }
 
-export const useCorrectAnswers = (questions: Question[]): UseCorrectAnswersReturn => {
+export const useCorrectAnswers = (): UseCorrectAnswersReturn => {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [name, setName] = useState('');
   const [savedAnswers, setSavedAnswers] = useState<Record<string, Record<number, string>>>({});

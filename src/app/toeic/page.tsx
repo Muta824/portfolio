@@ -18,7 +18,7 @@ const generateQuestions = (): Question[] =>
 
 const questions = generateQuestions();
 
-export const TOEICScoringPage = () => {
+export default function TOEICScoringPage() {
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gray-50">
@@ -51,5 +51,3 @@ export const TOEICScoringPage = () => {
     </ErrorBoundary>
   );
 }
-
-export default TOEICScoringPage;

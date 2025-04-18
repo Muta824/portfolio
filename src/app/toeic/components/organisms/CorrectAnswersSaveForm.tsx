@@ -19,7 +19,7 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
         handleSave,
         handleDelete,
         handleEdit,
-    } = useCorrectAnswers(questions);
+    } = useCorrectAnswers();
 
     const [isFormVisible, setIsFormVisible] = useState(false); // フォームの表示状態を管理
 
