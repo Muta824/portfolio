@@ -26,27 +26,27 @@ export const ScoringMethod = () => {
     }, [setSelectedCorrectAnswers]);
     
     return (
-        <div className="p-6 mt-6 border-2 border-gray-200 rounded-xl shadow-lg bg-white">
+        <div className="px-3 pt-3 mt-4 mb-4 border-2 border-gray-200 rounded-xl shadow-lg bg-white dark:bg-gray-900">
             <div className="mb-8">
-                <label className="block text-2xl font-bold text-center mb-6 text-gray-800">
+                <label className="block text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
                     採点方法を選択
                 </label>
                 <div className="flex justify-center space-x-6">
                     <button
-                        className={`px-8 py-4 rounded-xl border-2 transition-all duration-300 text-lg font-medium ${
+                        className={`px-4 py-4 rounded-xl border-2 transition-all duration-300 text-lg font-medium ${
                             gradingMode === "manual" 
                                 ? "bg-blue-500 text-white border-blue-600 shadow-lg hover:bg-blue-600" 
-                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300 dark:bg-gray-800 dark:text-white dark:border-white dark:hover:bg-gray-700 dark:hover:border-blue-300"
                         }`}
                         onClick={() => setGradingMode("manual")}
                     >
                         手動採点
                     </button>
                     <button
-                        className={`px-8 py-4 rounded-xl border-2 transition-all duration-300 text-lg font-medium ${
+                        className={`px-4 py-4 rounded-xl border-2 transition-all duration-300 text-lg font-medium ${
                             gradingMode === "auto" 
                                 ? "bg-blue-500 text-white border-blue-600 shadow-lg hover:bg-blue-600" 
-                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300"
+                                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300 dark:bg-gray-800 dark:text-white dark:border-white dark:hover:bg-gray-700 dark:hover:border-blue-300"
                         }`}
                         onClick={() => setGradingMode("auto")}
                     >
@@ -57,13 +57,14 @@ export const ScoringMethod = () => {
 
             {gradingMode === "auto" && (
                 <div className="mb-8">
-                    <label className="block text-xl font-semibold mb-4 text-gray-700">
+                    <label className="block text-xl font-semibold mb-4 text-gray-700 dark:text-white">
                         模範解答を選択
                     </label>
                     <select
                         value={selectedCorrectAnswers}
                         onChange={(e) => setSelectedCorrectAnswers(e.target.value)}
-                        className="w-full p-3 border-2 border-gray-300 rounded-lg text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                        className="w-full p-3 border-2 border-gray-300 rounded-lg text-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
+                        transition-all duration-200 dark:bg-gray-800 dark:text-white dark:border-white dark:focus:border-blue-500 dark:focus:ring-2 dark:focus:ring-blue-200"
                     >
                         {Object.keys(savedCorrectAnswers).map((name) => (
                             <option key={name} value={name}>

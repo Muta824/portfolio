@@ -24,7 +24,7 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
     const [isFormVisible, setIsFormVisible] = useState(false); // フォームの表示状態を管理
 
     return (
-        <div className="p-4 mt-6 border rounded shadow-md bg-white">
+        <div className="p-4 mt-6 border rounded shadow-md bg-white dark:bg-gray-900 dark:text-white max-w-xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">模範解答を作成</h2>
 
             {/* 名前入力 */}
@@ -34,7 +34,7 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
                     placeholder="模範解答の名前を入力"
                 />
             </div>
@@ -51,19 +51,19 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
             {isFormVisible && (
                 <>
                     {/* 解答入力 */}
-                    <div className="mb-4">
+                    <div className="mb-5 mx-3 sm:mx-10">
                         <h3 className="text-xl font-semibold mb-2">模範解答</h3>
                         {questions.map((question) => (
                             <div key={question.id} className="mb-4">
                                 <p className="font-medium text-xl">{question.text}</p>
-                                <div className="flex space-x-2">
+                                <div className="flex flex-row justify-evenly space-x-2">
                                     {question.choices.map((choice) => (
                                         <button
                                             key={choice}
-                                            className={`px-4 py-2 rounded-md border cursor-pointer size-15 ${
+                                            className={`px-4 py-2 dark:bg-gray-900 dark:text-white rounded-xl border cursor-pointer size-15 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800 ${
                                             answers[question.id] === choice
-                                                ? 'bg-blue-500 text-white'
-                                                : 'bg-gray-100'
+                                                ? 'bg-blue-500 text-white border-blue-600 shadow-lg hover:bg-blue-600 dark:bg-sky-600 dark:hover:bg-sky-700'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300'
                                             }`}
                                             onClick={() => handleAnswerChange(question.id, choice)}
                                         >
@@ -78,8 +78,11 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
                     {/* 保存ボタン */}
                     <button
                         type="button"
-                        onClick={handleSave}
-                        className="px-4 py-2 mb-5 bg-green-500 text-white rounded cursor-pointer"
+                        onClick={() => {
+                            handleSave();
+                            setIsFormVisible(false);
+                        }}
+                        className="px-4 py-2 mb-6 mx-auto block bg-green-500 text-white rounded cursor-pointer"
                     >
                         保存
                     </button>
@@ -91,9 +94,9 @@ export const CorrectAnswersSaveForm: React.FC<CorrectAnswersSaveFormProps> = ({ 
                 <h3 className="text-lg font-semibold mb-2">保存済みの模範解答</h3>
                 <ul>
                     {Object.keys(savedAnswers).map((savedName) => (
-                        <li key={savedName} className="flex items-center justify-between mb-2">
+                        <li key={savedName} className="flex items-center justify-between mb-2 dark:bg-gray-700 p-2 rounded-md">
                             <span>{savedName}</span>
-                            <div>
+                            <div className="flex flex-row space-x-2">
                                 <button
                                     type="button"
                                     onClick={() => handleEdit(savedName)}

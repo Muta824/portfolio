@@ -15,13 +15,13 @@ export const ChoiceButtons = memo(function ChoiceButtons(props: ChoiceButtonsPro
     }
     
     return (
-        <div className="flex justify-center space-x-6">
+        <div className="flex flex-row justify-evenly space-x-1">
             {q.choices.map((choice) => (
                 <button
                     key={choice}
-                    className={`px-7 py-5 rounded-xl border-2 transition-all duration-300 text-lg font-medium ${
+                    className={`px-5 py-3 sm:px-7 sm:py-5 rounded-xl border-2 text-lg font-medium dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800 ${
                         state.answers.find(a => a.questionId === q.id)?.selectedChoice === choice 
-                            ? "bg-blue-500 text-white border-blue-600 shadow-lg hover:bg-blue-600" 
+                            ? "bg-blue-500 text-white border-blue-600 shadow-lg hover:bg-blue-600 dark:bg-sky-600 dark:hover:bg-sky-700" 
                             : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-blue-300"
                     }`}
                     onClick={() => handleSelect(q.id, choice)}

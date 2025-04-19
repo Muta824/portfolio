@@ -13,10 +13,12 @@ export const QuestionsList = memo(function Questions(props: QuestionsProps) {
     const { gradingMode } = useGradingMode();
     
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-lg mx-auto">
             {questions.map((q) => (
-                <div key={q.id} className="p-6 border-2 border-gray-200 rounded-xl shadow-lg bg-white"> 
-                    <p className="text-2xl font-bold mb-6 text-gray-800 ">{q.text}</p>
+                <div key={q.id} className="p-6 border-2 border-gray-200 rounded-xl shadow-lg bg-white dark:bg-gray-900 dark:text-white"> 
+                    <p className="text-xl sm:text-2xl font-bold mb-6 text-gray-800 dark:text-white">
+                        {q.text}
+                    </p>
                     <div className="space-y-4">
                         <ChoiceButtons q={q}/>
                         {gradingMode === "manual" && (

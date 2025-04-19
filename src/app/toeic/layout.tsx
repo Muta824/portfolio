@@ -21,8 +21,8 @@ export default function TOEICLayout({
         <ScoreProvider>
           <GradingModeProvider>
             <SelectedCorrectAnswersProvider>
-              <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 font-sans">
-                <div className="max-w-5xl mx-auto px-6 py-12">
+              <div className="min-h-screen font-sans bg-white dark:bg-gray-900">
+                <div className="max-w-5xl mx-auto">
                   <div className="space-y-12">
                     {children}
                   </div>

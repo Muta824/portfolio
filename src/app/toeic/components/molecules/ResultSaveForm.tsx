@@ -8,13 +8,13 @@ export const ResultSaveForm = () => {
   const { score, setScore } = useScoreContext();
 
   return (
-    <div className="mt-6 border py-3 px-5 rounded">
-        <label className="block mb-2 font-semibold mx-1">名前を入力して採点結果を保存</label>
+    <div className="mt-6 border py-3 px-5 rounded dark:bg-gray-900 dark:text-white">
+        <label className="block mb-2 text-gray-800 dark:text-white font-semibold mx-1">名前を入力して採点結果を保存</label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border px-3 py-2 rounded w-full max-w-sm mb-3 mx-1"
+          className="border px-3 py-2 rounded w-full max-w-sm mb-3 mx-1 bg-gray-50 dark:bg-gray-900 dark:text-white dark:border-white"
           placeholder="ex: 第１回模試"
         />
         <button

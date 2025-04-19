@@ -34,29 +34,29 @@ export const TimerDisplay = ({ initialMinutes = 0, mode }: TimerProps) => {
   const seconds = Math.abs(time) % 60;
 
   return (
-    <div className={`py-8 px-10 shadow-lg bg-white border-2 border-gray-200 rounded-xl
+    <div className={`py-5 sm:py-8 px-4 sm:px-10 shadow-lg bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl
       ${isRunning ? "fixed top-0 right-0 left-0 flex justify-evenly items-center bg-white/95 backdrop-blur-sm" 
       : "text-center"} 
     `}>
-      <h2 className={`text-4xl font-bold ${!isRunning ? "mb-8" : ""} text-gray-800`}>
+      <h2 className={`text-1xl sm:text-4xl font-bold ${!isRunning ? "mb-8" : ""} text-gray-800 dark:text-white`}>
         {mode === "timer" ? "TIMER" : "STOPWATCH"}
       </h2>
 
-      <div className="p-8 border-2 border-gray-200 rounded-xl bg-gray-50 shadow-inner">
-        <p className="text-5xl font-mono font-bold text-gray-800">
+      <div className="p-4 sm:p-6 mx-2 border-2 border-gray-200 rounded-xl bg-gray-50 dark:bg-gray-900 shadow-inner">
+        <p className="text-2xl sm:text-5xl font-mono font-bold text-gray-800 dark:text-white">
           {mode === "timer" && time < 0 ? "-" : ""}
           {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
         </p>
       </div>
 
       {mode === "timer" && time <= 0 && (
-          <p className="text-red-500 m-6 text-4xl font-bold">TIME IS UP !</p>
+          <p className="text-red-500 m-6 text-2xl sm:text-4xl dark:text-white font-bold">TIME IS UP !</p>
       )}
 
-      <div className="flex justify-center items-center space-x-6">
+      <div className="flex justify-center items-center space-x-2 sm:space-x-6 dark:text-white">
         {isRunning && (
           <button
-            className="px-8 py-4 mt-6 bg-gray-500 text-white rounded-xl border-2 border-gray-600 shadow-lg hover:bg-gray-600 transition-all duration-300 text-lg font-medium"
+            className="px-2 py-1 sm:px-8 sm:py-4 bg-gray-500 dark:bg-gray-600 text-white rounded-xl border-2 border-gray-600 shadow-lg hover:bg-gray-600 transition-all duration-300 text-md font-medium"
             onClick={() => setIsRunning(false)}
           >
             STOP
@@ -64,7 +64,7 @@ export const TimerDisplay = ({ initialMinutes = 0, mode }: TimerProps) => {
         )}
         {!isRunning && (
           <button
-            className="px-8 py-4 mt-6 bg-green-500 text-white rounded-xl border-2 border-green-600 shadow-lg hover:bg-green-600 transition-all duration-300 text-lg font-medium"
+            className="px-2 py-1 sm:px-8 sm:py-4 mt-5 bg-green-500 dark:bg-green-600 text-white rounded-xl border-2 border-green-600 shadow-lg hover:bg-green-600 transition-all duration-300 text-md font-medium"
             onClick={() => setIsRunning(true)}
           >
             START
@@ -73,7 +73,7 @@ export const TimerDisplay = ({ initialMinutes = 0, mode }: TimerProps) => {
 
         {mode === "timer" && (
           <button
-            className="px-8 py-4 mt-6 bg-red-500 text-white rounded-xl border-2 border-red-600 shadow-lg hover:bg-red-600 transition-all duration-300 text-lg font-medium"
+            className={`px-2 py-1 sm:px-8 sm:py-4 ${!isRunning ? "mt-5" : ""} bg-red-500 dark:bg-red-600 text-white rounded-xl border-2 border-red-600 shadow-lg hover:bg-red-600 transition-all duration-300 text-md font-medium`}
             onClick={() => {setTime(initialMinutes * 60); setIsRunning(false);}}
           >
             RESET
@@ -81,7 +81,7 @@ export const TimerDisplay = ({ initialMinutes = 0, mode }: TimerProps) => {
         )}
         {mode === "stopwatch" && (
           <button
-            className="px-8 py-4 mt-6 bg-red-500 text-white rounded-xl border-2 border-red-600 shadow-lg hover:bg-red-600 transition-all duration-300 text-lg font-medium"
+            className={`px-2 py-1 sm:px-8 sm:py-4 ${!isRunning ? "mt-5" : ""} bg-red-500 dark:bg-red-600 text-white rounded-xl border-2 border-red-600 shadow-lg hover:bg-red-600 transition-all duration-300 text-md font-medium`}
             onClick={() => {setTime(0); setIsRunning(false);}}
           >
             RESET

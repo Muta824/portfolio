@@ -51,29 +51,29 @@ export const SavedResults = () => {
     );    
 
     return (
-    <div className="mt-6 border py-3 px-5 rounded">
+    <div className="mt-6 border py-3 px-5 rounded dark:bg-gray-900 dark:text-white">
         <h2 className="text-xl font-semibold mb-2">保存済みの採点結果</h2>
         <input
             type="text"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             placeholder="名前で検索"
-            className="border px-3 py-2 rounded mb-4 w-full max-w-sm"
+            className="border px-3 py-2 rounded mb-4 w-full max-w-sm dark:bg-gray-900 dark:text-white dark:border-white"
         />
         
         {/*保存したテストのリスト*/}
-        <ul className="space-y-2">
+        <ul className="space-y-2 dark:bg-gray-900 dark:text-white">
         {filteredNames.map((name) => (
-          <li key={name} className="flex items-center justify-between bg-white p-2 rounded shadow-sm">
+          <li key={name} className="flex items-center justify-between bg-white p-2 rounded shadow-sm dark:bg-gray-700 dark:text-white">
             <button
-              className="text-blue-500 hover:text-blue-900 cursor-pointer"
+              className="text-blue-500 hover:text-blue-900 cursor-pointer dark:text-white dark:hover:text-blue-200"
               onClick={() => handleSelect(name)} //保存した名前を代入し、詳細を表示
             >
               {name}
             </button>
             <button
               onClick={() => handleDelete(name)}
-              className="text-red-500 hover:text-red-900 text-sm cursor-pointer"
+              className="text-red-500 hover:text-red-900 text-sm cursor-pointer dark:text-white dark:hover:text-red-900"
             >
               🗑 削除
             </button>
@@ -84,30 +84,30 @@ export const SavedResults = () => {
 
         {/*選択した問題の詳細を表示*/}
         {selectedResult && (
-        <div className="mt-6 p-4 border rounded shadow bg-gray-50">
+        <div className="mt-6 p-4 border rounded shadow bg-gray-50 dark:bg-gray-900">
             <h3 className="text-lg font-bold mb-2">📋 {selectedResult.name}</h3>
             <p>正解数: {selectedResult.score}</p>
             <p>保存日時: {new Date(selectedResult.savedAt).toLocaleString()}</p>
             {/* 詳細表示用のボタン */}
             <button
                 onClick={() => setShowDetails((prev) => !prev)}
-                className="mt-2 px-3 py-1 bg-blue-500 text-white text-sm rounded cursor-pointer"
+                className="mt-2 px-3 py-1 bg-blue-500 text-white text-sm rounded cursor-pointer dark:bg-blue-500 dark:text-white"
             >
                 {showDetails ? "詳細を隠す" : "詳細を見る"}
             </button>
 
             {/* 詳細表示エリア */}
             {showDetails && (
-            <div className="mt-4 max-h-[300px] overflow-y-auto text-base">
+            <div className="mt-4 max-h-[300px] overflow-y-auto text-base dark:bg-gray-900">
                 <h4 className="font-semibold mb-2">📝 問題ごとの結果:</h4>
-                <ul className="space-y-1">
+                <ul className="space-y-1 dark:bg-gray-900">
                 {Object.entries(selectedResult.answers).map(([id, choice]) => {
                     const qId = Number(id);
                     const correct = selectedResult.results[qId];
                     return (
                         <li key={qId}>
                             Q{id}：「{choice}」 →
-                            <span className={correct ? "text-green-600" : "text-red-600"}>
+                            <span className={correct ? "text-green-600 dark:text-green-600" : "text-red-600 dark:text-red-600"}>
                                 {correct ? " 正解" : " 不正解"}
                             </span>
                         </li>
