@@ -61,7 +61,7 @@ export default function TodoPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 p-6">
+    <main className="min-h-screen bg-white dark:bg-gray-900 py-6 px-1 sm:px-6">
       <UsageGuideModal 
         isOpen={isGuideOpen}
         onClose={() => setIsGuideOpen(false)}
@@ -71,16 +71,16 @@ export default function TodoPage() {
         onClose={() => setIsTimeZoneGuideOpen(false)}
       />
       <div className="max-w-7xl mx-auto space-y-8">
-        <header className="flex flex-col lg:flex-row justify-between items-center">
+        <header className="flex flex-col gap-4 xl:flex-row justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl">
               {selectedDate.getFullYear()}年 {selectedDate.getMonth() + 1}月 {selectedDate.getDate()}日
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-gray-500 dark:text-gray-400 mt-4 sm:text-lg md:text-lg text-center">
               今日のタスクを管理しましょう
             </p>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap gap-4 justify-center items-center space-x-6">
             <Button
               variant="ghost"
               size="md"
@@ -118,7 +118,7 @@ export default function TodoPage() {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700">
               <TodoList 
                 tasks={tasks}
                 onUpdateTask={handleUpdateTask}

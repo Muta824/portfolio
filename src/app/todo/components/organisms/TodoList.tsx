@@ -78,7 +78,7 @@ export default function TodoList({ tasks, onUpdateTask }: TodoListProps) {
         <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-sm border-collapse">
           <thead>
             <tr className="border-b-2 border-gray-100 dark:border-gray-700">
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400 border-r border-gray-100 dark:border-gray-700">時間帯</th>
+              <th className="px-2 sm:px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400 border-r border-gray-100 dark:border-gray-700">時間帯</th>
               <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 dark:text-gray-400">タスク</th>
             </tr>
           </thead>
@@ -89,10 +89,10 @@ export default function TodoList({ tasks, onUpdateTask }: TodoListProps) {
                 <tr key={level.id} className={`border-b border-gray-100 dark:border-gray-700 transition-colors duration-200 ${
                   task?.isCompleted ? 'bg-gray-50 dark:bg-gray-700/50' : 'hover:bg-gray-50 dark:hover:bg-gray-700/30'
                 }`}>
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white border-r border-gray-100 dark:border-gray-700 font-medium">
+                  <td className="px-1 sm:px-4 py-2 text-sm text-gray-900 dark:text-white border-r border-gray-100 dark:border-gray-700 font-medium">
                     {level.label}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center flex-1">
                         {task?.isCompleted && (

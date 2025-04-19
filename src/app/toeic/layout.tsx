@@ -5,6 +5,11 @@ import { ResultsProvider } from "./contexts/ResultContext";
 import { ScoreProvider } from "./contexts/ScoreContext";
 import { SelectedCorrectAnswersProvider } from "./contexts/SelectedCorrectAnswersContext";
 
+export const metadata = {
+  title: "TOEIC Scoring App",
+  description: "TOEIC Scoring App",
+}
+
 export default function TOEICLayout({
   children,
 }: {
