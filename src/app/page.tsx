@@ -15,6 +15,10 @@ export default function Home() {
           Go to
           <a href="./todo" className='custom-link mx-2'> ToDo App</a>
         </p>
+        <p className='py-4 text-center text-2xl sm:text-3xl md:text-4xl text-white'>
+          Go to
+          <a href="./blog" className='custom-link mx-2'> Blog</a>
+        </p>
       </div>
 
       {/* リンクの色を変更するためのスタイル このスタイルはこのファイル内でしか使えない */}

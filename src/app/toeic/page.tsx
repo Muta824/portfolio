@@ -49,7 +49,8 @@ export default function TOEICScoringPage() {
                   <Eye className="w-4 h-4" />
                   <p>タイマー</p>
                 </div> 
-                 : <div className="flex flex-row items-center gap-2">
+                 : 
+                <div className="flex flex-row items-center gap-2">
                   <EyeOff className="w-4 h-4" />
                   <p>タイマー</p>
                 </div>}
@@ -62,7 +63,8 @@ export default function TOEICScoringPage() {
                   <Eye className="w-4 h-4" />
                   <p>スコア計算/結果表示</p>
                 </div> 
-                : <div className="flex flex-row items-center gap-2">
+                : 
+                <div className="flex flex-row items-center gap-2">
                   <EyeOff className="w-4 h-4" />
                   <p>スコア計算/結果表示</p>
                 </div>}
@@ -75,7 +77,8 @@ export default function TOEICScoringPage() {
                   <Eye className="w-4 h-4" />
                   <p>模範解答作成</p>
                 </div> 
-                : <div className="flex flex-row items-center gap-2">
+                : 
+                <div className="flex flex-row items-center gap-2">
                   <EyeOff className="w-4 h-4" />
                   <p>模範解答作成</p>
                 </div>}
