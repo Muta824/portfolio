@@ -1,7 +1,7 @@
 'use client';
 
 import { Task, ConcentrationLevel } from '../../types/todo';
-import Button from '../atoms/Button';
+import Button from '@/components/atoms/Button';
 
 interface TodoListProps {
   tasks: Task[];

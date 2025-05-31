@@ -1,9 +1,9 @@
 import "../globals.css";
-import { AnswerProvider } from "./contexts/AnswerContext";
-import { GradingModeProvider } from "./contexts/GradingModeContext";
-import { ResultsProvider } from "./contexts/ResultContext";
-import { ScoreProvider } from "./contexts/ScoreContext";
-import { SelectedCorrectAnswersProvider } from "./contexts/SelectedCorrectAnswersContext";
+import { AnswerProvider } from "@/features/toeic/contexts/AnswerContext";
+import { GradingModeProvider } from "@/features/toeic/contexts/GradingModeContext";
+import { ResultsProvider } from "@/features/toeic/contexts/ResultContext";
+import { ScoreProvider } from "@/features/toeic/contexts/ScoreContext";
+import { SelectedCorrectAnswersProvider } from "@/features/toeic/contexts/SelectedCorrectAnswersContext";
 
 export const metadata = {
   title: "TOEIC Scoring App",

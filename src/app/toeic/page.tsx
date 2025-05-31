@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from 'lucide-react';
-import { QuestionsList } from "./components/organisms/QuestionsList";
-import { Result } from "./components/organisms/Result";
-import { Timer } from "./components/organisms/Timer";
-import { CorrectAnswersSaveForm } from "./components/organisms/CorrectAnswersSaveForm";
-import { ErrorBoundary } from "./components/molecules/ErrorBoundary";
-import DarkModeToggle from "./components/atoms/DarkModeToggle";
-import ScrollToTopButton from "./components/atoms/ScrollToTopButton";
-import { Question } from "./types/data";
+import { QuestionsList } from "@/features/toeic/components/organisms/QuestionsList";
+import { Result } from "@/features/toeic/components/organisms/Result";
+import { Timer } from "@/features/toeic/components/organisms/Timer";
+import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
+import { ErrorBoundary } from "@/features/toeic/components/molecules/ErrorBoundary";
+import DarkModeToggle from "@/components/atoms/DarkModeToggle";
+import ScrollToTopButton from "@/features/toeic/components/atoms/ScrollToTopButton";
+import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
 
 const generateQuestions = (): Question[] => 

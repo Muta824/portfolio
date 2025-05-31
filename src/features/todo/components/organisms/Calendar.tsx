@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import CalendarDay from '../molecules/CalendarDay';
-import Button from '../atoms/Button';
+import Button from '@/components/atoms/Button';
 
 interface CalendarProps {
   selectedDate: Date;

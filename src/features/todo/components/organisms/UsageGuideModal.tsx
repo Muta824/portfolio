@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '../atoms/Button';
+import Button from '@/components/atoms/Button';
 
 interface UsageGuideModalProps {
   isOpen: boolean;

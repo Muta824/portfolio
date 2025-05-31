@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import TodoList from './components/organisms/TodoList';
-import Calendar from './components/organisms/Calendar';
-import DarkModeToggle from './components/atoms/DarkModeToggle';
-import UsageGuideModal from './components/organisms/UsageGuideModal';
-import TimeZoneGuideModal from './components/organisms/TimeZoneGuideModal';
-import Button from './components/atoms/Button';
-import { Task } from './types/todo';
+import TodoList from '@/features/todo/components/organisms/TodoList';
+import Calendar from '@/features/todo/components/organisms/Calendar';
+import DarkModeToggle from '@/components/atoms/DarkModeToggle';
+import UsageGuideModal from '@/features/todo/components/organisms/UsageGuideModal';
+import TimeZoneGuideModal from '@/features/todo/components/organisms/TimeZoneGuideModal';
+import Button from '@/components/atoms/Button';
+import { Task } from '@/features/todo/types/todo';
 
 interface TodoTasks {
   [date: string]: Task[];

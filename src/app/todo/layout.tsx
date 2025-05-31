@@ -1,4 +1,4 @@
-import './styles/todo.css';
+import './todo.css';
 
 export const metadata = {
   title: "Todo List",
