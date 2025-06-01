@@ -7,7 +7,7 @@ import { Result } from "@/features/toeic/components/organisms/Result";
 import { Timer } from "@/features/toeic/components/organisms/Timer";
 import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
 import { ErrorBoundary } from "@/features/toeic/components/molecules/ErrorBoundary";
-import DarkModeToggle from "@/components/atoms/DarkModeToggle";
+import { ThemeToggle } from "@/features/blog/components/atoms/ThemeToggle";
 import ScrollToTopButton from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
@@ -35,7 +35,7 @@ export default function TOEICScoringPage() {
           <h1 className="py-6 px-4 text-4xl text-center md:text-5xl font-bold text-gray-800 dark:text-white">
             TOEIC Scoring App
           </h1>
-          <DarkModeToggle />
+          <ThemeToggle />
         </header>
         
         <main className="container mx-auto px-4 py-8">

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import TodoList from '@/features/todo/components/organisms/TodoList';
 import Calendar from '@/features/todo/components/organisms/Calendar';
-import DarkModeToggle from '@/components/atoms/DarkModeToggle';
+import { ThemeToggle } from '@/features/blog/components/atoms/ThemeToggle';
 import UsageGuideModal from '@/features/todo/components/organisms/UsageGuideModal';
 import TimeZoneGuideModal from '@/features/todo/components/organisms/TimeZoneGuideModal';
 import Button from '@/components/atoms/Button';
@@ -103,7 +103,7 @@ export default function TodoPage() {
               </svg>
               <span>使い方を見る</span>
             </Button>
-            <DarkModeToggle className="p-2" />
+            <ThemeToggle />
           </div>
         </header>
 

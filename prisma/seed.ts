@@ -11,11 +11,18 @@ const userData: Prisma.UserCreateInput[] = [
         {
           title: 'Join the Prisma Discord',
           content: 'https://pris.ly/discord',
-          published: true,
+          slug: 'join-prisma-discord',
+          excerpt: 'Join our Discord community',
+          categoryId: '1',
+          publishedAt: new Date(),
         },
         {
           title: 'Prisma on YouTube',
           content: 'https://pris.ly/youtube',
+          slug: 'prisma-youtube',
+          excerpt: 'Watch Prisma tutorials on YouTube',
+          categoryId: '1',
+          publishedAt: new Date(),
         },
       ],
     },
@@ -28,12 +35,23 @@ const userData: Prisma.UserCreateInput[] = [
         {
           title: 'Follow Prisma on Twitter',
           content: 'https://www.twitter.com/prisma',
-          published: true,
+          slug: 'follow-prisma-twitter',
+          excerpt: 'Follow Prisma on Twitter for updates',
+          categoryId: '1',
+          publishedAt: new Date(),
         },
       ],
     },
   }
 ]
+
+const categoryData: Prisma.CategoryCreateInput[] = [
+  {
+    id: '1',
+    name: '技術記事',
+    slug: 'tech',
+  },
+];
 
 export async function main() {
   console.log(`Start seeding ...`)
@@ -42,6 +60,12 @@ export async function main() {
       data: u,
     })
     console.log(`Created user with id: ${user.id}`)
+  }
+  for (const c of categoryData) {
+    const category = await prisma.category.create({
+      data: c,
+    });
+    console.log(`Created category with id: ${category.id}`);
   }
   console.log(`Seeding finished.`)
 }

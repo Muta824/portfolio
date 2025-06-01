@@ -13,12 +13,12 @@ export const Text: React.FC<TextProps> = ({
   className = '',
 }) => {
   const variants = {
-    h1: 'text-4xl font-bold',
-    h2: 'text-3xl font-bold',
-    h3: 'text-2xl font-semibold',
-    h4: 'text-xl font-semibold',
-    body: 'text-base',
-    small: 'text-sm text-gray-600'
+    h1: 'text-4xl font-bold text-gray-800 dark:text-white',
+    h2: 'text-3xl font-bold text-gray-800 dark:text-white',
+    h3: 'text-2xl font-semibold text-gray-800 dark:text-white',
+    h4: 'text-xl font-semibold text-gray-800 dark:text-white',
+    body: 'text-base text-gray-800 dark:text-white',
+    small: 'text-sm text-gray-600 dark:text-gray-400'
   };
 
   const Component = variant.startsWith('h') ? variant : 'p';

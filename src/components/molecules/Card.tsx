@@ -13,7 +13,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={twMerge(
-        'bg-white rounded-lg shadow-md p-6',
+        'bg-white dark:bg-gray-900 rounded-lg shadow-md p-6',
         className
       )}
     >
