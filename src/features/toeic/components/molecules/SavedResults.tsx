@@ -50,6 +50,8 @@ export const SavedResults = () => {
         name.toLowerCase().includes(searchName.toLowerCase())
     );    
 
+    const answerEntries = Object.entries(selectedResult?.answers || {});
+
     return (
     <div className="mt-6 border py-3 px-5 rounded dark:bg-gray-900 dark:text-white">
         <h2 className="text-xl font-semibold mb-2">保存済みの採点結果</h2>
@@ -101,12 +103,15 @@ export const SavedResults = () => {
             <div className="mt-4 max-h-[300px] overflow-y-auto text-base dark:bg-gray-900">
                 <h4 className="font-semibold mb-2">📝 問題ごとの結果:</h4>
                 <ul className="space-y-1 dark:bg-gray-900">
-                {Object.entries(selectedResult.answers).map(([id, choice]) => {
-                    const qId = Number(id);
+                {answerEntries.map(([id, choice]) => {
+                    const qId = Number(id) + 1;
                     const correct = selectedResult.results[qId];
+                    const choiceText = typeof choice === 'object' && choice !== null && 'selectedChoice' in choice 
+                        ? (choice as { selectedChoice: string }).selectedChoice 
+                        : choice;
                     return (
                         <li key={qId}>
-                            Q{id}：「{choice}」 →
+                            Q{qId}：「{choiceText}」 →
                             <span className={correct ? "text-green-600 dark:text-green-600" : "text-red-600 dark:text-red-600"}>
                                 {correct ? " 正解" : " 不正解"}
                             </span>

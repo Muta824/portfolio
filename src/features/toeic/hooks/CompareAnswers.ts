@@ -18,7 +18,7 @@ export const CompareAnswers = ({ correctAnswers }: Props) => {
         const newResults: Results = {};
 
         // ユーザーの回答と模範解答が空の場合は、結果を保存しない
-        if (Object.keys(selectedCorrectAnswers).length === 0 || answers.length === 0) {
+        if (!selectedCorrectAnswers || answers.length === 0) {
             setResults({});
             return;
         }
