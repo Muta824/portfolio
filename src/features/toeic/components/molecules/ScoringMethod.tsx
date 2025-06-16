@@ -76,7 +76,7 @@ export const ScoringMethod = () => {
             )}
 
             {gradingMode === "auto" && Object.keys(savedCorrectAnswers).length > 0 && (
-                <CompareAnswers correctAnswers={savedCorrectAnswers[selectedCorrectAnswers]} />
+                <CompareAnswers correctAnswers={savedCorrectAnswers}/> // 自動採点の場合は、模範解答を選択して比較する
             )}
         </div>
     )

@@ -1,35 +1,39 @@
 import { useAnswer } from "../contexts/AnswerContext";
 import { useResultsContext } from "../contexts/ResultContext";
+import { useSelectedCorrectAnswers } from "../contexts/SelectedCorrectAnswersContext";
 import { useEffect } from "react";
+import { Results } from "../types/data";
 
-interface CompareAnswersProps {
-    correctAnswers: Record<number, string>;
+type Props = {
+    correctAnswers: Record<string, Record<number, string>>;
 }
 
-export const CompareAnswers = ({ correctAnswers }: CompareAnswersProps) => {
+export const CompareAnswers = ({ correctAnswers }: Props) => {
     const { state: { answers } } = useAnswer(); // ユーザーの回答
-    const { setResults } = useResultsContext(); // 結果を保存する関数
+    const { setResults } = useResultsContext();
+    const { selectedCorrectAnswers } = useSelectedCorrectAnswers();
 
     useEffect(() => {
         // 比較ロジック
-        const newResults: Record<number, boolean> = {};
+        const newResults: Results = {};
 
-        if (Object.keys(correctAnswers).length === 0 || Object.keys(answers).length === 0) {
+        // ユーザーの回答と模範解答が空の場合は、結果を保存しない
+        if (Object.keys(selectedCorrectAnswers).length === 0 || answers.length === 0) {
             setResults({});
             return;
         }
-
-        Object.entries(correctAnswers).forEach(([questionId, correctAnswer]) => {
-            const userAnswer = answers[Number(questionId) - 1];
-            if (!userAnswer) {
-                return; 
-            }
-            newResults[Number(questionId)] = userAnswer.selectedChoice === correctAnswer;
+        
+        // ユーザーの回答がある問題のみを比較
+        answers.forEach(answer => {
+            const questionId = answer.questionId;
+            const correctAnswer = correctAnswers[selectedCorrectAnswers][questionId];
+            const userAnswer = answer.selectedChoice;
+            newResults[questionId] = correctAnswer === userAnswer;
         });
 
         // 結果を保存
         setResults(newResults);
-    }, [answers, correctAnswers, setResults]);
+    }, [answers, selectedCorrectAnswers, setResults, correctAnswers]); 
 
     return null;
 };
