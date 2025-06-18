@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
+import { SignIn } from '@/components/atoms/signin-button';
 
 interface NavigationProps {
   className?: string;
@@ -32,7 +33,10 @@ export const Navigation: React.FC<NavigationProps> = ({
               </Link>
             ))}
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-4">
+            <SignIn />
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </nav>
