@@ -1,7 +1,7 @@
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
 import { CategoryFilter } from '@/features/blog/components/molecules/CategoryFilter';
 import { SearchBar } from '@/features/blog/components/molecules/SearchBar';
-import { ThemeToggle } from '@/features/blog/components/atoms/ThemeToggle';
+import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 

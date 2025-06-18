@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import TodoList from '@/features/todo/components/organisms/TodoList';
 import Calendar from '@/features/todo/components/organisms/Calendar';
-import { ThemeToggle } from '@/features/blog/components/atoms/ThemeToggle';
+import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import UsageGuideModal from '@/features/todo/components/organisms/UsageGuideModal';
 import TimeZoneGuideModal from '@/features/todo/components/organisms/TimeZoneGuideModal';
 import Button from '@/components/atoms/Button';

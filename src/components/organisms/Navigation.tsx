@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
-import { ThemeToggle } from '@/features/blog/components/atoms/ThemeToggle';
+import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 
 interface NavigationProps {
   className?: string;

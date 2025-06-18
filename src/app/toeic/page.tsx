@@ -7,7 +7,7 @@ import { Result } from "@/features/toeic/components/organisms/Result";
 import { Timer } from "@/features/toeic/components/organisms/Timer";
 import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
 import { ErrorBoundary } from "@/features/toeic/components/molecules/ErrorBoundary";
-import { ThemeToggle } from "@/features/blog/components/atoms/ThemeToggle";
+import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import ScrollToTopButton from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
