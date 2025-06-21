@@ -167,6 +167,7 @@ export default function LoginPage({
             action={handleCredentialsSubmit}
             className="space-y-4"
           >
+            {/* メールアドレス */}
             <Input
               label="Email"
               name="email"
@@ -175,7 +176,7 @@ export default function LoginPage({
               required
               className="bg-white/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
             />
-            
+            {/* パスワード */}
             <Input
               label="Password"
               name="password"

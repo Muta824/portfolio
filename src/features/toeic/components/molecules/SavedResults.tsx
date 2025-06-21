@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useScoreContext } from "../../contexts/ScoreContext";
+import { Answer } from "../../types/data";
+import { Results } from "../../types/data";
 
 type SavedResult = {
     name: string;
-    answers: Record<number, string>;
-    results: Record<number, boolean>;
+    answers: Answer[];
+    results: Results;
     score: number;
     savedAt: string;
 };
@@ -49,8 +51,6 @@ export const SavedResults = () => {
     const filteredNames = Object.keys(savedList).filter((name) =>
         name.toLowerCase().includes(searchName.toLowerCase())
     );    
-
-    const answerEntries = Object.entries(selectedResult?.answers || {});
 
     return (
     <div className="mt-6 border py-3 px-5 rounded dark:bg-gray-900 dark:text-white">
@@ -103,12 +103,10 @@ export const SavedResults = () => {
             <div className="mt-4 max-h-[300px] overflow-y-auto text-base dark:bg-gray-900">
                 <h4 className="font-semibold mb-2">📝 問題ごとの結果:</h4>
                 <ul className="space-y-1 dark:bg-gray-900">
-                {answerEntries.map(([id, choice]) => {
-                    const qId = Number(id) + 1;
+                {selectedResult.answers.map((answer) => {
+                    const qId = answer.questionId;
                     const correct = selectedResult.results[qId];
-                    const choiceText = typeof choice === 'object' && choice !== null && 'selectedChoice' in choice 
-                        ? (choice as { selectedChoice: string }).selectedChoice 
-                        : choice;
+                    const choiceText = answer.selectedChoice;
                     return (
                         <li key={qId}>
                             Q{qId}：「{choiceText}」 →
