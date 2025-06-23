@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useScoreContext } from "../../contexts/ScoreContext";
-import { Answer } from "../../types/data";
+import { Answers } from "../../types/data";
 import { Results } from "../../types/data";
 
 type SavedResult = {
     name: string;
-    answers: Answer[];
+    answers: Answers;
     results: Results;
     score: number;
     savedAt: string;
@@ -103,10 +103,8 @@ export const SavedResults = () => {
             <div className="mt-4 max-h-[300px] overflow-y-auto text-base dark:bg-gray-900">
                 <h4 className="font-semibold mb-2">📝 問題ごとの結果:</h4>
                 <ul className="space-y-1 dark:bg-gray-900">
-                {selectedResult.answers.map((answer) => {
-                    const qId = answer.questionId;
-                    const correct = selectedResult.results[qId];
-                    const choiceText = answer.selectedChoice;
+                {Object.entries(selectedResult.answers).map(([qId, choiceText]) => {
+                    const correct = selectedResult.results[Number(qId)];
                     return (
                         <li key={qId}>
                             Q{qId}：「{choiceText}」 →

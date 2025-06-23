@@ -2,50 +2,30 @@
 
 import { useEffect } from 'react';
 import { createContext, useContext, useReducer, ReactNode } from 'react';
-import { Answer, HandleSelect } from '../types/data';
-
-interface AnswerState {
-  answers: Answer[];
-  selectedQuestionId: number | null;
-}
+import { Answers, HandleSelect } from '../types/data';
 
 type AnswerAction =
-  | { type: 'SET_ANSWER'; payload: Answer }
-  | { type: 'SET_SELECTED_QUESTION'; payload: number | null }
+  | { type: 'SET_ANSWER'; payload: { questionId: number; selectedChoice: string } }
   | { type: 'RESET_ANSWERS' };
 
-const initialState: AnswerState = {
-  answers: [],
-  selectedQuestionId: null,
+const initialState: Answers = {
+  
 };
 
 const AnswerContext = createContext<{
-  state: AnswerState;
+  answers: Answers;
   handleSelect: HandleSelect;
-  setSelectedQuestion: (id: number | null) => void;
   resetAnswers: () => void;
 } | undefined>(undefined);
 
-const answerReducer = (state: AnswerState, action: AnswerAction): AnswerState => {
+
+const answerReducer = (state: Answers, action: AnswerAction): Answers => {
   switch (action.type) {
     case 'SET_ANSWER':
-      const existingAnswerIndex = state.answers.findIndex(
-        a => a.questionId === action.payload.questionId
-      );
-      
-      if (existingAnswerIndex >= 0) {
-        const newAnswers = [...state.answers];
-        newAnswers[existingAnswerIndex] = action.payload;
-        return { ...state, answers: newAnswers };
-      }
-      
-      return { ...state, answers: [...state.answers, action.payload] };
-    
-    case 'SET_SELECTED_QUESTION':
-      return { ...state, selectedQuestionId: action.payload };
+      return { ...state, [action.payload.questionId]: action.payload.selectedChoice };
     
     case 'RESET_ANSWERS':
-      return { ...state, answers: [] };
+      return {};
     
     default:
       return state;
@@ -53,8 +33,7 @@ const answerReducer = (state: AnswerState, action: AnswerAction): AnswerState =>
 };
 
 export const AnswerProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(answerReducer, initialState);
-
+  const [answers, dispatch] = useReducer(answerReducer, initialState);
 
   const handleSelect: HandleSelect = (questionId, choice) => {
     dispatch({
@@ -62,32 +41,28 @@ export const AnswerProvider = ({ children }: { children: ReactNode }) => {
       payload: { questionId, selectedChoice: choice },
     });
 
-    // 保存処理
+    // ブラウザのローカルストレージに保存
     const stored = localStorage.getItem("toeicAnswers");
     const parsed: Record<number, string> = stored ? JSON.parse(stored) : {};
     parsed[questionId] = choice;
     localStorage.setItem("toeicAnswers", JSON.stringify(parsed));
   };
 
-  const setSelectedQuestion = (id: number | null) => {
-    dispatch({ type: 'SET_SELECTED_QUESTION', payload: id });
-  };
-
   const resetAnswers = () => {
     dispatch({ type: 'RESET_ANSWERS' });
   };
 
+  // 最初にブラウザのローカルストレージから読み込む
   useEffect(() => {
     const stored = localStorage.getItem("toeicAnswers");
     if (stored) {
       const parsed: Record<number, string> = JSON.parse(stored);
-      Object.entries(parsed).forEach(([qid, choice]) => {
+      Object.keys(parsed).forEach((id) => {
+        const qid = Number(id);
+        const choice = parsed[qid];
         dispatch({
           type: 'SET_ANSWER',
-          payload: {
-            questionId: Number(qid),
-            selectedChoice: choice,
-          },
+          payload: { questionId: qid, selectedChoice: choice },
         });
       });
     }
@@ -95,7 +70,7 @@ export const AnswerProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AnswerContext.Provider
-      value={{ state, handleSelect, setSelectedQuestion, resetAnswers }}
+      value={{ answers, handleSelect, resetAnswers }}
     >
       {children}
     </AnswerContext.Provider>

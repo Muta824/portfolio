@@ -3,14 +3,11 @@ export interface Question {
     id: number; //問題番号
     text: string; //問題名
     choices: string[]; //選択肢A~D
-    correctAnswer?: string;
 }
 
 //各問題の回答データ
-export interface Answer {
-    questionId: number;
-    selectedChoice: string;
-    isCorrect?: boolean;
+export interface Answers {
+    [questionId: number]: string;
 }
 
 //各問題の正解、不正解のデータ

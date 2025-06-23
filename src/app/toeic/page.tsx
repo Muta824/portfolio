@@ -7,19 +7,19 @@ import { Result } from "@/features/toeic/components/organisms/Result";
 import { Timer } from "@/features/toeic/components/organisms/Timer";
 import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-import ScrollToTopButton from "@/features/toeic/components/atoms/ScrollToTopButton";
+import { ScrollToTopButton } from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
 
-const generateQuestions = (): Question[] => 
-  Array.from({ length: 200 }, (_, index) => ({
-    id: index + 1,
-    text: `Q${index + 1}`,
+//問題データを生成
+const questions: Question[] = []
+for (let i = 1; i <= 200; i++) {
+  questions.push({
+    id: i,
+    text: `Q${i}`,
     choices: ["A", "B", "C", "D"],
-    correctAnswer: undefined
-  }));
-
-const questions = generateQuestions();
+  })
+}
 
 export default function TOEICScoringPage() {
   const [isTimer, setIsTimer] = useState(false);

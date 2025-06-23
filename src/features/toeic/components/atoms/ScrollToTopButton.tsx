@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowUp } from 'lucide-react'; 
 
-export default function ScrollToTopButton() {
+export function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
 
   // スクロール位置を監視

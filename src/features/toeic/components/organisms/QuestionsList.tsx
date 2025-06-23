@@ -4,12 +4,7 @@ import { GradingButtons } from "../molecules/GradingButtons"
 import type { Question } from "../../types/data"
 import { memo } from "react"
 
-type QuestionsProps = {
-    questions: Question[];
-}
-
-export const QuestionsList = memo(function Questions(props: QuestionsProps) {
-    const { questions } = props;
+export const QuestionsList = memo(function Questions({questions}: {questions: Question[]}) {
     const { gradingMode } = useGradingMode();
     
     return (

@@ -9,26 +9,23 @@ type Props = {
 }
 
 export const CompareAnswers = ({ correctAnswers }: Props) => {
-    const { state: { answers } } = useAnswer(); // ユーザーの回答
+    const { answers } = useAnswer(); // ユーザーの回答
     const { setResults } = useResultsContext();
     const { selectedCorrectAnswers } = useSelectedCorrectAnswers();
 
     useEffect(() => {
-        // 比較ロジック
         const newResults: Results = {};
 
         // ユーザーの回答と模範解答が空の場合は、結果を保存しない
-        if (!selectedCorrectAnswers || answers.length === 0) {
+        if (!selectedCorrectAnswers || Object.keys(answers).length === 0) {
             setResults({});
             return;
         }
         
         // ユーザーの回答がある問題のみを比較
-        answers.forEach(answer => {
-            const questionId = answer.questionId;
-            const correctAnswer = correctAnswers[selectedCorrectAnswers][questionId];
-            const userAnswer = answer.selectedChoice;
-            newResults[questionId] = correctAnswer === userAnswer;
+        Object.entries(answers).forEach(([questionId, userAnswer]) => {
+            const correctAnswer = correctAnswers[selectedCorrectAnswers][Number(questionId)];
+            newResults[Number(questionId)] = correctAnswer === userAnswer;
         });
 
         // 結果を保存

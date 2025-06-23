@@ -4,7 +4,7 @@ import { useResultsContext } from "../contexts/ResultContext";
 import { useScoreContext } from "../contexts/ScoreContext";
 
 export const useSave = () => {
-    const { state: { answers } } = useAnswer();
+    const { answers } = useAnswer();
     const { results } = useResultsContext();
     const { score } = useScoreContext();
     const [name, setName] = useState("");
