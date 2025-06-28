@@ -3,20 +3,26 @@ import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { SignIn } from '@/components/atoms/signin-button';
+import { SignOut } from '@/components/atoms/signout-button';
+import UserAvatar from '@/components/atoms/UserAvatar';
+import { auth } from '../../../auth';
 
 interface NavigationProps {
   className?: string;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({
+export const Navigation: React.FC<NavigationProps> = async ({
   className = '',
 }) => {
+  
   const links = [
     { href: '/', label: 'ホーム' },
     { href: '/toeic', label: 'TOEIC' },
     { href: '/todo', label: 'Todo' },
     { href: '/blog', label: 'ブログ' },
   ];
+
+  const session = await auth();
 
   return (
     <nav className={twMerge('bg-white dark:bg-gray-900 shadow-sm', className)}>
@@ -34,7 +40,8 @@ export const Navigation: React.FC<NavigationProps> = ({
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <SignIn />
+            <UserAvatar />
+            {session ? <SignOut /> : <SignIn />}
             <ThemeToggle />
           </div>
         </div>

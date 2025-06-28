@@ -20,6 +20,7 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  role          String?
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
@@ -71,14 +72,19 @@ model Post {
   title       String
   slug        String     @unique
   content     String     @db.Text
-  excerpt     String     @db.Text
+  thumbnailUrl String?
+
+  authorId    String
+  author      User       @relation(fields: [authorId], references: [id])
+
+  categoryId  String
+  category    Category   @relation(fields: [categoryId], references: [id])
+
   publishedAt DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  author      User       @relation(fields: [authorId], references: [id])
-  authorId    String
-  category    Category   @relation(fields: [categoryId], references: [id])
-  categoryId  String
+
   tags        Tag[]      @relation("PostToTag")
+  
   comments    Comment[]
 }
 

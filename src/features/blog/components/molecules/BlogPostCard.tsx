@@ -1,33 +1,17 @@
 import { FC } from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
+import { BlogPost } from '@/features/blog/types/data';
 
-interface BlogPostCardProps {
-  id: string;
-  title: string;
-  excerpt: string;
-  publishedAt: Date;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-  };
-  tags: {
-    id: string;
-    name: string;
-    slug: string;
-  }[];
-  slug: string;
-}
-
-export const BlogPostCard: FC<BlogPostCardProps> = ({
+export const BlogPostCard: FC<BlogPost> = ({
   title,
-  excerpt,
   publishedAt,
   category,
   tags,
   slug,
 }) => {
+  const publishedDate = new Date(publishedAt);
+
   return (
     <article className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
       <Link href={`/blog/${slug}`} className="block p-6">
@@ -36,16 +20,13 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
             <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
               {category.name}
             </span>
-            <time dateTime={publishedAt.toISOString()}>
-              {formatDate(publishedAt)}
+            <time dateTime={publishedDate.toISOString()}>
+              {formatDate(publishedDate)}
             </time>
           </div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
             {title}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 line-clamp-3">
-            {excerpt}
-          </p>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span

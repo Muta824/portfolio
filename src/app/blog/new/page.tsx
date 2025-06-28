@@ -2,19 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
+import { Category } from '@/features/blog/types/data';
 
 export default function NewBlogPost() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    excerpt: '',
     categoryId: '',
     tags: '',
   });
@@ -49,7 +43,7 @@ export default function NewBlogPost() {
         router.push('/blog');
       }
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error('Failed to create post:', error);
     }
   };
 
@@ -67,20 +61,6 @@ export default function NewBlogPost() {
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            抜粋
-          </label>
-          <textarea
-            id="excerpt"
-            value={formData.excerpt}
-            onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            rows={3}
             required
           />
         </div>

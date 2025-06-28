@@ -22,7 +22,16 @@ const providers: Provider[] = [
       return null
     },
   }),
-  GitHub,
+  GitHub({
+    profile(profile) {
+      const { id, ...rest } = profile
+      return { 
+        id: id.toString(),
+        role: profile.role ?? "user", 
+        ...rest 
+      }
+    },
+  }),
 ]
 
 export const providerMap = providers
@@ -41,7 +50,7 @@ export const config = {
   providers,
   pages: {
     signIn: "/login",
-  }
+  },
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config)
