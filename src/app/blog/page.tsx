@@ -1,5 +1,4 @@
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
-import { SearchBar } from '@/features/blog/components/molecules/SearchBar';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import Link from 'next/link';
 import { auth } from '../../../auth';
@@ -31,8 +30,7 @@ export default async function BlogPage() {
           <ThemeToggle />
         </div>
       </div>
-      <SearchBar />
-      <BlogPostGrid initialPosts={posts} />
+      <BlogPostGrid initialPosts={posts} isUser={!!session?.user} />
     </main>
   );
 }

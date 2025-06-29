@@ -33,11 +33,11 @@ export async function POST(request: Request) {
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
+    // JSONを入力として受け取り、それを解釈してJavaScriptのオブジェクトに変換
     const data = await request.json();
-    const { title, content, categoryId, tags } = data;
+    const { title, content, category, tags } = data;
 
-    // スラッグを生成
+    // タイトルのスラッグを生成
     const slug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
@@ -49,11 +49,24 @@ export async function POST(request: Request) {
         title,
         slug,
         content,
-        categoryId,
-        authorId: session.user.id,
+        category: {
+          connectOrCreate: {
+            where: { name: category },
+            create: {
+              name: category,
+              slug: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            },
+          },
+        },
+        author: {
+          connect: { id: session.user.id },
+        },
         tags: {
+          // タグが存在しない場合は作成, 存在する場合は紐づけ
           connectOrCreate: tags.map((tagName: string) => ({
+            // タグのスラッグが存在するかを確認
             where: { slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+            // 存在しない場合は作成
             create: {
               name: tagName,
               slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),

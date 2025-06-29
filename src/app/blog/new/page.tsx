@@ -1,37 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Category } from '@/features/blog/types/data';
 
 export default function NewBlogPost() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    categoryId: '',
+    category: '',
     tags: '',
   });
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch('/api/blog/categories');
-      const data = await response.json();
-      setCategories(data);
-    };
-    fetchCategories();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    // JavaScriptの処理が中断されないように、ページのリロードを防ぐ
     e.preventDefault();
     
     try {
       const response = await fetch('/api/blog/posts', {
+        // HTTPメソッドの指定
         method: 'POST',
+        // リクエストボディに送信するデータがJSONであることをサーバーに伝える
         headers: {
           'Content-Type': 'application/json',
         },
+        // リクエストボディに送信するJavaScriptオブジェクトをJSON形式に変換
         body: JSON.stringify({
           ...formData,
           tags: formData.tags.split(',').map(tag => tag.trim()), // タグを配列に変換
@@ -83,20 +76,15 @@ export default function NewBlogPost() {
           <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             カテゴリー
           </label>
-          <select
+          <input
+            type="text"
             id="category"
-            value={formData.categoryId}
-            onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+            placeholder="例: 技術"
             required
-          >
-            <option value="">カテゴリーを選択</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div>
