@@ -62,7 +62,7 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
 
   return (
     <Card>
-      <div className="relative p-6">
+      <div className="relative">
         <Link href={`/blog/${slug}`} className="block">
           <div className="space-y-4">
             <div className="flex items-center justify-between">

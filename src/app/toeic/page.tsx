@@ -7,6 +7,7 @@ import { Result } from "@/features/toeic/components/organisms/Result";
 import { Timer } from "@/features/toeic/components/organisms/Timer";
 import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
+import { BackToHome } from "@/components/atoms/BackToHome";
 import { ScrollToTopButton } from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
@@ -27,15 +28,21 @@ export default function TOEICScoringPage() {
   const [isCorrectAnswersSaveForm, setIsCorrectAnswersSaveForm] = useState(false);
   
   return (
-      <div className="min-h-screen">
-        <ScrollToTopButton />
-        <header className="bg-white dark:bg-gray-900 flex flex-row justify-between items-center">
-          <h1 className="py-6 px-4 text-4xl text-center md:text-5xl font-bold text-gray-800 dark:text-white">
-            TOEIC Scoring App
-          </h1>
-          <ThemeToggle />
+    <main className="min-h-screen bg-white dark:bg-gray-900 py-6 px-1 sm:px-6">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <header className="flex flex-col gap-4 xl:flex-row justify-between items-center">
+          <div>
+            <BackToHome />
+            <ScrollToTopButton />
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl">
+              TOEIC Scoring App
+            </h1>
+          </div>
+          <div className="flex flex-wrap gap-4 justify-center items-center space-x-6">
+            <ThemeToggle />
+          </div>
         </header>
-        
+
         <main className="container mx-auto px-4 py-8">
           <div className="space-y-6">
             <div className="flex flex-wrap justify-evenly gap-4">
@@ -107,5 +114,6 @@ export default function TOEICScoringPage() {
           </div>
         </main>
       </div>
+    </main>
   );
 }

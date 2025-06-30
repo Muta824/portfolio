@@ -1,8 +1,9 @@
-import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
+import { BackToHome } from '@/components/atoms/BackToHome';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
+import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
+import { BlogPost } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '../../../auth';
-import { BlogPost } from '@/features/blog/types/data';
 
 export default async function BlogPage() {
   const session = await auth();
@@ -16,8 +17,12 @@ export default async function BlogPage() {
 
   return (
     <main className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center">
+        <BackToHome />
+        <ThemeToggle />
+      </div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold dark:text-white">Blog</h1>
+        <h1 className="text-4xl font-bold dark:text-white">Blog</h1>
         <div className="flex items-center gap-4">
           {session?.user && (
           <Link
@@ -27,7 +32,6 @@ export default async function BlogPage() {
               新規作成
             </Link>
           )}
-          <ThemeToggle />
         </div>
       </div>
       <BlogPostGrid initialPosts={posts} isUser={!!session?.user} />

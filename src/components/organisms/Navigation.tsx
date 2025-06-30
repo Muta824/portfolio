@@ -16,10 +16,10 @@ export const Navigation: React.FC<NavigationProps> = async ({
 }) => {
   
   const links = [
-    { href: '/', label: 'ホーム' },
+    { href: '/', label: 'Home' },
     { href: '/toeic', label: 'TOEIC' },
     { href: '/todo', label: 'Todo' },
-    { href: '/blog', label: 'ブログ' },
+    { href: '/blog', label: 'Blog' },
   ];
 
   const session = await auth();

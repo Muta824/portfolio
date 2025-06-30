@@ -17,7 +17,7 @@ export default function Home() {
       href: '/todo',
     },
     {
-      title: 'ブログ',
+      title: 'Blog',
       description: '記事の作成と管理ができるブログアプリケーション',
       href: '/blog',
     },
@@ -28,7 +28,7 @@ export default function Home() {
       <Navigation />
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="space-y-6">
-          <Text variant="h1">マイアプリケーション</Text>
+          <Text variant="h1">My Applications</Text>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {apps.map((app) => (
               <Link key={app.href} href={app.href}>

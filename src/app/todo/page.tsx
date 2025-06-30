@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import TodoList from '@/features/todo/components/organisms/TodoList';
 import Calendar from '@/features/todo/components/organisms/Calendar';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
+import { BackToHome } from '@/components/atoms/BackToHome';
 import UsageGuideModal from '@/features/todo/components/organisms/UsageGuideModal';
 import TimeZoneGuideModal from '@/features/todo/components/organisms/TimeZoneGuideModal';
 import Button from '@/components/atoms/Button';
@@ -73,12 +74,10 @@ export default function TodoPage() {
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="flex flex-col gap-4 xl:flex-row justify-between items-center">
           <div>
+            <BackToHome />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl">
               {selectedDate.getFullYear()}年 {selectedDate.getMonth() + 1}月 {selectedDate.getDate()}日
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-4 sm:text-lg md:text-lg text-center">
-              今日のタスクを管理しましょう
-            </p>
           </div>
           <div className="flex flex-wrap gap-4 justify-center items-center space-x-6">
             <Button
