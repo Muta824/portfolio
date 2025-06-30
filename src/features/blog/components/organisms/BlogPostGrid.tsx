@@ -9,23 +9,20 @@ import { BlogPost, Category } from '@/features/blog/types/data';
 
 interface BlogPostGridProps {
   initialPosts: BlogPost[];
+  categories: Category[];
   isUser?: boolean;
 }
 
-export const BlogPostGrid: FC<BlogPostGridProps> = ({ initialPosts, isUser }) => {
+export const BlogPostGrid: FC<BlogPostGridProps> = ({ 
+  initialPosts, 
+  categories, 
+  isUser 
+}) => {
   const router = useRouter();
   const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
   const [displayedPosts, setDisplayedPosts] = useState<BlogPost[]>(initialPosts);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
-  const [categories, setCategories] = useState<Category[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    // カテゴリーを取得
-    fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL || 'http://localhost:3000'}/api/blog/categories`)
-      .then(res => res.json())
-      .then(data => setCategories(data));
-  }, []);
 
   // 検索とカテゴリーフィルターを組み合わせた処理
   useEffect(() => {

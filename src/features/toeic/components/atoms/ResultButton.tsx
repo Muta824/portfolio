@@ -7,7 +7,7 @@ export const ResultButton = () => {
     return (
         <div>  
             <button
-                onClick={() => {calculateScore(results); console.log(results)}}
+                onClick={() => {calculateScore(results)}}
                 className="px-4 py-2 bg-green-500 text-white test-xl rounded-md cursor-pointer"
             >
                 採点する

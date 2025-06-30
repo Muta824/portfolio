@@ -1,7 +1,7 @@
 import { BackToHome } from '@/components/atoms/BackToHome';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
-import { BlogPost } from '@/features/blog/types/data';
+import { BlogPost, Category } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '../../../auth';
 import { prisma } from '@/lib/prisma';
@@ -9,66 +9,100 @@ import { prisma } from '@/lib/prisma';
 export default async function BlogPage() {
   const session = await auth();
   
-  let posts: BlogPost[] = [];
-  
   try {
-    const rawPosts = await prisma.post.findMany({
-      include: {
-        category: true,
-        tags: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
+    const [posts, categories] = await Promise.all([
+      prisma.post.findMany({
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          publishedAt: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          tags: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
           },
         },
-      },
-      orderBy: {
-        publishedAt: 'desc',
-      },
-    });
+        orderBy: {
+          publishedAt: 'desc',
+        },
+      }),
+      prisma.category.findMany({
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      }),
+    ]);
 
-    // Prismaから返されるデータをBlogPost型に変換
-    posts = rawPosts.map(post => ({
-      id: post.id,
-      title: post.title,
-      publishedAt: post.publishedAt,
-      category: post.category,
-      tags: post.tags,
-      slug: post.slug,
-    }));
-
-    // 開発環境のみでログ出力
-    if (process.env.NODE_ENV === 'development') {
-      console.log('posts:', posts);
-    }
-  } catch (error) {
-    console.error('Failed to fetch posts:', error);
-    // エラーが発生した場合は空の配列を使用
-    posts = [];
-  }
-
-  return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center">
-        <BackToHome />
-        <ThemeToggle />
-      </div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold dark:text-white">Blog</h1>
-        <div className="flex items-center gap-4">
-          {session?.user && (
-          <Link
-            href="/blog/new"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-              新規作成
-            </Link>
-          )}
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center">
+          <BackToHome />
+          <ThemeToggle />
         </div>
-      </div>
-      <BlogPostGrid initialPosts={posts} isUser={!!session?.user} />
-    </main>
-  );
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold dark:text-white">Blog</h1>
+          <div className="flex items-center gap-4">
+            {session?.user && (
+              <Link
+                href="/blog/new"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                新規作成
+              </Link>
+            )}
+          </div>
+        </div>
+        <BlogPostGrid 
+          initialPosts={posts as BlogPost[]} 
+          categories={categories as Category[]}
+          isUser={!!session?.user} 
+        />
+      </main>
+    );
+  } catch (error) {
+    console.error('Failed to fetch blog data:', error);
+    
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center">
+          <BackToHome />
+          <ThemeToggle />
+        </div>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold dark:text-white">Blog</h1>
+        </div>
+        <div className="text-center py-12">
+          <div className="max-w-md mx-auto">
+            <div className="text-red-600 dark:text-red-400 mb-4">
+              <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <h2 className="text-xl font-semibold mb-2">データの取得に失敗しました</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                ブログ記事の読み込み中にエラーが発生しました。しばらく時間をおいて再度お試しください。
+              </p>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              再試行
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 }

@@ -4,7 +4,6 @@ import Image from "next/image"
 export default async function UserAvatar() {
   const session = await auth()
  
-  console.log('session:', session)
   if (!session?.user?.image) return null
  
   return (
