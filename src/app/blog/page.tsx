@@ -94,12 +94,12 @@ export default async function BlogPage() {
                 ブログ記事の読み込み中にエラーが発生しました。しばらく時間をおいて再度お試しください。
               </p>
             </div>
-            <button
-              onClick={() => window.location.reload()}
+            <Link
+              href="/blog"
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               再試行
-            </button>
+            </Link>
           </div>
         </div>
       </main>
