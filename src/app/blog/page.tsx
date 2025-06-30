@@ -1,32 +1,53 @@
 import { BackToHome } from '@/components/atoms/BackToHome';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
+import { BlogPost } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '../../../auth';
 import { prisma } from '@/lib/prisma';
-import { BlogPost } from '@/features/blog/types/data';
 
 export default async function BlogPage() {
   const session = await auth();
   
-  const posts: BlogPost[] = await prisma.post.findMany({
-    include: {
-      category: true,
-      tags: true,
-      author: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
+  let posts: BlogPost[] = [];
+  
+  try {
+    const rawPosts = await prisma.post.findMany({
+      include: {
+        category: true,
+        tags: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
         },
       },
-    },
-    orderBy: {
-      publishedAt: 'desc',
-    },
-  });
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
 
-  console.log('posts:', posts);
+    // Prismaから返されるデータをBlogPost型に変換
+    posts = rawPosts.map(post => ({
+      id: post.id,
+      title: post.title,
+      publishedAt: post.publishedAt,
+      category: post.category,
+      tags: post.tags,
+      slug: post.slug,
+    }));
+
+    // 開発環境のみでログ出力
+    if (process.env.NODE_ENV === 'development') {
+      console.log('posts:', posts);
+    }
+  } catch (error) {
+    console.error('Failed to fetch posts:', error);
+    // エラーが発生した場合は空の配列を使用
+    posts = [];
+  }
 
   return (
     <main className="container mx-auto px-4 py-8">
