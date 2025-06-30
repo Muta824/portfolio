@@ -1,19 +1,32 @@
 import { BackToHome } from '@/components/atoms/BackToHome';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
-import { BlogPost } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '../../../auth';
+import { prisma } from '@/lib/prisma';
+import { BlogPost } from '@/features/blog/types/data';
 
 export default async function BlogPage() {
   const session = await auth();
   
-  // サーバーサイドで記事を取得
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  const fetchedPosts = await fetch(`${baseUrl}/api/blog/posts`);
-  const posts: BlogPost[] = await fetchedPosts.json();
+  const posts: BlogPost[] = await prisma.post.findMany({
+    include: {
+      category: true,
+      tags: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      publishedAt: 'desc',
+    },
+  });
 
-  console.log(posts);
+  console.log('posts:', posts);
 
   return (
     <main className="container mx-auto px-4 py-8">

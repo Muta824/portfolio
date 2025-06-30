@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-interface Post {
+interface PostData {
   id: string;
   title: string;
   slug: string;
@@ -29,7 +29,7 @@ interface PageProps {
 
 export default function EditBlogPost({ params }: PageProps) {
   const router = useRouter();
-  const { slug } = use(params);
+  const [slug, setSlug] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,21 +40,24 @@ export default function EditBlogPost({ params }: PageProps) {
     tags: '',
   });
 
+  // パラメータを取得
+  useEffect(() => {
+    params.then(({ slug }) => setSlug(slug));
+  }, [params]);
+
   // 既存のポストデータを取得
   useEffect(() => {
+    if (!slug) return;
+
     const fetchPost = async () => {
       try {
         const response = await fetch(`/api/blog/posts/${slug}`);
         if (!response.ok) {
-          if (response.status === 404) {
-            setError('記事が見つかりません');
-          } else {
-            setError('記事の取得に失敗しました');
-          }
+          setError('記事が見つかりません');
           return;
         }
 
-        const post: Post = await response.json();
+        const post: PostData = await response.json();
         setFormData({
           title: post.title,
           content: post.content,

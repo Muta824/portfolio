@@ -6,31 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-
-interface Post {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  publishedAt: string;
-  updatedAt: string;
-  thumbnailUrl?: string;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-  };
-  tags: Array<{
-    id: string;
-    name: string;
-    slug: string;
-  }>;
-  author: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
+import { prisma } from '@/lib/prisma';
 
 interface PageProps {
   params: Promise<{
@@ -42,17 +18,25 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
   try {
-    // サーバーサイドで記事を取得
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-    const response = await fetch(`${baseUrl}/api/blog/posts/${slug}`, {
-      cache: 'no-store',
+    // サーバーサイドで直接Prismaクライアントを使用
+    const post = await prisma.post.findUnique({
+      where: { slug },
+      include: {
+        category: true,
+        tags: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
     });
 
-    if (!response.ok) {
+    if (!post) {
       notFound();
     }
-
-    const post: Post = await response.json();
 
     return (
       <main className="container mx-auto px-4 py-8 max-w-4xl">
@@ -76,11 +60,11 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-4">
               <span>投稿者: {post.author.name}</span>
               <span>
-                投稿日: {format(new Date(post.publishedAt), 'yyyy年MM月dd日', { locale: ja })}
+                投稿日: {format(post.publishedAt, 'yyyy年MM月dd日', { locale: ja })}
               </span>
               {post.updatedAt !== post.publishedAt && (
                 <span>
-                  更新日: {format(new Date(post.updatedAt), 'yyyy年MM月dd日', { locale: ja })}
+                  更新日: {format(post.updatedAt, 'yyyy年MM月dd日', { locale: ja })}
                 </span>
               )}
             </div>
@@ -198,23 +182,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     height={600}
                     className="max-w-full h-auto rounded-lg my-4"
                   />
-                ),
-                table: ({ children }) => (
-                  <div className="overflow-x-auto mb-4">
-                    <table className="min-w-full border border-gray-300 dark:border-gray-600">
-                      {children}
-                    </table>
-                  </div>
-                ),
-                th: ({ children }) => (
-                  <th className="border border-gray-300 px-4 py-2 bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                    {children}
-                  </th>
-                ),
-                td: ({ children }) => (
-                  <td className="border border-gray-300 px-4 py-2 dark:border-gray-600 dark:text-gray-300">
-                    {children}
-                  </td>
                 ),
               }}
             >

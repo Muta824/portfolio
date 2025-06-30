@@ -1,7 +1,7 @@
 export interface BlogPost {
     id: string;
     title: string;
-    publishedAt: string;
+    publishedAt: Date;
     category: Category;
     tags: Tag[];
     slug: string;

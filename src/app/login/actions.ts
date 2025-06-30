@@ -10,6 +10,7 @@ export async function signInWithCredentials(formData: FormData) {
   try {
     await signIn("credentials", formData);
   } catch (error) {
+    console.error("Sign in error:", error);
     if (error instanceof AuthError) {
       return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
     } 
@@ -25,6 +26,7 @@ export async function signInWithProvider(formData: FormData) {
       redirectTo: callbackUrl ?? "/",
     });
   } catch (error) {
+    console.error("Provider sign in error:", error);
     if (error instanceof AuthError) {
       return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
     } 
