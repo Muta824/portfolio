@@ -23,6 +23,7 @@ model User {
 
   role          String? @default("user")
   login         String? @unique
+  node_id       String? @unique
 
   accounts      Account[]
   sessions      Session[]
