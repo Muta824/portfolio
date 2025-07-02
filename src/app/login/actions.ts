@@ -26,10 +26,10 @@ export async function signInWithProvider(formData: FormData) {
       redirectTo: callbackUrl ?? "/",
     });
   } catch (error) {
-    console.error("Provider sign in error:", error);
     if (error instanceof AuthError) {
-      return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+      throw error;
     } 
+    console.error("Provider sign in error:", error);
     throw error;
   }
 }

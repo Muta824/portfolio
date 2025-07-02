@@ -24,11 +24,13 @@ const providers: Provider[] = [
   }),
   GitHub({
     profile(profile) {
-      const { id, ...rest } = profile
       return { 
-        id: id.toString(),
-        role: profile.role ?? "user", 
-        ...rest 
+        id: profile.id.toString(),
+        name: profile.name,
+        email: profile.email,
+        image: profile.avatar_url,
+        login: profile.login,
+        role: "user",
       }
     },
   }),
