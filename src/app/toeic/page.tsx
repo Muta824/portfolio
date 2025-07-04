@@ -28,24 +28,21 @@ export default function TOEICScoringPage() {
   const [isCorrectAnswersSaveForm, setIsCorrectAnswersSaveForm] = useState(false);
   
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900 py-6 px-1 sm:px-6">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-6 px-1 sm:px-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        <header className="flex flex-col gap-4 xl:flex-row justify-between items-center">
-          <div>
+        <header className="flex flex-col gap-4">
+          <div className="flex justify-between items-center w-full">
             <BackToHome />
-            <ScrollToTopButton />
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl">
-              TOEIC Scoring App
-            </h1>
-          </div>
-          <div className="flex flex-wrap gap-4 justify-center items-center space-x-6">
             <ThemeToggle />
           </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl text-center">
+            TOEIC Scoring App
+          </h1>
         </header>
 
-        <main className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8">
           <div className="space-y-6">
-            <div className="flex flex-wrap justify-evenly gap-4">
+            <div className="flex flex-wrap justify-center sm:justify-evenly gap-4">
               <button className="bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 px-4 py-2 rounded-md"
                 onClick={() => setIsTimer(!isTimer)}
               >
@@ -112,8 +109,9 @@ export default function TOEICScoringPage() {
               <QuestionsList questions={questions} />
             </div>
           </div>
-        </main>
+        </div>
       </div>
-    </main>
+      <ScrollToTopButton />
+    </div>
   );
 }
