@@ -20,11 +20,9 @@ export async function signInWithCredentials(formData: FormData) {
 
 export async function signInWithProvider(formData: FormData) {
   const providerId = formData.get("providerId") as string;
-  const callbackUrl = formData.get("callbackUrl") as string;
+  const redirectTo = formData.get("callbackUrl") as string;
   try {
-    await signIn(providerId, {
-      redirectTo: callbackUrl ?? "/",
-    });
+    await signIn(providerId, { redirectTo });
   } catch (error) {
     if (error instanceof AuthError) {
       throw error;
