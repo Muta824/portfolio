@@ -2,7 +2,7 @@
 
 import { signInWithCredentials, signInWithProvider } from "./actions";
 import { use } from "react";  
-import { providerMap } from "../../../auth";
+import { providerMap } from "@/auth";
 
 
 export default function LoginPage({

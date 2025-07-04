@@ -5,7 +5,7 @@ import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { SignIn } from '@/components/atoms/signin-button';
 import { SignOut } from '@/components/atoms/signout-button';
 import UserAvatar from '@/components/atoms/UserAvatar';
-import { auth } from '../../../auth';
+import { auth } from '@/auth';
 
 interface NavigationProps {
   className?: string;
