@@ -53,7 +53,7 @@ export const config = {
   pages: {
     signIn: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config)
