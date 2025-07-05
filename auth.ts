@@ -2,8 +2,12 @@ import NextAuth from "next-auth"
 import GitHub from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
+import type { JWT } from "next-auth/jwt"
+import type { Session } from "next-auth"
+import type { User as NextAuthUser } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import prisma from "@/lib/prisma"
+import { verifyPassword } from "@/lib/auth-utils"
 
 const providers: Provider[] = [
   Credentials({
@@ -11,15 +15,45 @@ const providers: Provider[] = [
       email: { label: "Email", type: "email" },
       password: { label: "Password", type: "password" } 
     },
-    authorize(c) {
-      if (c.email === "test@example.com" && c.password === "password") {
-        return {
-          id: "test",
-          name: "Test User",
-          email: "test@example.com",
-        }
+    async authorize(credentials) {
+      if (!credentials?.email || !credentials?.password) {
+        return null
       }
-      return null
+
+      const email = credentials.email as string
+      const password = credentials.password as string
+
+      try {
+        // データベースからユーザーを検索
+        const user = await prisma.user.findUnique({
+          where: { email }
+        })
+
+        if (!user || !user.password) {
+          console.log("ユーザーが見つからないか、パスワードが設定されていません:", email)
+          return null
+        }
+
+        // パスワードを検証
+        const isValid = await verifyPassword(password, user.password)
+        
+        if (!isValid) {
+          console.log("パスワードが無効です:", email)
+          return null
+        }
+
+        console.log("認証成功:", user.email)
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role || "user",
+          image: user.image,
+        }
+      } catch (error) {
+        console.error("認証エラー:", error)
+        return null
+      }
     },
   }),
   GitHub({
@@ -53,7 +87,27 @@ export const config = {
   pages: {
     signIn: "/signin",
   },
+  session: {
+    strategy: "jwt" as const,
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
+      if (user) {
+        token.role = user.role || "user"
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token) {
+        session.user.id = token.id as string
+        session.user.role = token.role
+      }
+      return session
+    },
+  },
   secret: process.env.AUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config)
