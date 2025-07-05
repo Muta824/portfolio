@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 interface PageProps {
   params: Promise<{

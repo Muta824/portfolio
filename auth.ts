@@ -3,7 +3,7 @@ import GitHub from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "@/lib/prisma"
+import prisma from "@/lib/prisma"
 
 const providers: Provider[] = [
   Credentials({
@@ -51,7 +51,7 @@ export const config = {
   adapter: PrismaAdapter(prisma),
   providers,
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
   secret: process.env.AUTH_SECRET,
 }

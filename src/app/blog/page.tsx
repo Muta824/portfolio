@@ -4,7 +4,7 @@ import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid'
 import { BlogPost, Category } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '@/auth';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 
 export default async function BlogPage() {
   const session = await auth();

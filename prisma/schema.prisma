@@ -13,7 +13,7 @@ model User {
   email         String    @unique
   name          String?
   createdAt     DateTime  @default(now())
-  emailVerified DateTime?
+  emailVerified DateTime? @map("email_verified")
   image         String?
   updatedAt     DateTime  @updatedAt
   role          String?   @default("user")
@@ -21,34 +21,41 @@ model User {
   accounts      Account[]
   posts         Post[]
   sessions      Session[]
+
+  @@map("users")
 }
 
 model Account {
-  userId            String
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
   type              String
   provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  providerAccountId String   @map("provider_providerAccountId")
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String?  @db.Text
   session_state     String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
-  sessionToken String   @unique
-  userId       String
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model VerificationToken {
@@ -56,7 +63,8 @@ model VerificationToken {
   token      String
   expires    DateTime
 
-  @@id([identifier, token])
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model Post {
@@ -80,6 +88,7 @@ model Category {
   name  String @unique
   slug  String @unique
   posts Post[]
+
 }
 
 model Tag {
