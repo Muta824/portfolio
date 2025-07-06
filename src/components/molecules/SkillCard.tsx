@@ -20,16 +20,16 @@ export const SkillCard: React.FC<SkillCardProps> = ({
   className = '' 
 }) => {
   const getLevelColor = (level: number) => {
-    if (level >= 4) return 'from-emerald-500 to-teal-500';
-    if (level >= 3) return 'from-blue-500 to-cyan-500';
-    if (level >= 2) return 'from-amber-500 to-orange-500';
+    if (level >= 5) return 'from-emerald-500 to-teal-500';
+    if (level >= 4) return 'from-blue-500 to-cyan-500';
+    if (level >= 3) return 'from-amber-500 to-orange-500';
     return 'from-gray-400 to-gray-500';
   };
 
   const getLevelText = (level: number) => {
-    if (level >= 4) return 'Expert';
-    if (level >= 3) return 'Advanced';
-    if (level >= 2) return 'Intermediate';
+    if (level >= 5) return 'Expert';
+    if (level >= 4) return 'Advanced';
+    if (level >= 3) return 'Intermediate';
     return 'Beginner';
   };
 

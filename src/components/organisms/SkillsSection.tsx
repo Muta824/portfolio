@@ -70,15 +70,15 @@ const skillsData = [
   {
     name: 'Next.js 15',
     icon: Icons.NextJS,
-    level: 4,
-    experience: '1.5年',
+    level: 3,
+    experience: '1年',
     description: 'React フレームワーク、SSR/SSG、App Router'
   },
   {
     name: 'React 19',
     icon: Icons.React,
-    level: 4,
-    experience: '2年',
+    level: 3,
+    experience: '1年',
     description: 'UI ライブラリ、Hooks、コンポーネント設計'
   },
   {
@@ -92,35 +92,35 @@ const skillsData = [
     name: 'Prisma',
     icon: Icons.Prisma,
     level: 3,
-    experience: '1年',
+    experience: '1ヶ月',
     description: 'ORM、データベース操作、マイグレーション'
   },
   {
     name: 'PostgreSQL',
     icon: Icons.PostgreSQL,
     level: 3,
-    experience: '1年',
+    experience: '1ヶ月',
     description: 'リレーショナルデータベース、クエリ最適化'
   },
   {
     name: 'Tailwind CSS',
     icon: Icons.Tailwind,
-    level: 4,
-    experience: '1.5年',
+    level: 3,
+    experience: '1年',
     description: 'ユーティリティファーストCSS、レスポンシブデザイン'
   },
   {
     name: 'NextAuth.js',
     icon: Icons.NextAuth,
-    level: 3,
-    experience: '1年',
+    level: 2,
+    experience: '1ヶ月',
     description: '認証システム、OAuth、セッション管理'
   },
   {
     name: 'Git/GitHub',
     icon: Icons.GitHub,
-    level: 4,
-    experience: '2年',
+    level: 2,
+    experience: '半年',
     description: 'バージョン管理、コラボレーション'
   }
 ];
@@ -129,17 +129,10 @@ export const SkillsSection: React.FC = () => {
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-medium mb-6">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-lg font-medium mb-6">
             🚀 技術スタック
           </div>
-          <Text variant="h1" className="mb-6 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-            主要技術
-          </Text>
-          <Text variant="body" className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg">
-            このポートフォリオで実際に使用している主要な技術スタックです。
-            フルスタック開発の経験と継続的な学習を通じて、最新技術への対応力を高めています。
-          </Text>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
