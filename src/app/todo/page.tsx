@@ -72,9 +72,9 @@ export default function TodoPage() {
         onClose={() => setIsTimeZoneGuideOpen(false)}
       />
       <div className="max-w-7xl mx-auto space-y-8">
+        <BackToHome />
         <header className="flex flex-col gap-4 xl:flex-row justify-between items-center">
           <div>
-            <BackToHome />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl">
               {selectedDate.getFullYear()}年 {selectedDate.getMonth() + 1}月 {selectedDate.getDate()}日
             </h1>
