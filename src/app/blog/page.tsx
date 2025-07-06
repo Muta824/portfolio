@@ -1,7 +1,7 @@
 import { BackToHome } from '@/components/atoms/BackToHome';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { BlogPostGrid } from '@/features/blog/components/organisms/BlogPostGrid';
-import { BlogPost, Category } from '@/features/blog/types/data';
+import { BlogPost } from '@/features/blog/types/data';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
@@ -17,6 +17,7 @@ export default async function BlogPage() {
           title: true,
           slug: true,
           publishedAt: true,
+          thumbnailUrl: true,
           category: {
             select: {
               id: true,
@@ -65,8 +66,8 @@ export default async function BlogPage() {
           </div>
         </div>
         <BlogPostGrid 
-          initialPosts={posts as BlogPost[]} 
-          categories={categories as Category[]}
+          posts={posts as unknown as BlogPost[]} 
+          categories={categories}
           isUser={!!session?.user} 
         />
       </main>

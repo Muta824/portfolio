@@ -6,26 +6,21 @@ import { formatDate } from '@/lib/utils';
 import { BlogPost } from '@/features/blog/types/data';
 import { Card } from '@/components/molecules/Card';
 
-interface BlogPostCardProps extends BlogPost {
+interface BlogPostCardProps {
+  post: BlogPost;
   onEdit?: (post: BlogPost) => void;
   onDelete?: (postId: string) => void;
   showActions?: boolean;
 }
 
 export const BlogPostCard: FC<BlogPostCardProps> = ({
-  id,
-  title,
-  publishedAt,
-  category,
-  tags,
-  slug,
+  post,
   onEdit,
   onDelete,
   showActions = false,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const publishedDate = new Date(publishedAt);
 
   // 外側をクリックしたときにメニューを閉じる
   useEffect(() => {
@@ -47,7 +42,7 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
   const handleEdit = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onEdit?.({ id, title, publishedAt, category, tags, slug });
+    onEdit?.(post);
     setIsMenuOpen(false);
   };
 
@@ -55,7 +50,7 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
     e.preventDefault();
     e.stopPropagation();
     if (confirm('この記事を削除しますか？')) {
-      onDelete?.(slug);
+      onDelete?.(post.slug);
     }
     setIsMenuOpen(false);
   };
@@ -63,16 +58,16 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
   return (
     <Card>
       <div className="relative">
-        <Link href={`/blog/${slug}`} className="block">
+        <Link href={`/blog/${post.slug}`} className="block">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               {/* カテゴリと日付 */}
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
-                  {category.name}
+                  {post.category.name}
                 </span>
-                <time dateTime={publishedDate.toISOString()}>
-                  {formatDate(publishedDate)}
+                <time dateTime={post.publishedAt.toISOString()}>
+                  {formatDate(post.publishedAt)}
                 </time>
               </div>
 
@@ -124,12 +119,12 @@ export const BlogPostCard: FC<BlogPostCardProps> = ({
 
             {/* タイトル */}
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              {title}
+              {post.title}
             </h2>
 
             {/* タグ */}
             <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {post.tags.map((tag) => (
                 <span
                   key={tag.id}
                   className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full"

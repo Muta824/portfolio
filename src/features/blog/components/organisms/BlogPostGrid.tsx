@@ -8,25 +8,25 @@ import { SearchBar } from '../molecules/SearchBar';
 import { BlogPost, Category } from '@/features/blog/types/data';
 
 interface BlogPostGridProps {
-  initialPosts: BlogPost[];
+  posts: BlogPost[];
   categories: Category[];
   isUser?: boolean;
 }
 
 export const BlogPostGrid: FC<BlogPostGridProps> = ({ 
-  initialPosts, 
+  posts, 
   categories, 
   isUser 
 }) => {
   const router = useRouter();
-  const [posts, setPosts] = useState<BlogPost[]>(initialPosts);
-  const [displayedPosts, setDisplayedPosts] = useState<BlogPost[]>(initialPosts);
+  const [statePosts, setStatePosts] = useState<BlogPost[]>(posts);
+  const [displayedPosts, setDisplayedPosts] = useState<BlogPost[]>(posts);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [searchQuery, setSearchQuery] = useState('');
 
   // 検索とカテゴリーフィルターを組み合わせた処理
   useEffect(() => {
-    let filteredPosts = initialPosts;
+    let filteredPosts = posts;
 
     // カテゴリーフィルター
     if (selectedCategory) {
@@ -41,7 +41,7 @@ export const BlogPostGrid: FC<BlogPostGridProps> = ({
     }
 
     setDisplayedPosts(filteredPosts);
-  }, [selectedCategory, searchQuery, initialPosts]);
+  }, [selectedCategory, searchQuery, posts]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -63,8 +63,8 @@ export const BlogPostGrid: FC<BlogPostGridProps> = ({
 
       if (response.ok) {
         // 削除成功後、投稿リストを更新
-        const updatedPosts = posts.filter(post => post.slug !== slug);
-        setPosts(updatedPosts);
+        const updatedPosts = statePosts.filter(post => post.slug !== slug);
+        setStatePosts(updatedPosts);
         setDisplayedPosts(displayedPosts.filter(post => post.slug !== slug));
       } else {
         alert('削除に失敗しました');
@@ -96,7 +96,7 @@ export const BlogPostGrid: FC<BlogPostGridProps> = ({
         {displayedPosts.map((post: BlogPost) => (
           <BlogPostCard 
             key={post.id} 
-            {...post} 
+            post={post}
             showActions={!!isUser}
             onEdit={handleEdit}
             onDelete={handleDelete}

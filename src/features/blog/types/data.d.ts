@@ -1,10 +1,11 @@
 export interface BlogPost {
     id: string;
     title: string;
+    slug: string;
     publishedAt: Date;
+    thumbnailUrl: string | null;
     category: Category;
     tags: Tag[];
-    slug: string;
   }
 
   export interface Category {

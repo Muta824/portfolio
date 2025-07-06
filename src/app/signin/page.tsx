@@ -44,7 +44,7 @@ const ProviderIcons = {
 const SIGNIN_ERROR_URL = "/error"
  
 export default async function SignInPage(props: {
-  searchParams: { callbackUrl: string | undefined; message?: string }
+  searchParams: Promise<{ callbackUrl: string | undefined; message?: string }>
 }) {
   const { callbackUrl, message } = await props.searchParams;
 
