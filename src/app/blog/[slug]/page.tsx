@@ -8,6 +8,21 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import prisma from '@/lib/prisma';
 
+// ページの再生成間隔を1時間に設定 (ISR)
+export const revalidate = 3600;
+
+// ビルド時に静的生成するパスを定義
+export async function generateStaticParams() {
+  const posts = await prisma.post.findMany({
+    select: {
+      slug: true,
+    },
+  });
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 interface PageProps {
   params: Promise<{
     slug: string;

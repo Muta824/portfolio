@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
+import { revalidatePath } from 'next/cache';
 
 export async function GET(
   request: Request,
@@ -75,6 +76,10 @@ export async function PUT(
       },
     });
 
+    // ブログ一覧ページと記事詳細ページのキャッシュを無効化
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
+
     return NextResponse.json(post, { status: 200 });
   } catch (error) {
     console.error('Failed to update post:', error);
@@ -113,6 +118,10 @@ export async function DELETE(
     await prisma.post.delete({
       where: { slug },
     });
+
+    // ブログ一覧ページと記事詳細ページのキャッシュを無効化
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
 
     return NextResponse.json({ message: 'Post deleted successfully' }, { status: 200 });
   } catch (error) {

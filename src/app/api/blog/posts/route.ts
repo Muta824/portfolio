@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
+import { revalidatePath } from 'next/cache';
 
 export async function GET() {
   try {
@@ -75,6 +76,10 @@ export async function POST(request: Request) {
         },
       },
     });
+
+    // ブログ一覧ページと記事詳細ページのキャッシュを無効化
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${slug}`);
 
     return NextResponse.json(post, { status: 201 });
   } catch (error) {

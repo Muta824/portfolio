@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 
+// ページの再生成間隔を1時間に設定 (ISR)
+export const revalidate = 3600;
+
 export default async function BlogPage() {
   const session = await auth();
   
