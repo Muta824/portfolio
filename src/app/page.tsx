@@ -22,6 +22,11 @@ export default function Home() {
       description: '記事の作成と管理ができるブログアプリケーション',
       href: '/blog',
     },
+    {
+      title: 'Subscription Searcher',
+      description: 'サブスクリプションの検索ができるアプリケーション',
+      href: '/subscription_searcher',
+    }
   ];
 
   return (
