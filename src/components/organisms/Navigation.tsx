@@ -20,6 +20,7 @@ export const Navigation: React.FC<NavigationProps> = async ({
     { href: '/toeic', label: 'TOEIC' },
     { href: '/todo', label: 'Todo' },
     { href: '/blog', label: 'Blog' },
+    { href: '/subscription_searcher', label: 'Subscription Searcher' },
   ];
 
   const session = await auth();

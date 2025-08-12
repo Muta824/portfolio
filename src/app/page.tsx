@@ -30,18 +30,18 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Navigation />
+    <main className="min-h-screen dark:bg-gray-900">
+      <Navigation className="dark:border-b dark:border-gray-700"/>
       
       {/* アプリケーションセクション */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+      <section className="pt-10 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-6">
             <Text variant="h1">My Applications</Text>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="pt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {apps.map((app) => (
                 <Link key={app.href} href={app.href}>
-                  <Card className="hover:shadow-lg transition-shadow">
+                  <Card className="hover:shadow-lg transition-shadow dark:bg-gray-800">
                     <Text variant="h3">{app.title}</Text>
                     <Text variant="body" className="mt-2">
                       {app.description}

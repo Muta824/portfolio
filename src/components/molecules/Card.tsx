@@ -13,7 +13,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={twMerge(
-        'p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]',
+        'p-6 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] border border-gray-200 dark:border-gray-700',
         className
       )}
     >
