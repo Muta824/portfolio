@@ -26,7 +26,6 @@ export default function SubscriptionSearchPage() {
         setIsLoading(true)
         const contents = await getContents(query)
         setContents(contents)
-        console.log(contents)
         setIsLoading(false)
     }
     const debouncedHandleSearch = useDebouncedCallback(handleSearch, 300);
@@ -35,7 +34,6 @@ export default function SubscriptionSearchPage() {
         handleSearch(searchParams.get('q')?.toString() || "");
     }, [])
 
-    
     return (
         <div className="min-h-screen flex flex-col">
             <div className="pt-6 pb-4">
@@ -55,7 +53,9 @@ export default function SubscriptionSearchPage() {
                     <Loading />
                 : contents.length > 0 ?
                     <Contents contents={contents}/>
-                : <h1 className="text-gray-600 text-5xl pb-10 font-serif italic tracking-wide leading-relaxed">Let&apos;s search for your favorite content!</h1>
+                : <h1 className="text-gray-600 text-5xl pb-10 font-serif italic tracking-wide leading-relaxed">
+                    Let&apos;s search for your favorite movies and TV shows!
+                </h1>
                 }
             </div>
         </div>
