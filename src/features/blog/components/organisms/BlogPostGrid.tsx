@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { BlogPostCard } from '../molecules/BlogPostCard';
-import { CategoryFilter } from '../molecules/CategoryFilter';
+import { CategoryFilter } from '../molecules/CategoryTags';
 import { SearchBar } from '../molecules/SearchBar';
 import { BlogPost, Category } from '@/features/blog/types/data';
 

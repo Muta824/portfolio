@@ -13,25 +13,20 @@ export default function NewBlogPost() {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // JavaScriptの処理が中断されないように、ページのリロードを防ぐ
     e.preventDefault();
     
     try {
       const response = await fetch('/api/blog/posts', {
-        // HTTPメソッドの指定
         method: 'POST',
-        // リクエストボディに送信するデータがJSONであることをサーバーに伝える
         headers: {
           'Content-Type': 'application/json',
         },
-        // リクエストボディに送信するJavaScriptオブジェクトをJSON形式に変換
         body: JSON.stringify({
           ...formData,
-          tags: formData.tags.split(',').map(tag => tag.trim()), // タグを配列に変換
+          tags: formData.tags.split(',').map(tag => tag.trim()),
         }),
       });
       
-      // 成功したらブログ一覧にリダイレクト
       if (response.ok) {
         router.push('/blog');
       }

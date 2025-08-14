@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 
 // ページの再生成間隔を1時間に設定 (ISR)
 export const revalidate = 3600;
@@ -18,9 +18,7 @@ export async function generateStaticParams() {
       slug: true,
     },
   });
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts
 }
 
 interface PageProps {
@@ -33,7 +31,6 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
   try {
-    // サーバーサイドで直接Prismaクライアントを使用
     const post = await prisma.post.findUnique({
       where: { slug },
       include: {

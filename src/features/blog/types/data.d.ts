@@ -1,21 +1,5 @@
-export interface BlogPost {
-    id: string;
-    title: string;
-    slug: string;
-    publishedAt: Date;
-    thumbnailUrl: string | null;
-    category: Category;
-    tags: Tag[];
-  }
+import { Prisma } from "@prisma/client";
+import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
 
-  export interface Category {
-    id: string;
-    name: string;
-    slug: string;
-  }
-
-  export interface Tag {
-    id: string;
-    name: string;
-    slug: string;
-  }
+export type BlogPostType = Prisma.PostGetPayload<typeof blogPostQuery>;
+export type CategoryType = Prisma.CategoryGetPayload<typeof categoryQuery>;
