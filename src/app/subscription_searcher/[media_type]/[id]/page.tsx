@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { getDetails, getWatchProviders } from "@/features/subscription_searcher/utils/server-actions"
+import { getDetails, getWatchProviders } from "@/features/subscription_searcher/server-actions"
 
 export default async function WatchProviderPage({ 
     params 

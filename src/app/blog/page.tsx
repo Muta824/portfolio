@@ -4,8 +4,7 @@ import { CreateLink } from '@/features/blog/components/atoms/CreateLink';
 import { BlogPosts } from '@/features/blog/components/organisms/BlogPosts';
 
 // ページの再生成間隔を1時間に設定 (ISR)
-const ONE_HOUR_IN_SECONDS = 60 * 60;
-export const revalidate = ONE_HOUR_IN_SECONDS;
+export const revalidate = 3600;
 
 export default async function BlogPage() {
   return (

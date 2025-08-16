@@ -6,7 +6,7 @@ import Loading from "@/app/loading";
 import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getContents } from "@/features/subscription_searcher/utils/server-actions";
+import { getContents } from "@/features/subscription_searcher/server-actions";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams()

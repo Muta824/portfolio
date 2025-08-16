@@ -1,4 +1,4 @@
-import { getCategories, getPosts } from "@/features/blog/utils/server-actions";
+import { getCategories, getPosts } from "@/features/blog/server-actions";
 import { PostsFilter } from "./PostsFilter";
 
 export async function BlogPosts() {

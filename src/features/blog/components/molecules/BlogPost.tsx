@@ -3,11 +3,16 @@ import { Card } from "@/components/molecules/Card";
 import { BlogPostType } from "@/features/blog/types/data";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { EllipsisButton } from "./EllipsisButton";
 
 export function BlogPost({ post }: { post: BlogPostType }) {
     return (
-        <Link href={`/blog/${post.slug}`}>
-            <Card className="space-y-4">
+        <Card className="relative">
+            <div className="absolute top-2 right-2 z-10">
+                <EllipsisButton slug={post.slug} />
+            </div>
+            
+            <Link href={`/blog/${post.slug}`} className="space-y-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
                         {post.category.name}
@@ -28,7 +33,7 @@ export function BlogPost({ post }: { post: BlogPostType }) {
                         </span>
                     ))}
                 </div>
-            </Card>
-        </Link>
+            </Link>
+        </Card>
     )
 }

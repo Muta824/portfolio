@@ -51,6 +51,7 @@ export default function SignUpPage() {
       // 登録成功後、サインインページにリダイレクト
       router.push("/signin?message=登録が完了しました。ログインしてください。")
     } catch (error) {
+      console.error(error)
       setError("登録中にエラーが発生しました")
     } finally {
       setIsLoading(false)
