@@ -3,14 +3,22 @@ import { Card } from "@/components/molecules/Card";
 import { BlogPostType } from "@/features/blog/types/data";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-import { EllipsisButton } from "./EllipsisButton";
+import { EllipsisButton } from "@/features/blog/components/molecules/EllipsisButton";
 
-export function BlogPost({ post }: { post: BlogPostType }) {
+export function BlogPost({ 
+    post,
+    isUserLoggedIn,
+}: {
+    post: BlogPostType;
+    isUserLoggedIn: boolean;
+}) {
     return (
         <Card className="relative">
-            <div className="absolute top-2 right-2 z-10">
-                <EllipsisButton slug={post.slug} />
-            </div>
+            {isUserLoggedIn && (
+                <div className="absolute top-2 right-2 z-10">
+                    <EllipsisButton slug={post.slug} />
+                </div>
+            )}
             
             <Link href={`/blog/${post.slug}`} className="space-y-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">

@@ -8,9 +8,11 @@ import { CategoryTags } from "../molecules/CategoryTags";
 export function PostsFilter({
     posts,
     categories,
+    isUserLoggedIn,
 }: {
     posts: BlogPostType[];
     categories: CategoryType[];
+    isUserLoggedIn: boolean;
 }) {
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -30,7 +32,7 @@ export function PostsFilter({
             {/* filtered blog posts */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPosts.map((post) => (
-                    <BlogPost key={post.id} post={post} />
+                    <BlogPost key={post.id} post={post} isUserLoggedIn={isUserLoggedIn} />
                 ))}
             </div>
         </div>
