@@ -15,6 +15,29 @@ export async function getCategories() {
     return categories
 }
 
+export async function getPost(slug: string) {
+    try {
+        const post = await prisma.post.findUnique({
+            where: { slug },
+            include: {
+                category: true,
+                tags: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+            }
+        })
+        return post
+    } catch (error) {
+        console.log("Failed to fetch the post", error)
+        return null
+    }
+}
+
 export async function deletePost(slug: string) {
     try {
         await prisma.post.delete({

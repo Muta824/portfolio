@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import { getPost } from '@/features/blog/server-actions';
 import prisma from '@/lib/prisma/prisma';
 
 // ページの再生成間隔を1時間に設定 (ISR)
@@ -29,28 +30,13 @@ interface PageProps {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
+  const post = await getPost(slug);
 
-  try {
-    const post = await prisma.post.findUnique({
-      where: { slug },
-      include: {
-        category: true,
-        tags: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
-    });
+  if (!post) {
+    notFound();
+  }
 
-    if (!post) {
-      notFound();
-    }
-
-    return (
+  return (
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
           <Link
@@ -203,8 +189,4 @@ export default async function BlogPostPage({ params }: PageProps) {
         </article>
       </main>
     );
-  } catch (error) {
-    console.error('Failed to fetch post:', error);
-    notFound();
-  }
 }
