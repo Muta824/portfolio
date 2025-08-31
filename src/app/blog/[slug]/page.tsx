@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { getPost } from '@/features/blog/server-actions';
 import prisma from '@/lib/prisma/prisma';
+import type { Components } from 'react-markdown';
 
 // ページの再生成間隔を1時間に設定 (ISR)
 export const revalidate = 3600;
@@ -26,6 +27,83 @@ interface PageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+const components: Components = {
+  h1: ({ children }) => (
+    <h1 className="text-3xl font-bold mb-4 mt-8 dark:text-white">
+      {children}
+    </h1>
+  ),
+  h2: ({ children }) => (
+    <h2 className="text-2xl font-bold mb-3 mt-6 dark:text-white">
+      {children}
+    </h2>
+  ),
+  h3: ({ children }) => (
+    <h3 className="text-xl font-bold mb-2 mt-4 dark:text-white">
+      {children}
+    </h3>
+  ),
+  p: ({ children }) => (
+    <p className="mb-4 leading-relaxed dark:text-gray-300">
+      {children}
+    </p>
+  ),
+  ul: ({ children }) => (
+    <ul className="list-disc list-inside mb-4 space-y-1 dark:text-gray-300">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="list-decimal list-inside mb-4 space-y-1 dark:text-gray-300">
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => (
+    <li className="dark:text-gray-300">{children}</li>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="border-l-4 border-blue-500 pl-4 italic mb-4 dark:text-gray-300">
+      {children}
+    </blockquote>
+  ),
+  code: ({ children, className }) => {
+    const isInline = !className;
+    return isInline ? (
+      <code className="bg-gray-100 px-1 py-0.5 rounded text-sm dark:bg-gray-800 dark:text-gray-200">
+        {children}
+      </code>
+    ) : (
+      <code className="block bg-gray-100 p-4 rounded-lg overflow-x-auto dark:bg-gray-800 dark:text-gray-200">
+        {children}
+      </code>
+    );
+  },
+  pre: ({ children }) => (
+    <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4 dark:bg-gray-800">
+      {children}
+    </pre>
+  ),
+  a: ({ href, children }) => (
+    <a
+      href={href}
+      className="text-blue-600 hover:text-blue-800 underline dark:text-blue-400 dark:hover:text-blue-200"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  ),
+  img: ({ src, alt }) => (
+    <Image
+      src={typeof src === 'string' ? src : ''}
+      alt={alt || ''}
+      width={800}
+      height={600}
+      className="max-w-full h-auto rounded-lg my-4"
+    />
+  ),
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
@@ -106,82 +184,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="markdown-content">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              components={{
-                h1: ({ children }) => (
-                  <h1 className="text-3xl font-bold mb-4 mt-8 dark:text-white">
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children }) => (
-                  <h2 className="text-2xl font-bold mb-3 mt-6 dark:text-white">
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 className="text-xl font-bold mb-2 mt-4 dark:text-white">
-                    {children}
-                  </h3>
-                ),
-                p: ({ children }) => (
-                  <p className="mb-4 leading-relaxed dark:text-gray-300">
-                    {children}
-                  </p>
-                ),
-                ul: ({ children }) => (
-                  <ul className="list-disc list-inside mb-4 space-y-1 dark:text-gray-300">
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="list-decimal list-inside mb-4 space-y-1 dark:text-gray-300">
-                    {children}
-                  </ol>
-                ),
-                li: ({ children }) => (
-                  <li className="dark:text-gray-300">{children}</li>
-                ),
-                blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-blue-500 pl-4 italic mb-4 dark:text-gray-300">
-                    {children}
-                  </blockquote>
-                ),
-                code: ({ children, className }) => {
-                  const isInline = !className;
-                  return isInline ? (
-                    <code className="bg-gray-100 px-1 py-0.5 rounded text-sm dark:bg-gray-800 dark:text-gray-200">
-                      {children}
-                    </code>
-                  ) : (
-                    <code className="block bg-gray-100 p-4 rounded-lg overflow-x-auto dark:bg-gray-800 dark:text-gray-200">
-                      {children}
-                    </code>
-                  );
-                },
-                pre: ({ children }) => (
-                  <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4 dark:bg-gray-800">
-                    {children}
-                  </pre>
-                ),
-                a: ({ href, children }) => (
-                  <a
-                    href={href}
-                    className="text-blue-600 hover:text-blue-800 underline dark:text-blue-400 dark:hover:text-blue-200"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {children}
-                  </a>
-                ),
-                img: ({ src, alt }) => (
-                  <Image
-                    src={typeof src === 'string' ? src : ''}
-                    alt={alt || ''}
-                    width={800}
-                    height={600}
-                    className="max-w-full h-auto rounded-lg my-4"
-                  />
-                ),
-              }}
+              components={components}
             >
               {post.content}
             </ReactMarkdown>
