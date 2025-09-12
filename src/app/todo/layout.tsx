@@ -11,7 +11,7 @@ export default function TodoLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="todo-container">
+    <div className="">
       {children}
     </div>
   );

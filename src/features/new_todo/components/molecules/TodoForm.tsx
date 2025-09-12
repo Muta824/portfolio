@@ -21,10 +21,15 @@ export function TodoForm({
             <input 
                 type="text" 
                 value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
+                onChange={(e) => setTitle(e.target.value)}
+                className="border px-2 py-1 rounded"
                 placeholder="Add a new todo"
             />
-            <button type="submit">Add</button>
+            <button 
+                type="submit" 
+                className="border px-2 py-1 rounded"
+                disabled={title.trim() === ''}
+            >Add</button>
         </form>
     )
 }

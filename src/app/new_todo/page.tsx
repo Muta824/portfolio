@@ -4,7 +4,7 @@ export default async function Page() {
 
     return (
         <>
-            <h1>Todo App</h1>
+            <h1 className="text-2xl mb-4 font-bold">Todo App</h1>
             <TodoList />
         </>
     )
