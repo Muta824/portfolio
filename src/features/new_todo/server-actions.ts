@@ -3,10 +3,12 @@
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
 
-export async function createTodo(todo: Todo): Promise<Todo> {
+export async function createTodo(title: string): Promise<Todo> {
     try {
         const newTodo = await prisma.todo.create({
-            data: todo,
+            data: {
+                title: title,
+            },
         });
         return newTodo;
     } catch (error) {
