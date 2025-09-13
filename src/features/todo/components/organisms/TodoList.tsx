@@ -28,12 +28,20 @@ export function TodoList() {
         setTodos(prev => [newTodo, ...prev]);
     };
 
+    // Todoを更新
+    const handleUpdateTodo = (updatedTodo: TodoType) => {
+        setTodos(prev => prev.map(todo => 
+            todo.id === updatedTodo.id ? updatedTodo : todo
+        ));
+    };
+
     // Todoを削除
     const handleDeleteTodo = (id: string) => {
         setTodos(prev => prev.filter(todo => todo.id !== id));
         deleteTodo(id);
     };
 
+    // 選択した日付のTodoを取得
     const filteredTodos = todos.filter((todo) => isSameDay(todo.createdAt, selectedDate));
 
     return (
@@ -46,12 +54,17 @@ export function TodoList() {
                     className="border px-2 py-1 rounded"
                 />
                 <TodoForm onAddTodo={handleAddTodo} />
+                {/* 完了したTodo */}
+                <p className="px-2 py-1">
+                    {filteredTodos.filter((todo) => todo.completed).length} / {filteredTodos.length} completed
+                </p>
             </div>
             {filteredTodos.map((todo) => (
                 <Todo 
                     key={todo.id} 
                     todo={todo} 
-                    onDeleteTodo={handleDeleteTodo} 
+                    onDeleteTodo={handleDeleteTodo}
+                    onUpdateTodo={handleUpdateTodo}
                 />
             ))}
         </div>

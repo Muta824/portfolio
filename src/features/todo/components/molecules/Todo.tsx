@@ -4,13 +4,26 @@ import { useState } from "react";
 
 export function Todo({ 
     todo, 
-    onDeleteTodo, 
+    onDeleteTodo,
+    onUpdateTodo,
 }: { 
     todo: TodoType, 
-    onDeleteTodo: (id: string) => void, 
+    onDeleteTodo: (id: string) => void,
+    onUpdateTodo: (todo: TodoType) => void,
 }) {
     const [title, setTitle] = useState(todo.title);
     const [completed, setCompleted] = useState(todo.completed);
+
+    const handleCompletedChange = async () => {
+        const newCompleted = !completed;
+        setCompleted(newCompleted);
+        const updatedTodo = await updateTodo({ ...todo, completed: newCompleted });
+        onUpdateTodo(updatedTodo);
+    };
+
+    const handleTitleBlur = async () => {
+        await updateTodo({ ...todo, title: title });
+    };
 
     return (
         <div className="flex gap-2 px-2 py-1 my-2">
@@ -19,10 +32,7 @@ export function Todo({
                     type="checkbox" 
                     checked={completed}
                     className="border px-2 py-1 rounded w-5 h-5"
-                    onChange={() => {
-                        setCompleted(!completed);
-                        updateTodo({ ...todo, completed: !completed });
-                    }}
+                    onChange={handleCompletedChange}
                 />
                 <input 
                     type="text" 
@@ -33,8 +43,7 @@ export function Todo({
                     `}
                     disabled={completed}
                     onChange={(e) => setTitle(e.target.value)}
-                    // フォーカスを外すとDBのTodoを更新
-                    onBlur={() => updateTodo({ ...todo, title: title })} 
+                    onBlur={handleTitleBlur}
                 />
             </div>
             <button 
