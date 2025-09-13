@@ -31,8 +31,10 @@ export function Todo({
                         border px-2 py-1 rounded 
                         ${completed ? 'bg-green-500 text-white' : 'bg-white text-gray-900'}
                     `}
+                    disabled={completed}
                     onChange={(e) => setTitle(e.target.value)}
-                    onBlur={() => updateTodo(todo)} 
+                    // フォーカスを外すとDBのTodoを更新
+                    onBlur={() => updateTodo({ ...todo, title: title })} 
                 />
             </div>
             <button 

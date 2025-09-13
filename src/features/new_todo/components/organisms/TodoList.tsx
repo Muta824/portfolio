@@ -9,14 +9,17 @@ import { TodoForm } from "../molecules/TodoForm";
 export function TodoList() {
     const [todos, setTodos] = useState<TodoType[]>([]);
     
+    // 初回レンダリング時にTodoを取得
     useEffect(() => {
         getTodos().then((todos) => setTodos(todos));
     }, []);
 
+    // Todoを追加
     const handleAddTodo = (newTodo: TodoType) => {
         setTodos(prev => [newTodo, ...prev]);
     };
 
+    // Todoを削除
     const handleDeleteTodo = (id: string) => {
         setTodos(prev => prev.filter(todo => todo.id !== id));
         deleteTodo(id);

@@ -9,6 +9,7 @@ export function TodoForm({
 }) {
     const [title, setTitle] = useState('');
 
+    // Todoを追加
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const newTodo = await createTodo(title);
@@ -28,6 +29,7 @@ export function TodoForm({
             <button 
                 type="submit" 
                 className="border px-2 py-1 rounded"
+                // 入力が空の場合はボタンを無効化
                 disabled={title.trim() === ''}
             >Add</button>
         </form>
