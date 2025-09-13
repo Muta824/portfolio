@@ -25,19 +25,19 @@ export function TodoList() {
 
     // Todoを追加
     const handleAddTodo = (newTodo: TodoType) => {
-        setTodos(prev => [newTodo, ...prev]);
+        setTodos(prevTodos => [newTodo, ...prevTodos]);
     };
 
     // Todoを更新
     const handleUpdateTodo = (updatedTodo: TodoType) => {
-        setTodos(prev => prev.map(todo => 
+        setTodos(prevTodos => prevTodos.map(todo => 
             todo.id === updatedTodo.id ? updatedTodo : todo
         ));
     };
 
     // Todoを削除
     const handleDeleteTodo = (id: string) => {
-        setTodos(prev => prev.filter(todo => todo.id !== id));
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
         deleteTodo(id);
     };
 
@@ -47,13 +47,15 @@ export function TodoList() {
     return (
         <div>
             <div className="flex flex-col sm:flex-row gap-4 mb-5">
+                {/* 日付を選択 */}
                 <input 
                     type="date" 
                     value={selectedDate.toISOString().split('T')[0]}
                     onChange={(e) => setSelectedDate(new Date(e.target.value))}
                     className="border px-2 py-1 rounded"
                 />
-                <TodoForm onAddTodo={handleAddTodo} />
+                {/* Todoを追加 */}
+                <TodoForm onAddTodo={handleAddTodo} selectedDate={selectedDate} />
                 {/* 完了したTodo */}
                 <p className="px-2 py-1">
                     {filteredTodos.filter((todo) => todo.completed).length} / {filteredTodos.length} completed

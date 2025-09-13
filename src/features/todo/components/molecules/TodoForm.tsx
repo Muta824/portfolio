@@ -4,15 +4,17 @@ import { createTodo } from "../../server-actions";
 
 export function TodoForm({
     onAddTodo,
+    selectedDate,
 }: {
     onAddTodo: (todo: TodoType) => void
+    selectedDate: Date
 }) {
     const [title, setTitle] = useState('');
 
     // Todoを追加
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newTodo = await createTodo(title);
+        const newTodo = await createTodo(title, selectedDate);
         onAddTodo(newTodo);
         setTitle('');
     }
