@@ -18,12 +18,12 @@ export function TodoForm({
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-1 gap-2">
             <input 
                 type="text" 
                 value={title} 
                 onChange={(e) => setTitle(e.target.value)}
-                className="border px-2 py-1 rounded"
+                className="flex-1 border px-2 py-1 rounded"
                 placeholder="Add a new todo"
             />
             <button 
@@ -31,7 +31,9 @@ export function TodoForm({
                 className="border px-2 py-1 rounded"
                 // 入力が空の場合はボタンを無効化
                 disabled={title.trim() === ''}
-            >Add</button>
+            >
+                Add
+            </button>
         </form>
     )
 }

@@ -14,7 +14,7 @@ export function Todo({
 
     return (
         <div className="flex gap-2 px-2 py-1 my-2">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-1 items-center gap-2">
                 <input 
                     type="checkbox" 
                     checked={completed}
@@ -28,7 +28,7 @@ export function Todo({
                     type="text" 
                     value={title}
                     className={`
-                        border px-2 py-1 rounded 
+                        flex-1 border px-2 py-1 rounded 
                         ${completed ? 'bg-green-500 text-white' : 'bg-white text-gray-900'}
                     `}
                     disabled={completed}
