@@ -14,9 +14,9 @@ export function TodoForm({
     // Todoを追加
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setTitle('');
         const newTodo = await createTodo(title, selectedDate);
         onAddTodo(newTodo);
-        setTitle('');
     }
 
     return (
