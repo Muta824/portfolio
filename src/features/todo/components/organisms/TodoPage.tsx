@@ -20,7 +20,7 @@ export function TodoPage({initialTodos}: {initialTodos: TodoType[]}) {
     
     // Todoを追加
     const handleAddTodo = (newTodo: TodoType) => {
-        setTodos(prevTodos => [newTodo, ...prevTodos]);
+        setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 
     // Todoを更新

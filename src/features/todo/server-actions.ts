@@ -22,7 +22,7 @@ export async function getTodos(): Promise<Todo[]> {
     try {
         const todos = await prisma.todo.findMany({
             orderBy: {
-                createdAt: 'desc',
+                createdAt: 'asc',
             },
         });
         return todos;
