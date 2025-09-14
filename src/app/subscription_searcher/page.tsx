@@ -7,6 +7,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getContents } from "@/features/subscription_searcher/server-actions";
+import { BackToHome } from "@/components/atoms/BackToHome";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams()
@@ -36,6 +37,7 @@ export default function SubscriptionSearchPage() {
 
     return (
         <div className="min-h-screen flex flex-col">
+            <BackToHome />
             <div className="pt-6 pb-4">
                 <Input 
                     type="text" 
