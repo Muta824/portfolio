@@ -2,9 +2,10 @@
 
 import { Todo as TodoType } from "@prisma/client";
 import { Todo } from "../molecules/Todo";
-import { useState } from "react";
 import { deleteTodo } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
+import { useState } from "react";
+import { use } from "react";
 
 const isSameDay = (d1: Date, d2: Date) => {
     return (
@@ -14,8 +15,8 @@ const isSameDay = (d1: Date, d2: Date) => {
     )
 }
 
-export function TodoPage({initialTodos}: {initialTodos: TodoType[]}) {
-    const [todos, setTodos] = useState<TodoType[]>(initialTodos);
+export function TodoPage({initialTodos}: {initialTodos: Promise<TodoType[]>}) {
+    const [todos, setTodos] = useState<TodoType[]>(use(initialTodos));
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     
     // Todoを追加
