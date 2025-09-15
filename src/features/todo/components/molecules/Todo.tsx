@@ -5,11 +5,9 @@ import { useState } from "react";
 export function Todo({ 
     todo, 
     onDeleteTodo,
-    //onUpdateTodo,
 }: { 
     todo: TodoType, 
     onDeleteTodo: (id: string) => void,
-    //onUpdateTodo: (todo: TodoType) => void,
 }) {
     const [title, setTitle] = useState(todo.title);
     const [completed, setCompleted] = useState(todo.completed);

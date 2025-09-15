@@ -2,10 +2,10 @@
 
 import { Todo as TodoType } from "@prisma/client";
 import { Todo } from "../molecules/Todo";
-import { deleteTodo } from "@/features/todo/server-actions";
+import { deleteTodo, getTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
-import { useState } from "react";
-import { use } from "react";
+import { useState, useEffect } from "react";
+import Loading from "@/app/loading";
 
 const isSameDay = (d1: Date, d2: Date) => {
     return (
@@ -15,21 +15,27 @@ const isSameDay = (d1: Date, d2: Date) => {
     )
 }
 
-export function TodoPage({initialTodos}: {initialTodos: Promise<TodoType[]>}) {
-    const [todos, setTodos] = useState<TodoType[]>(use(initialTodos));
+export function TodoPage() {
+    const [todos, setTodos] = useState<TodoType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+    // Todoを初回レンダリング時に取得
+    useEffect(() => {
+        getTodos()
+            .then((todos) => setTodos(todos))
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    // ローディング中
+    if (isLoading) {
+        return <Loading />;
+    }
     
     // Todoを追加
     const handleAddTodo = (newTodo: TodoType) => {
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };
-
-    // Todoを更新
-    //const handleUpdateTodo = (updatedTodo: TodoType) => {
-    //    setTodos(prevTodos => prevTodos.map(todo => 
-    //        todo.id === updatedTodo.id ? updatedTodo : todo
-    //    ));
-    //};
 
     // Todoを削除
     const handleDeleteTodo = (id: string) => {
@@ -62,7 +68,6 @@ export function TodoPage({initialTodos}: {initialTodos: Promise<TodoType[]>}) {
                     key={todo.id} 
                     todo={todo} 
                     onDeleteTodo={handleDeleteTodo}
-                    //onUpdateTodo={handleUpdateTodo}
                 />
             ))}
         </div>
