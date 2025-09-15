@@ -5,11 +5,11 @@ import { useState } from "react";
 export function Todo({ 
     todo, 
     onDeleteTodo,
-    onUpdateTodo,
+    //onUpdateTodo,
 }: { 
     todo: TodoType, 
     onDeleteTodo: (id: string) => void,
-    onUpdateTodo: (todo: TodoType) => void,
+    //onUpdateTodo: (todo: TodoType) => void,
 }) {
     const [title, setTitle] = useState(todo.title);
     const [completed, setCompleted] = useState(todo.completed);
@@ -17,8 +17,7 @@ export function Todo({
     const handleCompletedChange = async () => {
         const newCompleted = !completed;
         setCompleted(newCompleted);
-        const updatedTodo = await updateTodo({ ...todo, completed: newCompleted });
-        onUpdateTodo(updatedTodo);
+        await updateTodo({ ...todo, completed: newCompleted });
     };
 
     const handleTitleBlur = async () => {

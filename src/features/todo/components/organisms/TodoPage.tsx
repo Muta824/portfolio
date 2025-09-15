@@ -25,11 +25,11 @@ export function TodoPage({initialTodos}: {initialTodos: Promise<TodoType[]>}) {
     };
 
     // Todoを更新
-    const handleUpdateTodo = (updatedTodo: TodoType) => {
-        setTodos(prevTodos => prevTodos.map(todo => 
-            todo.id === updatedTodo.id ? updatedTodo : todo
-        ));
-    };
+    //const handleUpdateTodo = (updatedTodo: TodoType) => {
+    //    setTodos(prevTodos => prevTodos.map(todo => 
+    //        todo.id === updatedTodo.id ? updatedTodo : todo
+    //    ));
+    //};
 
     // Todoを削除
     const handleDeleteTodo = (id: string) => {
@@ -62,7 +62,7 @@ export function TodoPage({initialTodos}: {initialTodos: Promise<TodoType[]>}) {
                     key={todo.id} 
                     todo={todo} 
                     onDeleteTodo={handleDeleteTodo}
-                    onUpdateTodo={handleUpdateTodo}
+                    //onUpdateTodo={handleUpdateTodo}
                 />
             ))}
         </div>
