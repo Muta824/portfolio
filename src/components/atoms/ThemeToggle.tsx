@@ -1,8 +1,8 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const ThemeToggle: FC = () => {
+export const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -11,13 +11,24 @@ export const ThemeToggle: FC = () => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     }
+    else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = isDark ? 'light' : 'dark';
-    setIsDark(!isDark);
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+
+    const newTheme = newIsDark ? 'dark' : 'light';
     localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark');
+
+    if (newIsDark) {
+      document.documentElement.classList.add('dark');
+    }
+    else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   return (
