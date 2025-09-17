@@ -11,14 +11,14 @@ interface SkillCardProps {
   className?: string;
 }
 
-export const SkillCard: React.FC<SkillCardProps> = ({ 
+export const SkillCard = ({ 
   name, 
   icon, 
   level, 
   experience, 
   description,
   className = '' 
-}) => {
+}: SkillCardProps) => {
   const getLevelColor = (level: number) => {
     if (level >= 5) return 'from-emerald-500 to-teal-500';
     if (level >= 4) return 'from-blue-500 to-cyan-500';

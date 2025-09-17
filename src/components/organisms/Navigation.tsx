@@ -7,26 +7,19 @@ import { SignOut } from '@/components/atoms/signout-button';
 import UserAvatar from '@/components/atoms/UserAvatar';
 import { auth } from '@/auth';
 
-interface NavigationProps {
-  className?: string;
-}
-
-export const Navigation: React.FC<NavigationProps> = async ({
-  className = '',
-}) => {
-  
-  const links = [
+const links = [
     { href: '/', label: 'Home' },
     { href: '/toeic', label: 'TOEIC' },
     { href: '/todo', label: 'Todo' },
     { href: '/blog', label: 'Blog' },
     { href: '/subscription_searcher', label: 'Subscription Searcher' },
-  ];
+];
 
+export const Navigation = async () => {
   const session = await auth();
 
   return (
-    <nav className={twMerge('bg-white dark:bg-gray-900 shadow-sm', className)}>
+    <nav className={twMerge('bg-white dark:bg-gray-900 shadow-sm dark:border-b dark:border-gray-700')}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
