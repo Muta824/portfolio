@@ -1,8 +1,7 @@
 import { TodoPage } from "@/features/todo/components/organisms/TodoPage";
 import { BackToHome } from "@/components/atoms/BackToHome";
 
-export default async function Page() {
-    
+export default function Page() {
     return (
         <>
             <BackToHome />

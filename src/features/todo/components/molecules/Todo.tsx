@@ -35,7 +35,7 @@ export function Todo({
                     type="text" 
                     value={title}
                     className={`
-                        flex-1 border px-2 py-1 rounded 
+                        flex-1 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white
                         ${completed ? 'bg-green-500 text-white' : 'bg-white text-gray-900'}
                     `}
                     disabled={completed}
