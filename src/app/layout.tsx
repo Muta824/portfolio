@@ -6,14 +6,14 @@ export const metadata = {
 }
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
     return (
         <html lang="ja">
             <body>
-                <main className="dark:bg-gray-900 dark:text-white">
+                <main className="min-h-screen dark:bg-gray-900 dark:text-white">
                     {children}
                 </main>
             </body>

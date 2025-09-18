@@ -47,7 +47,7 @@ export function TodoPage() {
     const filteredTodos = todos.filter((todo) => isSameDay(todo.createdAt, selectedDate));
 
     return (
-        <div>
+        <>
             <div className="flex flex-col sm:flex-row gap-4 mb-5">
                 {/* 日付を選択 */}
                 <input 
@@ -70,6 +70,6 @@ export function TodoPage() {
                     onDeleteTodo={handleDeleteTodo}
                 />
             ))}
-        </div>
+        </>
     )
 }
