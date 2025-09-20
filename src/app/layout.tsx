@@ -12,8 +12,8 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ja">
-            <body>
-                <main className="min-h-screen dark:bg-gray-900 dark:text-white">
+            <body className="dark:bg-gray-900 dark:text-white">
+                <main>
                     {children}
                 </main>
             </body>

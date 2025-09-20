@@ -27,8 +27,8 @@ const apps = [
 
 export function AppSection() {
     return (
-        <div className="p-6">
-            <Text variant="h2" className="mb-6">My Applications</Text>
+        <section id="portfolio" className="p-6">
+            <Text variant="h2" className="mt-24 mb-8">My Applications</Text>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {apps.map((app) => (
                     <Link key={app.href} href={app.href}>
@@ -41,6 +41,6 @@ export function AppSection() {
                     </Link>
                 ))}
             </div>
-        </div>
+        </section>
     )
 }

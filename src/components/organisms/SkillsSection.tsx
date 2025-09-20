@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from '../atoms/Text';
 import { SkillCard } from '../molecules/SkillCard';
 
 // 公式SVGアイコン
@@ -134,28 +133,29 @@ const skillsData = [
 
 export function SkillsSection() {
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-lg font-medium mb-6">
-            🚀 技術スタック
-          </div>
-        </div>
+    <section id="skills" className="">
+        <div className="mx-auto px-4">
+            <div className="mt-24 mb-8 text-center">
+                <div className="inline-flex px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-lg font-medium">
+                    🚀 Skills
+                </div>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {skillsData.map((skill) => (
-            <SkillCard
-              key={skill.name}
-              name={skill.name}
-              icon={skill.icon}
-              level={skill.level}
-              experience={skill.experience}
-              description={skill.description}
-              className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50"
-            />
-          ))}
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {skillsData.map((skill) => (
+                    <SkillCard
+                        key={skill.name}
+                        name={skill.name}
+                        icon={skill.icon}
+                        level={skill.level}
+                        experience={skill.experience}
+                        description={skill.description}
+                        className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50"
+                    />
+                ))}
+            </div>
 
+        {/*
         <div className="mt-16 text-center">
           <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 px-6 py-4 rounded-2xl border border-blue-200/50 dark:border-blue-700/50">
             <div className="flex items-center space-x-2">
@@ -193,7 +193,8 @@ export function SkillsSection() {
             </Text>
           </div>
         </div>
-      </div>
+        */}
+        </div>
     </section>
   );
 }; 

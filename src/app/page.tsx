@@ -9,11 +9,11 @@ export default function Page() {
             {/* ナビゲーション */}
             <Navigation />
             
-            {/* アプリケーションセクション */}
-            <AppSection />
-    
             {/* 技術スキルセクション */}
             <SkillsSection />
+
+            {/* アプリケーションセクション */}
+            <AppSection />
         </>
   )
 }
