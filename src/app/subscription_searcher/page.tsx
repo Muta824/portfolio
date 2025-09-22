@@ -1,6 +1,7 @@
 "use client"
 
 import { Input } from "@/components/atoms/Input";
+import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { Contents } from "@/features/subscription_searcher/components/molecules/Contents";
 import Loading from "@/app/loading";
 import { useDebouncedCallback } from 'use-debounce';
@@ -37,7 +38,10 @@ export default function SubscriptionSearchPage() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <BackToHome />
+            <div className="flex justify-between items-center">
+                <BackToHome />
+                <ThemeToggle />
+            </div>
             <div className="pt-6 pb-4">
                 <Input 
                     type="text" 
