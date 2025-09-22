@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Todo as TodoType } from "@prisma/client";
 import { createTodo } from "../../server-actions";
+import cuid from "cuid";
 
 export function TodoForm({
     onAddTodo,
@@ -15,8 +16,14 @@ export function TodoForm({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setTitle('');
-        const newTodo = await createTodo(title, selectedDate);
+        const newTodo = {
+            id: cuid(),
+            title: title,
+            completed: false,
+            createdAt: selectedDate,
+        }
         onAddTodo(newTodo);
+        await createTodo(newTodo);
     }
 
     return (

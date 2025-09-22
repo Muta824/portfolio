@@ -3,12 +3,14 @@
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
 
-export async function createTodo(title: string, createdAt: Date): Promise<Todo> {
+export async function createTodo(todo: Todo): Promise<Todo> {
     try {
         const newTodo = await prisma.todo.create({
             data: {
-                title: title,
-                createdAt: createdAt,
+                id: todo.id,
+                title: todo.title,
+                completed: todo.completed,
+                createdAt: todo.createdAt,
             },
         });
         return newTodo;
