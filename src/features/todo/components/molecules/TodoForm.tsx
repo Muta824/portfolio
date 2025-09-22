@@ -22,7 +22,9 @@ export function TodoForm({
             completed: false,
             createdAt: selectedDate,
         }
+        // クライアントサイドでTodoを追加
         onAddTodo(newTodo);
+        // サーバーサイドでTodoを追加
         await createTodo(newTodo);
     }
 

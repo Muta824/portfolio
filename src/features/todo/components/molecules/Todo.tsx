@@ -4,22 +4,24 @@ import { useState } from "react";
 
 export function Todo({ 
     todo, 
+    onToggleCompleted,
     onDeleteTodo,
 }: { 
     todo: TodoType, 
+    onToggleCompleted: (id: string) => void,
     onDeleteTodo: (id: string) => void,
 }) {
     const [title, setTitle] = useState(todo.title);
     const [completed, setCompleted] = useState(todo.completed);
 
     const handleCompletedChange = async () => {
+        // Todoコンポーネントで完了状態を変更
         const newCompleted = !completed;
         setCompleted(newCompleted);
+        // 全体のTodoリストにも完了状態を反映
+        onToggleCompleted(todo.id);
+        // サーバーサイドで完了状態を更新
         await updateTodo({ ...todo, completed: newCompleted });
-    };
-
-    const handleTitleBlur = async () => {
-        await updateTodo({ ...todo, title: title });
     };
 
     return (
@@ -40,7 +42,8 @@ export function Todo({
                     `}
                     disabled={completed}
                     onChange={(e) => setTitle(e.target.value)}
-                    onBlur={handleTitleBlur}
+                    // フォーカスが外れたら、サーバーサイドでtodoのタイトルを更新
+                    onBlur={() => updateTodo({ ...todo, title: title })}
                 />
             </div>
             <button 

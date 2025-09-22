@@ -1,19 +1,11 @@
 "use client";
 
 import { Todo as TodoType } from "@prisma/client";
-import { Todo } from "../molecules/Todo";
 import { deleteTodo, getTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
 import { useState, useEffect } from "react";
 import Loading from "@/app/loading";
-
-const isSameDay = (d1: Date, d2: Date) => {
-    return (
-        d1.getFullYear() === d2.getFullYear() &&
-        d1.getMonth() === d2.getMonth() &&
-        d1.getDate() === d2.getDate()
-    )
-}
+import { SelectedTodos } from "./SelectedTodos";
 
 export function TodoPage() {
     const [todos, setTodos] = useState<TodoType[]>([]);
@@ -37,14 +29,22 @@ export function TodoPage() {
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 
-    // Todoを削除
-    const handleDeleteTodo = (id: string) => {
-        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
-        deleteTodo(id);
+    // Todoの完了状態を変更
+    const handleToggleCompleted = (id: string) => {
+        setTodos(prevTodos => prevTodos.map(todo => 
+            todo.id === id 
+                ? 
+            { ...todo, completed: !todo.completed } : todo
+        ));
     };
 
-    // 選択した日付のTodoを取得
-    const filteredTodos = todos.filter((todo) => isSameDay(todo.createdAt, selectedDate));
+    // Todoを削除
+    const handleDeleteTodo = (id: string) => {
+        // クライアントサイドでTodoを削除
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+        // サーバーサイドでTodoを削除
+        deleteTodo(id);
+    };
 
     return (
         <>
@@ -58,18 +58,13 @@ export function TodoPage() {
                 />
                 {/* Todoを追加 */}
                 <TodoForm onAddTodo={handleAddTodo} selectedDate={selectedDate} />
-                {/* 完了したTodo */}
-                <p className="px-2 py-1">
-                    {filteredTodos.filter((todo) => todo.completed).length} / {filteredTodos.length} completed
-                </p>
             </div>
-            {filteredTodos.map((todo) => (
-                <Todo 
-                    key={todo.id} 
-                    todo={todo} 
-                    onDeleteTodo={handleDeleteTodo}
-                />
-            ))}
+            <SelectedTodos 
+                todos={todos} 
+                selectedDate={selectedDate}
+                onToggleCompleted={handleToggleCompleted}
+                onDeleteTodo={handleDeleteTodo} 
+            />
         </>
     )
 }
