@@ -1,200 +1,90 @@
 import React from 'react';
 import { SkillCard } from '../molecules/SkillCard';
+import { RiNextjsFill } from "react-icons/ri";
+import { FaReact } from "react-icons/fa";
+import { BiLogoTypescript } from "react-icons/bi";
+import { SiPrisma } from "react-icons/si";
+import { DiPostgresql } from "react-icons/di";
+import { RiTailwindCssFill } from "react-icons/ri";
+import { FaGithub } from "react-icons/fa";
+import { BsCCircle } from "react-icons/bs";
 
 // 公式SVGアイコン
 const Icons = {
-  NextJS: (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 -9 115 130" className="text-gray-700 dark:text-gray-200">
-    <path fill="currentColor" d="M18.974,31.5c0,0.828-0.671,1.5-1.5,1.5s-1.5-0.672-1.5-1.5v-14c0-0.653,0.423-1.231,1.045-1.43 c0.625-0.198,1.302,0.03,1.679,0.563l16.777,23.704C40.617,36.709,44,30.735,44,24c0-11-9-20-20-20S4,13,4,24s9,20,20,20 c3.192,0,6.206-0.777,8.89-2.122L18.974,22.216V31.5z M28.974,16.5c0-0.828,0.671-1.5,1.5-1.5s1.5,0.672,1.5,1.5v13.84l-3-4.227 V16.5z"></path>
-    </svg>
-  ),
-  React: (
-    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#61DAFB]">
-      <circle cx="64" cy="64" r="11.4" fill="currentColor"/>
-      <g stroke="currentColor" strokeWidth="6" fill="none">
-        <ellipse rx="56" ry="22" cx="64" cy="64"/>
-        <ellipse rx="56" ry="22" cx="64" cy="64" transform="rotate(60 64 64)"/>
-        <ellipse rx="56" ry="22" cx="64" cy="64" transform="rotate(120 64 64)"/>
-      </g>
-    </svg>
-  ),
-  TypeScript: (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 -9 115 130">
-    <rect width="36" height="36" x="6" y="6" fill="#1976d2"></rect><polygon fill="#fff" points="27.49,22 14.227,22 14.227,25.264 18.984,25.264 18.984,40 22.753,40 22.753,25.264 27.49,25.264"></polygon><path fill="#fff" d="M39.194,26.084c0,0-1.787-1.192-3.807-1.192s-2.747,0.96-2.747,1.986 c0,2.648,7.381,2.383,7.381,7.712c0,8.209-11.254,4.568-11.254,4.568V35.22c0,0,2.152,1.622,4.733,1.622s2.483-1.688,2.483-1.92 c0-2.449-7.315-2.449-7.315-7.878c0-7.381,10.658-4.469,10.658-4.469L39.194,26.084z"></path>
-    </svg>
-  ),
-  Prisma: (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 -9 115 130" className="text-gray-700 dark:text-gray-200">
-    <path fill="currentColor" d="M44.674,37.568L27.405,1.49c-0.89-1.859-3.473-2.012-4.575-0.271L3.679,31.461c-0.413,0.652-0.401,1.486,0.03,2.126	l9.647,14.323c0.599,0.889,1.7,1.29,2.729,0.994l26.994-7.775C44.596,40.692,45.357,38.994,44.674,37.568z M40.86,38.865	l-22.703,6.369c-0.526,0.148-1.02-0.318-0.906-0.853L25.3,6.749c0.145-0.678,1.064-0.788,1.364-0.163l14.843,30.881	C41.766,38.033,41.459,38.697,40.86,38.865z"></path>
-    </svg>
-  ),
-  PostgreSQL: (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 -9 115 130">
-    <path fill="#fff" d="M44.083,29.79c-0.183-0.829-0.935-1.796-2.452-1.796c-0.31,0-0.649,0.039-1.035,0.119c-0.708,0.146-1.311,0.217-1.842,0.241c4.133-7.04,6.816-16.819,4.159-20.214c-3.501-4.473-8.214-5.141-10.711-5.141L31.967,3c-0.929,0.015-1.893,0.129-2.863,0.339l-3.583,0.774C25.033,4.052,24.536,4.009,24.018,4l-0.03,0l-0.016,0l-0.152-0.001c-1.593,0-3.046,0.338-4.341,0.973l-1.251-0.493c-1.72-0.678-4.308-1.485-6.868-1.485c-0.144,0-0.287,0.003-0.431,0.008C8.407,3.093,6.241,4.05,4.664,5.769C2.696,7.915,1.8,11.054,2.003,15.1C2.013,15.309,4.461,36,11.4,36h0.025l0.064-0.001c0.901-0.022,1.76-0.384,2.563-1.077c0.613,0.46,1.406,0.732,2.145,0.84c0.488,0.115,1.366,0.278,2.418,0.278c1.284,0,2.442-0.263,3.44-0.738c-0.001,0.88-0.006,1.994-0.016,3.418l-0.001,0.075l0.005,0.075c0.097,1.419,0.342,2.698,0.711,3.701c1.051,2.859,2.866,4.434,5.111,4.434c0.093,0,0.188-0.003,0.284-0.009c1.846-0.114,3.717-1.151,5.004-2.772c1.393-1.755,1.715-3.607,1.839-5.026L35,39.111v-0.088v-4.079l0.103,0.01l0.436,0.038l0.042,0.004l0.042,0.002c0.124,0.006,0.252,0.008,0.381,0.008c1.507,0,3.362-0.391,4.616-0.974C41.819,33.476,44.559,31.948,44.083,29.79z"></path><path fill="#0277bd" d="M33,34c0-0.205,0.012-0.376,0.018-0.565C33.008,33.184,33,33,33,33s0.012-0.009,0.032-0.022c0.149-2.673,0.886-3.703,1.675-4.29c-0.11-0.153-0.237-0.318-0.356-0.475c-0.333-0.437-0.748-0.979-1.192-1.674l-0.082-0.158c-0.067-0.164-0.229-0.447-0.435-0.819c-1.183-2.14-3.645-6.592-1.96-9.404c0.738-1.232,2.122-1.942,4.121-2.117C33.986,11.718,30.925,6.115,23.985,6c-0.002,0-0.004,0-0.006,0c-6.041-0.098-8.026,5.392-8.672,8.672c0.89-0.377,1.906-0.606,2.836-0.606c0.014,0,0.029,0,0.043,0c2.29,0.017,3.865,1.239,4.323,3.354c0.335,1.552,0.496,2.91,0.492,4.153c-0.01,2.719-0.558,4.149-1.042,5.411l-0.154,0.408c-0.124,0.334-0.255,0.645-0.379,0.937c-0.126,0.298-0.237,0.563-0.318,0.802c0.484,0.11,0.864,0.265,1.125,0.38l0.151,0.066c0.047,0.02,0.094,0.043,0.137,0.069c0.848,0.516,1.376,1.309,1.489,2.233c0.061,0.498,0.051,3.893,0.03,6.855c0.087,1.285,0.305,2.364,0.593,3.146c0.409,1.114,1.431,3.241,3.394,3.119c1.37-0.085,2.687-0.919,3.561-2.019c0.938-1.181,1.284-2.487,1.414-3.958V34z"></path><path fill="#0277bd" d="M15.114 28.917c-1.613-1.683-2.399-3.947-2.104-6.056.285-2.035.124-4.027.037-5.098-.029-.357-.048-.623-.047-.77 0-.008.002-.015.003-.023 0-.004-.002-.007-.002-.011.121-3.021 1.286-7.787 4.493-10.62C15.932 5.724 13.388 4.913 11 5 7.258 5.136 3.636 7.724 4 15c.137 2.73 3.222 19.103 7.44 19 .603-.015 1.229-.402 1.872-1.176 1.017-1.223 2.005-2.332 2.708-3.104C15.705 29.481 15.401 29.217 15.114 28.917zM37.023 14.731c.015.154.002.286-.022.408.031.92-.068 1.813-.169 2.677-.074.636-.15 1.293-.171 1.952-.021.645.07 1.282.166 1.956.225 1.578.459 3.359-.765 5.437.225.296.423.571.581.837 4.61-7.475 6.468-16.361 4.695-18.626C38.655 5.944 34.941 4.952 31.999 5c-.921.015-1.758.139-2.473.294C34.602 7.754 36.863 13.026 37.023 14.731zM41 30.071c-2.665.55-3.947.257-4.569-.126-.1.072-.2.133-.293.19-.372.225-.961.583-1.105 2.782.083.016.156.025.246.044L35.714 33c1.32.06 3.049-.31 4.063-.781C41.962 31.205 43.153 29.627 41 30.071zM22.023 32.119c-.037-.298-.198-.539-.492-.732l-.108-.047C21.062 31.181 20.653 31 20 31h-.004c-.127.01-.253.019-.38.019-.052 0-.103-.007-.155-.009-.474.365-1.148.647-2.816.99-2.98.759-1.221 1.655-.078 1.794 1.106.277 3.735.614 5.481-.809C22.043 32.537 22.035 32.229 22.023 32.119z"></path><path fill="#0277bd" d="M20.681 18.501c-.292.302-.753.566-1.262.484-.828-.134-1.463-1.133-1.417-1.508h0c.044-.374.751-.569 1.578-.435.287.047.548.128.768.228-.32-.688-.899-1.085-1.782-1.182-1.565-.174-3.226.644-3.56 1.097.007.11.02.251.033.417.093 1.147.265 3.284-.05 5.537-.208 1.485.393 3.169 1.567 4.395.757.79 1.641 1.29 2.513 1.438.111-.478.309-.944.513-1.425.113-.265.233-.547.346-.852l.162-.427c.443-1.155.9-2.35.909-4.703C21.003 20.66 20.892 19.627 20.681 18.501zM34.847 22.007c-.104-.729-.211-1.484-.185-2.303.023-.742.105-1.442.184-2.119.062-.533.11-1.045.138-1.55-1.289.107-2.145.479-2.551 1.108.168-.057.358-.102.568-.129.892-.116 1.543.141 1.618.637.055.363-.253.705-.388.836-.277.269-.626.442-.981.488-.064.008-.129.012-.192.012-.353 0-.69-.121-.949-.3.112 1.973 1.567 4.612 2.283 5.907.153.277.271.498.369.688C35.154 24.163 35.009 23.143 34.847 22.007z"></path>
-    </svg>
-  ),
-  Tailwind: (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 -9 115 130" className="text-[#00acc1]">
-    <path fill="currentColor" d="M24,9.604c-6.4,0-10.4,3.199-12,9.597c2.4-3.199,5.2-4.398,8.4-3.599 c1.826,0.456,3.131,1.781,4.576,3.247C27.328,21.236,30.051,24,36,24c6.4,0,10.4-3.199,12-9.598c-2.4,3.199-5.2,4.399-8.4,3.6 c-1.825-0.456-3.13-1.781-4.575-3.247C32.672,12.367,29.948,9.604,24,9.604L24,9.604z M12,24c-6.4,0-10.4,3.199-12,9.598 c2.4-3.199,5.2-4.399,8.4-3.599c1.825,0.457,3.13,1.781,4.575,3.246c2.353,2.388,5.077,5.152,11.025,5.152 c6.4,0,10.4-3.199,12-9.598c-2.4,3.199-5.2,4.399-8.4,3.599c-1.826-0.456-3.131-1.781-4.576-3.246C20.672,26.764,17.949,24,12,24 L12,24z"></path>
-    </svg>
-  ),
-  NextAuth: (
-    <svg width="100" height="100" viewBox="0 0 460 490" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fillRule="evenodd" clipRule="evenodd" d="M208.687 31.859L30.0947 167.73C8.16388 127.966 0.567559 79.9975 0 51.2275V33.6181C0 31.0567 2.7788 29.5628 4.16851 29.1356C33.5617 20.2778 93.2465 2.30524 96.8378 1.28069C100.429 0.256138 103.464 0 104.534 0H104.631C105.7 0 108.735 0.256138 112.327 1.28069C115.918 2.30524 175.603 20.2778 204.996 29.1356C206.03 29.4533 207.832 30.3613 208.687 31.859Z" fill="url(#paint0_linear_128_61)"/>
-      <path fillRule="evenodd" clipRule="evenodd" d="M30.0938 167.952L208.686 32.0815C208.981 32.5983 209.164 33.1842 209.164 33.8406V51.45C208.202 100.223 187.038 204.172 110.081 229.786C109.013 230.213 106.49 231.067 104.951 231.067H104.212C102.673 231.067 100.15 230.213 99.0814 229.786C67.5193 219.281 45.3415 195.6 30.0938 167.952Z" fill="url(#paint1_linear_128_61)"/>
-      <path d="M111.74 1.28325C108.147 0.25665 105.11 0 104.04 0L103.719 231.305H104.361C105.901 231.305 108.425 230.45 109.494 230.022C186.489 204.357 207.663 100.2 208.625 51.3299V33.6853C208.625 31.1188 205.845 29.6216 204.454 29.1939C175.047 20.3181 115.333 2.30985 111.74 1.28325Z" fill="url(#paint2_linear_128_61)" fillOpacity="0.21"/>
-      <ellipse cx="104.905" cy="114.209" rx="47.801" ry="47.4802" fill="#E3E2FA"/>
-      <path fillRule="evenodd" clipRule="evenodd" d="M96.2435 124.475C92.6077 124.796 83.4111 123.192 78.9197 119.342C74.0971 115.208 71.541 109.718 71.541 101.697C71.541 91.7469 80.5239 81.1654 93.0355 81.4861C104.919 81.7907 112.934 88.4894 114.53 99.1307C115.363 104.684 114.514 107.353 113.854 109.426C113.752 109.749 113.654 110.057 113.568 110.359C113.247 111.429 112.798 113.76 113.568 114.53C114.337 115.3 126.079 126.614 131.854 132.174C132.388 132.816 133.458 134.42 133.458 135.703V141.799C133.458 142.761 133.201 143.082 132.175 143.082H119.342C118.594 142.975 117.096 142.248 117.096 140.195C117.096 138.006 116.863 137.684 116.396 137.039C116.316 136.928 116.228 136.807 116.134 136.666C115.492 135.703 114.209 135.703 112.926 135.703C111.643 135.703 110.68 135.382 110.039 134.741C109.397 134.099 109.397 133.137 109.718 131.854C110.039 130.57 109.718 129.287 109.076 128.966C108.974 128.915 108.856 128.848 108.723 128.772C108.019 128.372 106.896 127.734 105.547 128.004C103.943 128.325 101.697 128.004 100.414 126.721C99.131 125.437 97.5267 124.401 96.2435 124.475ZM87.5814 100.094C90.2391 100.094 92.3936 97.9393 92.3936 95.2816C92.3936 92.6239 90.2391 90.4694 87.5814 90.4694C84.9237 90.4694 82.7692 92.6239 82.7692 95.2816C82.7692 97.9393 84.9237 100.094 87.5814 100.094Z" fill="url(#paint3_linear_128_61)"/>
-      <defs>
-        <linearGradient id="paint0_linear_128_61" x1="19.5695" y1="96.5644" x2="97.5269" y2="15.0782" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#45FFC8"/>
-          <stop offset="1" stopColor="#1DBBF1"/>
-        </linearGradient>
-        <linearGradient id="paint1_linear_128_61" x1="73.7856" y1="143.724" x2="170.671" y2="190.884" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#D14AE8"/>
-          <stop offset="0.552228" stopColor="#B628E3"/>
-          <stop offset="1" stopColor="#8315FD"/>
-        </linearGradient>
-        <linearGradient id="paint2_linear_128_61" x1="155.914" y1="21.8152" x2="155.914" y2="182.542" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#20ABF5"/>
-          <stop offset="0.398093" stopColor="#2A8CC3"/>
-          <stop offset="1" stopColor="#A104DC"/>
-        </linearGradient>
-        <linearGradient id="paint3_linear_128_61" x1="90.1481" y1="99.4517" x2="129.287" y2="138.912" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FE5B01"/>
-          <stop offset="1" stopColor="#FFB200"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  ),
-  GitHub: (
-    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="64" cy="64" r="64" fill="#181717"/><path d="M64 12C36.5 12 14 34.5 14 62c0 22.1 14.3 40.8 34.1 47.5 2.5.5 3.4-1.1 3.4-2.4v-8.5c-13.9 3-16.8-6.7-16.8-6.7-2.3-5.8-5.6-7.3-5.6-7.3-4.6-3.1.3-3 .3-3 5.1.4 7.8 5.2 7.8 5.2 4.5 7.7 11.7 5.5 14.6 4.2.5-3.2 1.8-5.5 3.2-6.8-11.1-1.3-22.8-5.6-22.8-24.8 0-5.5 2-10 5.2-13.5-.5-1.3-2.2-6.5.5-13.5 0 0 4.2-1.3 13.7 5.2 4-1.1 8.3-1.7 12.6-1.7s8.6.6 12.6 1.7c9.5-6.5 13.7-5.2 13.7-5.2 2.7 7 1 12.2.5 13.5 3.2 3.5 5.2 8 5.2 13.5 0 19.2-11.7 23.5-22.8 24.8 1.8 1.5 3.4 4.5 3.4 9.1v13.5c0 1.3.9 2.9 3.4 2.4C99.7 102.8 114 84.1 114 62c0-27.5-22.5-50-50-50z" fill="#fff"/></svg>
-  ),
+    Nextjs: <RiNextjsFill />,
+    React: <FaReact />,
+    TypeScript: <BiLogoTypescript />,
+    Prisma: <SiPrisma />,
+    PostgreSQL: <DiPostgresql />,
+    TailwindCss: <RiTailwindCssFill />,
+    GitHub: <FaGithub />,
+    C: <BsCCircle />,
 };
 
 const skillsData = [
-  {
-    name: 'Next.js 15',
-    icon: Icons.NextJS,
-    level: 3,
-    experience: '1年',
-    description: 'React フレームワーク、SSR/SSG、App Router'
-  },
-  {
-    name: 'React 19',
-    icon: Icons.React,
-    level: 3,
-    experience: '1年',
-    description: 'UI ライブラリ、Hooks、コンポーネント設計'
-  },
-  {
-    name: 'TypeScript',
-    icon: Icons.TypeScript,
-    level: 3,
-    experience: '1年',
-    description: '型安全性、開発効率向上'
-  },
-  {
-    name: 'Prisma',
-    icon: Icons.Prisma,
-    level: 3,
-    experience: '1ヶ月',
-    description: 'ORM、データベース操作、マイグレーション'
-  },
-  {
-    name: 'PostgreSQL',
-    icon: Icons.PostgreSQL,
-    level: 3,
-    experience: '1ヶ月',
-    description: 'リレーショナルデータベース、クエリ最適化'
-  },
-  {
-    name: 'Tailwind CSS',
-    icon: Icons.Tailwind,
-    level: 3,
-    experience: '1年',
-    description: 'ユーティリティファーストCSS、レスポンシブデザイン'
-  },
-  {
-    name: 'NextAuth.js',
-    icon: Icons.NextAuth,
-    level: 2,
-    experience: '1ヶ月',
-    description: '認証システム、OAuth、セッション管理'
-  },
-  {
-    name: 'Git/GitHub',
-    icon: Icons.GitHub,
-    level: 2,
-    experience: '半年',
-    description: 'バージョン管理、コラボレーション'
-  }
+    {
+        name: 'C',
+        icon: Icons.C,
+        level: 3,
+    },
+    {
+        name: 'TypeScript',
+        icon: Icons.TypeScript,
+        level: 3,
+    },
+    {
+        name: 'React',
+        icon: Icons.React,
+        level: 3,
+    },
+    {
+        name: 'Next.js',
+        icon: Icons.Nextjs,
+        level: 3,
+    },
+    {
+        name: 'PostgreSQL',
+        icon: Icons.PostgreSQL,
+        level: 1.5,
+    },
+    {
+        name: 'Prisma',
+        icon: Icons.Prisma,
+        level: 2,
+    },
+    {
+        name: 'Tailwind CSS',
+        icon: Icons.TailwindCss,
+        level: 3,
+    },
+    {
+        name: 'Git/GitHub',
+        icon: Icons.GitHub,
+        level: 2,
+    }
 ];
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="">
-        <div className="mx-auto px-4">
-            <div className="mt-24 mb-8 text-center">
-                <div className="inline-flex px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-lg font-medium">
-                    🚀 Skills
+        <section id="skills" className="">
+            <div className="mx-auto px-4">
+                <div className="mt-24 mb-8 text-center">
+                    <div className="inline-flex px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-2xl text-white font-medium">
+                        🚀 Skills
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {skillsData.map((skill) => (
+                        <SkillCard
+                            key={skill.name}
+                            name={skill.name}
+                            icon={skill.icon}
+                            level={skill.level}
+                        />
+                    ))}
                 </div>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {skillsData.map((skill) => (
-                    <SkillCard
-                        key={skill.name}
-                        name={skill.name}
-                        icon={skill.icon}
-                        level={skill.level}
-                        experience={skill.experience}
-                        description={skill.description}
-                        className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border border-gray-200/50 dark:border-gray-700/50"
-                    />
-                ))}
-            </div>
-
-        {/*
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 px-6 py-4 rounded-2xl border border-blue-200/50 dark:border-blue-700/50">
-            <div className="flex items-center space-x-2">
-              <span className="text-blue-600 dark:text-blue-400">💡</span>
-              <Text variant="small" className="text-blue-600 dark:text-blue-400 font-medium">
-                スキルレベル
-              </Text>
-            </div>
-            <div className="flex space-x-2">
-              <span className="text-yellow-400">★★★★★</span>
-              <Text variant="small" className="text-gray-600 dark:text-gray-400">
-                Expert
-              </Text>
-            </div>
-            <div className="flex space-x-2">
-              <span className="text-blue-400">★★★★☆</span>
-              <Text variant="small" className="text-gray-600 dark:text-gray-400">
-                Advanced
-              </Text>
-            </div>
-            <div className="flex space-x-2">
-              <span className="text-orange-400">★★★☆☆</span>
-              <Text variant="small" className="text-gray-600 dark:text-gray-400">
-                Intermediate
-              </Text>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 px-4 py-2 rounded-full border border-emerald-200/50 dark:border-emerald-700/50">
-            <span className="text-emerald-600 dark:text-emerald-400">✨</span>
-            <Text variant="small" className="text-emerald-600 dark:text-emerald-400 font-medium">
-              このポートフォリオは Next.js 15 + React 19 + Prisma + PostgreSQL で構築
-            </Text>
-          </div>
-        </div>
-        */}
-        </div>
-    </section>
-  );
+        </section>
+    );
 }; 

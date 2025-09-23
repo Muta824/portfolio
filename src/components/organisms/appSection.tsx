@@ -29,7 +29,9 @@ export function AppSection() {
     return (
         <section id="portfolio" className="p-6">
             <div className="mt-24 mb-8 text-center">
-                <Text variant="h2">My Portfolio</Text>
+                <div className="inline-flex px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white text-2xl font-medium">
+                    My Portfolio
+                </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {apps.map((app) => (
