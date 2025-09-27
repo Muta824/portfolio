@@ -16,7 +16,7 @@ export function Contents({
                             alt="Sorry, the image is not available"
                             width={500}
                             height={750}
-                            className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
+                            className="border dark:border-white w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
                         />
                     </Link>
                 </div>

@@ -28,7 +28,7 @@ const apps = [
 export function AppSection() {
     return (
         <section id="portfolio" className="p-6">
-            <div className="mt-24 mb-8 text-center">
+            <div className="mt-20 mb-8 text-center">
                 <div className="inline-flex px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white text-2xl font-medium">
                     My Portfolio
                 </div>
