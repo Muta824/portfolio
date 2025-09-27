@@ -7,7 +7,7 @@ import { Result } from "@/features/toeic/components/organisms/Result";
 import { Timer } from "@/features/toeic/components/organisms/Timer";
 import { CorrectAnswersSaveForm } from "@/features/toeic/components/organisms/CorrectAnswersSaveForm";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-import { BackToHome } from "@/components/atoms/BackToHome";
+import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ScrollToTopButton } from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
 import '../globals.css'
@@ -32,7 +32,7 @@ export default function TOEICScoringPage() {
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="flex flex-col gap-4">
           <div className="flex justify-between items-center w-full">
-            <BackToHome />
+            <GoBackLink />
             <ThemeToggle />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight md:text-5xl text-center">

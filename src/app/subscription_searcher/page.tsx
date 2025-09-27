@@ -8,7 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getContents } from "@/features/subscription_searcher/server-actions";
-import { BackToHome } from "@/components/atoms/BackToHome";
+import { GoBackLink } from "@/components/atoms/GoBackLink";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams()
@@ -37,12 +37,12 @@ export default function SubscriptionSearchPage() {
     }, [])
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col h-full">
             <div className="flex justify-between items-center">
-                <BackToHome />
+                <GoBackLink />
                 <ThemeToggle />
             </div>
-            <div className="pt-6 pb-4">
+            <div className="pt-2 pb-4 mb-8">
                 <Input 
                     type="text" 
                     placeholder="Search"
@@ -54,16 +54,15 @@ export default function SubscriptionSearchPage() {
                 />
             </div>
             
-            <div className="flex-1 flex items-center justify-center">
-                {isLoading ? 
-                    <Loading />
+            {isLoading ? 
+                <Loading />
                 : contents.length > 0 ?
-                    <Contents contents={contents}/>
-                : <h1 className="text-gray-600 text-5xl pb-10 font-serif italic tracking-wide leading-relaxed">
+                <Contents contents={contents}/>
+                : 
+                <p className="h-full p-4 flex items-center justify-center text-center text-5xl text-gray-600 font-serif italic tracking-wide leading-relaxed">
                     Let&apos;s search for your favorite movies and TV shows!
-                </h1>
-                }
-            </div>
+                </p>
+            }
         </div>
     )
 }

@@ -7,7 +7,7 @@ export function Contents({
     contents: any[] 
 }) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+        <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
             {contents.map((content: any) => (
                 <div key={content.id} className="w-full max-w-xs">
                     <Link href={`/subscription_searcher/${content.media_type}/${content.id}`}>

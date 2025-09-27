@@ -15,7 +15,8 @@ export async function getContents(query: string) {
             throw new Error(`API request failed with status: ${res.status}`)
         }
         const data = await res.json()
-        return data.results
+        const filteredResults = data.results.filter((result: any) => result.media_type === "movie" || result.media_type === "tv")
+        return filteredResults
     } catch (error) {
         console.error(error)
         return []
