@@ -28,7 +28,12 @@ export async function getTodos(): Promise<Todo[]> {
                 createdAt: 'asc',
             },
         });
-        return todos;
+        // 日本時間に修正
+        const adjustedTodos = todos.map(todo => ({
+            ...todo,
+            createdAt: new Date(todo.createdAt.getTime() - 9 * 60 * 60 * 1000),
+        }));
+        return adjustedTodos;
     } catch (error) {
         console.error('Get todos error:', error);
         throw new Error('Failed to get todos');
