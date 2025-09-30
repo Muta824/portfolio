@@ -52,7 +52,7 @@ export function TodoPage() {
                 {/* 日付を選択 */}
                 <input 
                     type="date" 
-                    value={selectedDate.toISOString().split('T')[0]}
+                    value={selectedDate.toLocaleDateString('en-CA')}
                     onChange={(e) => setSelectedDate(new Date(e.target.value))}
                     className="border px-2 py-1 rounded"
                 />

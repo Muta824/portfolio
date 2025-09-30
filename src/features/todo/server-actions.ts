@@ -10,7 +10,8 @@ export async function createTodo(todo: Todo): Promise<Todo> {
                 id: todo.id,
                 title: todo.title,
                 completed: todo.completed,
-                createdAt: todo.createdAt,
+                // 日本時間に直す
+                createdAt: new Date(todo.createdAt.getTime() + 9 * 60 * 60 * 1000),
             },
         });
         return newTodo;
