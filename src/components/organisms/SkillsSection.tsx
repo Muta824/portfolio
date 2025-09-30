@@ -6,7 +6,7 @@ import { BiLogoTypescript } from "react-icons/bi";
 import { SiPrisma } from "react-icons/si";
 import { DiPostgresql } from "react-icons/di";
 import { RiTailwindCssFill } from "react-icons/ri";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaJava } from "react-icons/fa";
 import { BsCCircle } from "react-icons/bs";
 
 // 公式SVGアイコン
@@ -19,6 +19,7 @@ const Icons = {
     TailwindCss: <RiTailwindCssFill />,
     GitHub: <FaGithub />,
     C: <BsCCircle />,
+    Java: <FaJava />,
 };
 
 const skillsData = [
@@ -26,6 +27,11 @@ const skillsData = [
         name: 'C',
         icon: Icons.C,
         level: 3,
+    },
+    {
+        name: 'Java',
+        icon: Icons.Java,
+        level: 2.5,
     },
     {
         name: 'TypeScript',
