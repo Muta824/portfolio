@@ -9,7 +9,7 @@ import { SelectedTodos } from "./SelectedTodos";
 
 export function TodoPage() {
     const [todos, setTodos] = useState<TodoType[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     // Todoを初回レンダリング時に取得
@@ -39,11 +39,11 @@ export function TodoPage() {
     };
 
     // Todoを削除
-    const handleDeleteTodo = (id: string) => {
+    const handleDeleteTodo = async (id: string) => {
         // クライアントサイドでTodoを削除
         setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
         // サーバーサイドでTodoを削除
-        deleteTodo(id);
+        await deleteTodo(id);
     };
 
     return (

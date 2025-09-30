@@ -16,11 +16,17 @@ export function TodoForm({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setTitle('');
+        
+        // 選択された日付に現在の時間を設定
+        const now = new Date();
+        const todoDate = new Date(selectedDate);
+        todoDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+        
         const newTodo = {
             id: cuid(),
             title: title,
             completed: false,
-            createdAt: selectedDate,
+            createdAt: todoDate,
         }
         // クライアントサイドでTodoを追加
         onAddTodo(newTodo);
