@@ -4,8 +4,8 @@ import { Todo as TodoType } from "@prisma/client";
 import { deleteTodo, getTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
 import { useState, useEffect } from "react";
-import Loading from "@/app/loading";
 import { SelectedTodos } from "./SelectedTodos";
+import { Spinner } from "@/components/atoms/Spinner";
 
 export function TodoPage() {
     const [todos, setTodos] = useState<TodoType[]>([]);
@@ -21,7 +21,7 @@ export function TodoPage() {
 
     // ローディング中
     if (isLoading) {
-        return <Loading />;
+        return <Spinner />;
     }
     
     // Todoを追加

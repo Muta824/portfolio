@@ -11,7 +11,7 @@ export default function BlogLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+        <div className="container mx-auto p-4 min-h-screen transition-colors">
             {children}
         </div>
     )
