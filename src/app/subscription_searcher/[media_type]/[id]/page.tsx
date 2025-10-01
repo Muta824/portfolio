@@ -31,7 +31,7 @@ export default async function WatchProviderPage({
                     height={450}
                     className="m-auto rounded-xl shadow-lg border dark:border-white"
                 />
-                <div className="flex flex-col gap-4 mx-4 items-center relative">
+                <div className="flex flex-col gap-4 m-auto items-center relative">
                     <h1 className="my-4 text-4xl lg:text-5xl font-bold">
                         {content.original_name || content.original_title}
                     </h1>
@@ -59,7 +59,7 @@ export default async function WatchProviderPage({
             <hr className="my-12 border-t-2 border-gray-300 dark:border-gray-500" />
 
             {/* Subscription Providers Section */}
-            <div className="">
+            <div>
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold mb-4">Where to Watch</h2>
                     <p className="text-lg max-w-2xl mx-auto">
