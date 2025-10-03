@@ -1,4 +1,4 @@
-import { Todo as TodoType } from "@prisma/client";
+import { Todo as TodoType } from "@/features/todo/types/data";
 import { updateTodo } from "../../server-actions";
 import { useState } from "react";
 

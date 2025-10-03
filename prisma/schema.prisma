@@ -21,6 +21,7 @@ model User {
   login         String?   @unique
   accounts      Account[]
   posts         Post[]
+  todos         Todo[]
   sessions      Session[]
 
   @@map("users")
@@ -90,7 +91,6 @@ model Category {
   name  String @unique
   slug  String @unique
   posts Post[]
-
 }
 
 model Tag {
@@ -116,4 +116,6 @@ model Todo {
   title     String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
 }

@@ -1,14 +1,14 @@
 "use client";
 
-import { Todo as TodoType } from "@prisma/client";
 import { deleteTodo, getTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
 import { useState, useEffect } from "react";
 import { SelectedTodos } from "./SelectedTodos";
 import { Spinner } from "@/components/atoms/Spinner";
+import { Todo } from "@/features/todo/types/data";
 
 export function TodoPage() {
-    const [todos, setTodos] = useState<TodoType[]>([]);
+    const [todos, setTodos] = useState<Todo[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
@@ -25,7 +25,7 @@ export function TodoPage() {
     }
     
     // Todoを追加
-    const handleAddTodo = (newTodo: TodoType) => {
+    const handleAddTodo = (newTodo: Todo) => {
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Todo as TodoType } from "@prisma/client";
+import { Todo } from "@/features/todo/types/data";
 import { createTodo } from "../../server-actions";
 import cuid from "cuid";
 
@@ -7,7 +7,7 @@ export function TodoForm({
     onAddTodo,
     selectedDate,
 }: {
-    onAddTodo: (todo: TodoType) => void
+    onAddTodo: (todo: Todo) => void
     selectedDate: Date
 }) {
     const [title, setTitle] = useState('');

@@ -1,20 +1,33 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
 
-export async function createTodo(todo: Todo): Promise<Todo> {
+type ClientTodoInput = {
+    id: string;
+    title: string;
+    completed: boolean;
+    createdAt: Date;
+}
+
+export async function createTodo(todo: ClientTodoInput): Promise<void> {
+    const session = await auth();
+    // ユーザーがログインしていない場合はdbに保存しない
+    if (!session?.user) {
+        return;
+    }
     try {
-        const newTodo = await prisma.todo.create({
+        await prisma.todo.create({
             data: {
                 id: todo.id,
                 title: todo.title,
                 completed: todo.completed,
                 // 日本時間に直す
                 createdAt: new Date(todo.createdAt.getTime() + 9 * 60 * 60 * 1000),
+                userId: session.user.id,
             },
         });
-        return newTodo;
     } catch (error) {
         console.error('Create error:', error);
         throw new Error('Failed to create todo');
@@ -22,8 +35,16 @@ export async function createTodo(todo: Todo): Promise<Todo> {
 }
 
 export async function getTodos(): Promise<Todo[]> {
+    const session = await auth();
+    // ユーザーがログインしていない場合は空の配列を返す
+    if (!session?.user) {
+        return [];
+    }
     try {
         const todos = await prisma.todo.findMany({
+            where: {
+                userId: session.user.id,
+            },
             orderBy: {
                 createdAt: 'asc',
             },
@@ -40,16 +61,19 @@ export async function getTodos(): Promise<Todo[]> {
     }
 }
 
-export async function updateTodo(todo: Todo): Promise<Todo> {
+export async function updateTodo(todo: ClientTodoInput): Promise<void> {
+    const session = await auth();
+    if (!session?.user) {
+        return;
+    }
     try {
-        const updatedTodo = await prisma.todo.update({
+        await prisma.todo.update({
             where: { id: todo.id },
             data: {
                 title: todo.title,
                 completed: todo.completed,
             },
         });
-        return updatedTodo;
     } catch (error) {
         console.error('Update error:', error);
         throw new Error('Failed to update todo');

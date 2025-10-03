@@ -10,104 +10,104 @@ import prisma from "@/lib/prisma/prisma"
 import { verifyPassword } from "@/lib/auth-utils"
 
 const providers: Provider[] = [
-  Credentials({
-    credentials: { 
-      email: { label: "Email", type: "email" },
-      password: { label: "Password", type: "password" } 
-    },
-    async authorize(credentials) {
-      if (!credentials?.email || !credentials?.password) {
-        return null
-      }
+    Credentials({
+        credentials: { 
+            email: { label: "Email", type: "email" },
+            password: { label: "Password", type: "password" } 
+        },
+        async authorize(credentials) {
+            if (!credentials?.email || !credentials?.password) {
+                return null
+            }
 
-      const email = credentials.email as string
-      const password = credentials.password as string
+            const email = credentials.email as string
+            const password = credentials.password as string
 
-      try {
-        // データベースからユーザーを検索
-        const user = await prisma.user.findUnique({
-          where: { email }
-        })
+            try {
+                // データベースからユーザーを検索
+                const user = await prisma.user.findUnique({
+                    where: { email }
+                })
 
-        if (!user || !user.password) {
-          console.log("ユーザーが見つからないか、パスワードが設定されていません:", email)
-          return null
-        }
+                if (!user || !user.password) {
+                    console.log("ユーザーが見つからないか、パスワードが設定されていません:", email)
+                    return null
+                }
 
-        // パスワードを検証
-        const isValid = await verifyPassword(password, user.password)
-        
-        if (!isValid) {
-          console.log("パスワードが無効です:", email)
-          return null
-        }
+                // パスワードを検証
+                const isValid = await verifyPassword(password, user.password)
+                
+                if (!isValid) {
+                    console.log("パスワードが無効です:", email)
+                    return null
+                }
 
-        console.log("認証成功:", user.email)
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role || "user",
-          image: user.image,
-        }
-      } catch (error) {
-        console.error("認証エラー:", error)
-        return null
-      }
-    },
-  }),
-  GitHub({
-    profile(profile) {
-      return { 
-        id: profile.id.toString(),
-        name: profile.name,
-        email: profile.email,
-        image: profile.avatar_url,
-        login: profile.login,
-        role: "user",
-      }
-    },
-  }),
+                console.log("認証成功:", user.email)
+                return {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role || "user",
+                    image: user.image,
+                }
+            } catch (error) {
+                console.error("認証エラー:", error)
+                return null
+            }
+        },
+    }),
+    GitHub({
+        profile(profile) {
+            return { 
+                id: profile.id.toString(),
+                name: profile.name,
+                email: profile.email,
+                image: profile.avatar_url,
+                login: profile.login,
+                role: "user",
+            }
+        },
+    }),
 ]
 
 export const providerMap = providers
-  .map((provider) => {
-    if (typeof provider === "function") {
-      const providerData = provider()
-      return { id: providerData.id, name: providerData.name }
-    } else {
-      return { id: provider.id, name: provider.name }
-    }
-  })
-  .filter((provider) => provider.id !== "credentials")
+    .map((provider) => {
+        if (typeof provider === "function") {
+            const providerData = provider()
+            return { id: providerData.id, name: providerData.name }
+        } else {
+            return { id: provider.id, name: provider.name }
+        }
+    })
+    .filter((provider) => provider.id !== "credentials")
 
 export const config = {
-  adapter: PrismaAdapter(prisma),
-  providers,
-  pages: {
-    signIn: "/signin",
-  },
-  session: {
-    strategy: "jwt" as const,
-  },
-  callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
-      if (user) {
-        token.role = user.role || "user"
-        token.id = user.id
-      }
-      return token
+    adapter: PrismaAdapter(prisma),
+    providers,
+    pages: {
+        signIn: "/signin",
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
-      if (token) {
-        session.user.id = token.id as string
-        session.user.role = token.role
-      }
-      return session
+    session: {
+        strategy: "jwt" as const,
     },
-  },
-  secret: process.env.AUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+    callbacks: {
+        async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
+            if (user) {
+                token.role = user.role || "user"
+                token.id = user.id
+            }
+            return token
+        },
+        async session({ session, token }: { session: Session; token: JWT }) {
+            if (token) {
+                session.user.id = token.id as string
+                session.user.role = token.role
+            }
+            return session
+        },
+    },
+    secret: process.env.AUTH_SECRET,
+    debug: process.env.NODE_ENV === "development",
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config)

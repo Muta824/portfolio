@@ -1,5 +1,5 @@
 import { Todo } from "../molecules/Todo";
-import { Todo as TodoType } from "@prisma/client";
+import { Todo as TodoType } from "@/features/todo/types/data";
 
 const isSameDay = (d1: Date, d2: Date) => {
     return (
