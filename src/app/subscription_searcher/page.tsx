@@ -46,7 +46,11 @@ export default function SubscriptionSearchPage() {
                 <Input 
                     type="text" 
                     placeholder="Search"
-                    className="text-center w-3/4 max-w-2xl text-lg px-6 py-4 mx-auto block shadow-lg border-2 border-gray-200 focus:border-blue-400 transition-all duration-200"
+                    className="
+                        text-center w-3/4 max-w-2xl text-lg px-6 py-4 mx-auto block
+                        shadow-lg border-2 border-gray-200 dark:border-gray-600 focus:border-blue-400 transition-all duration-200
+                        placeholder:text-gray-500 dark:placeholder:text-gray-400
+                    "
                     onChange={(e) => {
                         debouncedHandleSearch(e.target.value);
                     }}
