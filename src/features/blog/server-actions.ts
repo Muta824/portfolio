@@ -8,13 +8,13 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export async function getPosts(): Promise<BlogPostType[]> {
-    const posts = await prisma.post.findMany(blogPostQuery)
-    return posts
+    const posts = await prisma.post.findMany(blogPostQuery);
+    return posts;
 }
 
 export async function getCategories() {
-    const categories = await prisma.category.findMany(categoryQuery)
-    return categories
+    const categories = await prisma.category.findMany(categoryQuery);
+    return categories;
 }
 
 export async function getPost(slug: string) {
@@ -35,15 +35,15 @@ export async function getPost(slug: string) {
         })
         return post
     } catch (error) {
-        console.log("Failed to fetch the post", error)
-        return null
+        console.log("Failed to fetch the post", error);
+        return null;
     }
 }
 
 export async function createPost(request: Request) {
     try {
         const session = await auth();
-        if (!session?.user) {
+        if (session?.user?.role !== "admin") {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

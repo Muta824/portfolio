@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 export async function CreateLink() {
     const session = await auth();
 
-    if (!session?.user) {
+    if (session?.user?.role !== "admin") {
         return null;
     }
 

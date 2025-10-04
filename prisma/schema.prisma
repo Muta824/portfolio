@@ -1,121 +1,121 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
+    provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  password      String?   
-  createdAt     DateTime  @default(now())
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  updatedAt     DateTime  @updatedAt
-  role          String?   @default("user")
-  login         String?   @unique
-  accounts      Account[]
-  posts         Post[]
-  todos         Todo[]
-  sessions      Session[]
+    id            String    @id @default(cuid())
+    email         String    @unique
+    name          String?
+    password      String?   
+    createdAt     DateTime  @default(now())
+    emailVerified DateTime? @map("email_verified")
+    image         String?
+    updatedAt     DateTime  @updatedAt
+    role          String?   @default("user")
+    login         String?   @unique
+    accounts      Account[]
+    posts         Post[]
+    todos         Todo[]
+    sessions      Session[]
 
-  @@map("users")
+    @@map("users")
 }
 
 model Account {
-  id                String   @id @default(cuid())
-  userId            String   @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String   @map("provider_providerAccountId")
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?  @db.Text
-  session_state     String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                String   @id @default(cuid())
+    userId            String   @map("user_id")
+    type              String
+    provider          String
+    providerAccountId String   @map("provider_providerAccountId")
+    refresh_token     String?  @db.Text
+    access_token      String?  @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?  @db.Text
+    session_state     String?
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
+    @@unique([provider, providerAccountId])
+    @@map("accounts")
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id           String   @id @default(cuid())
+    sessionToken String   @unique @map("session_token")
+    userId       String   @map("user_id")
+    expires      DateTime
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("sessions")
+    @@map("sessions")
 }
 
 model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+    identifier String
+    token      String
+    expires    DateTime
 
-  @@unique([identifier, token])
-  @@map("verification_tokens")
+    @@unique([identifier, token])
+    @@map("verification_tokens")
 }
 
 // models for blog
 model Post {
-  id           String    @id @default(cuid())
-  title        String
-  content      String
-  authorId     String
-  categoryId   String
-  publishedAt  DateTime  @default(now())
-  slug         String    @unique
-  updatedAt    DateTime  @updatedAt
-  thumbnailUrl String?
-  comments     Comment[]
-  author       User      @relation(fields: [authorId], references: [id])
-  category     Category  @relation(fields: [categoryId], references: [id])
-  tags         Tag[]     @relation("PostToTag")
+    id           String    @id @default(cuid())
+    title        String
+    content      String
+    authorId     String
+    categoryId   String
+    publishedAt  DateTime  @default(now())
+    slug         String    @unique
+    updatedAt    DateTime  @updatedAt
+    thumbnailUrl String?
+    comments     Comment[]
+    author       User      @relation(fields: [authorId], references: [id])
+    category     Category  @relation(fields: [categoryId], references: [id])
+    tags         Tag[]     @relation("PostToTag")
 }
 
 model Category {
-  id    String @id @default(cuid())
-  name  String @unique
-  slug  String @unique
-  posts Post[]
+    id    String @id @default(cuid())
+    name  String @unique
+    slug  String @unique
+    posts Post[]
 }
 
 model Tag {
-  id    String @id @default(cuid())
-  name  String @unique
-  slug  String @unique
-  posts Post[] @relation("PostToTag")
+    id    String @id @default(cuid())
+    name  String @unique
+    slug  String @unique
+    posts Post[] @relation("PostToTag")
 }
 
 model Comment {
-  id        String   @id @default(cuid())
-  content   String
-  author    String
-  email     String
-  createdAt DateTime @default(now())
-  postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+    id        String   @id @default(cuid())
+    content   String
+    author    String
+    email     String
+    createdAt DateTime @default(now())
+    postId    String
+    post      Post     @relation(fields: [postId], references: [id])
 }
 
 // models for todos
 model Todo {
-  id        String   @id @default(cuid())
-  title     String
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
-  user      User?     @relation(fields: [userId], references: [id])
-  userId    String?
+    id        String   @id @default(cuid())
+    title     String
+    completed Boolean  @default(false)
+    createdAt DateTime @default(now())
+    user      User?     @relation(fields: [userId], references: [id])
+    userId    String?
 }

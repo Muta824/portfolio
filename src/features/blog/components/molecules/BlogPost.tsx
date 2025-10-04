@@ -7,14 +7,14 @@ import { EllipsisButton } from "@/features/blog/components/molecules/EllipsisBut
 
 export function BlogPost({ 
     post,
-    isUserLoggedIn,
+    isUserAdmin,
 }: {
     post: BlogPostType;
-    isUserLoggedIn: boolean;
+    isUserAdmin: boolean;
 }) {
     return (
         <Card className="relative">
-            {isUserLoggedIn && (
+            {isUserAdmin && (
                 <div className="absolute top-2 right-2 z-10">
                     <EllipsisButton slug={post.slug} />
                 </div>

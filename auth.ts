@@ -17,42 +17,42 @@ const providers: Provider[] = [
         },
         async authorize(credentials) {
             if (!credentials?.email || !credentials?.password) {
-                return null
+                return null;
             }
 
-            const email = credentials.email as string
-            const password = credentials.password as string
+            const email = credentials.email as string;
+            const password = credentials.password as string;
 
             try {
                 // データベースからユーザーを検索
                 const user = await prisma.user.findUnique({
-                    where: { email }
+                    where: { email },
                 })
 
                 if (!user || !user.password) {
-                    console.log("ユーザーが見つからないか、パスワードが設定されていません:", email)
-                    return null
+                    console.log("ユーザーが見つからないか、パスワードが設定されていません:", email);
+                    return null;
                 }
 
                 // パスワードを検証
-                const isValid = await verifyPassword(password, user.password)
+                const isValid = await verifyPassword(password, user.password);
                 
                 if (!isValid) {
-                    console.log("パスワードが無効です:", email)
-                    return null
+                    console.log("パスワードが無効です:", email);
+                    return null;
                 }
 
-                console.log("認証成功:", user.email)
+                console.log("認証成功:", user.email);
                 return {
                     id: user.id,
                     name: user.name,
                     email: user.email,
-                    role: user.role || "user",
                     image: user.image,
+                    role: user.role || "user",
                 }
             } catch (error) {
-                console.error("認証エラー:", error)
-                return null
+                console.error("認証エラー:", error);
+                return null;
             }
         },
     }),
@@ -64,7 +64,6 @@ const providers: Provider[] = [
                 email: profile.email,
                 image: profile.avatar_url,
                 login: profile.login,
-                role: "user",
             }
         },
     }),
@@ -73,8 +72,8 @@ const providers: Provider[] = [
 export const providerMap = providers
     .map((provider) => {
         if (typeof provider === "function") {
-            const providerData = provider()
-            return { id: providerData.id, name: providerData.name }
+            const providerData = provider();
+            return { id: providerData.id, name: providerData.name };
         } else {
             return { id: provider.id, name: provider.name }
         }
@@ -93,21 +92,24 @@ export const config = {
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
             if (user) {
-                token.role = user.role || "user"
-                token.id = user.id
+                const dbUser = await prisma.user.findUnique({
+                    where: { id: user.id },
+                    select: { role: true },
+                })
+                token.role = dbUser?.role || "user";
+                token.id = user.id;
             }
-            return token
+            return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
             if (token) {
-                session.user.id = token.id as string
-                session.user.role = token.role
+                session.user.id = token.id as string;
+                session.user.role = token.role;
             }
-            return session
+            return session;
         },
     },
     secret: process.env.AUTH_SECRET,
-    debug: process.env.NODE_ENV === "development",
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth(config)
+export const { handlers, signIn, signOut, auth } = NextAuth(config);

@@ -9,9 +9,9 @@ export async function BlogPosts() {
     ]);
     const session = await auth();
 
-    const isUserLoggedIn = session?.user ? true : false;
+    const isUserAdmin = session?.user?.role === "admin";
 
     return (
-        <PostsFilter posts={posts} categories={categories} isUserLoggedIn={isUserLoggedIn} />
+        <PostsFilter posts={posts} categories={categories} isUserAdmin={isUserAdmin} />
     )
 }
