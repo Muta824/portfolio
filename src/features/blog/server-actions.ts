@@ -5,7 +5,6 @@ import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
 import { BlogPostType } from "./types/data";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import { NextResponse } from "next/server";
 
 export async function getPosts(): Promise<BlogPostType[]> {
     const posts = await prisma.post.findMany(blogPostQuery);
@@ -40,22 +39,30 @@ export async function getPost(slug: string) {
     }
 }
 
-export async function createPost(request: Request) {
+export async function createPost(formData: FormData) {
     try {
         const session = await auth();
         if (session?.user?.role !== "admin") {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            throw new Error('Unauthorized');
         }
 
-        const data = await request.json();
-        const { title, content, category, tags } = data;
+        const title = formData.get('title') as string;
+        const content = formData.get('content') as string;
+        const category = formData.get('category') as string;
+        const tagsString = formData.get('tags') as string;
+        
+        // カンマ区切りの文字列を配列に変換
+        const tags = tagsString
+            .split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0);
 
         const slug = title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
 
-        const post = await prisma.post.create({
+        await prisma.post.create({
             data: {
                 title,
                 slug,
@@ -77,25 +84,20 @@ export async function createPost(request: Request) {
                     connectOrCreate: tags.map((tagName: string) => ({
                         // タグのスラッグが存在するかを確認
                         where: { slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
-                            // 存在しない場合は作成
-                            create: {
-                                name: tagName,
-                                slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-                            },
+                        create: {
+                            name: tagName,
+                            slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                        },
                     })),
                 },
             },
         });
+
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
-
-        return NextResponse.json(post, { status: 201 });
     } catch(error) {
         console.error('Failed to create post:', error);
-        return NextResponse.json(
-            { error: 'Failed to create post' },
-            { status: 500 }
-        );
+        throw error;
     }
 }
 
@@ -110,9 +112,15 @@ export async function updatePost(formData: FormData) {
         const title = formData.get('title') as string;
         const content = formData.get('content') as string;
         const category = formData.get('category') as string;
-        const tags = formData.getAll('tags') as string[];
+        const tagsString = formData.get('tags') as string;
+        
+        // カンマ区切りの文字列を配列に変換
+        const tags = tagsString
+            .split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0);
 
-        const post = await prisma.post.update({
+        await prisma.post.update({
             where: { slug },
             data: {
                 title,
@@ -141,8 +149,6 @@ export async function updatePost(formData: FormData) {
 
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
-
-        return post;
     } catch (error) {
         console.error('Failed to update post:', error);
         throw error;

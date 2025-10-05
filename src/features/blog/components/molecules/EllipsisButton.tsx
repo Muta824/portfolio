@@ -9,14 +9,8 @@ export function EllipsisButton({ slug }: { slug: string }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleDelete = async () => {
-        try {
-            await deletePost(slug);
-            alert('記事を削除しました');
-            setIsOpen(false);
-        } catch (error) {
-            console.error('Delete error:', error);
-            alert('削除に失敗しました');
-        }
+        await deletePost(slug);
+        setIsOpen(false);
     }
 
     return (
