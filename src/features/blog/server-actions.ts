@@ -33,7 +33,7 @@ export async function getPost(slug: string) {
                 },
             }
         })
-        return post
+        return post;
     } catch (error) {
         console.log("Failed to fetch the post", error);
         return null;
@@ -96,6 +96,56 @@ export async function createPost(request: Request) {
             { error: 'Failed to create post' },
             { status: 500 }
         );
+    }
+}
+
+export async function updatePost(formData: FormData) {
+    try {
+        const session = await auth();
+        if (session?.user?.role !== "admin") {
+            throw new Error('Unauthorized');
+        }
+
+        const slug = formData.get('slug') as string;
+        const title = formData.get('title') as string;
+        const content = formData.get('content') as string;
+        const category = formData.get('category') as string;
+        const tags = formData.getAll('tags') as string[];
+
+        const post = await prisma.post.update({
+            where: { slug },
+            data: {
+                title,
+                content,
+                category: {
+                    connectOrCreate: {
+                        where: { name: category },
+                        create: {
+                            name: category,
+                            slug: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                        },
+                    },
+                },
+                tags: {
+                    set: [],
+                    connectOrCreate: tags.map((tagName: string) => ({
+                        where: { slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+                        create: {
+                            name: tagName,
+                            slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                        },
+                    })),
+                },
+            },
+        });
+
+        revalidatePath('/blog');
+        revalidatePath(`/blog/${slug}`);
+
+        return post;
+    } catch (error) {
+        console.error('Failed to update post:', error);
+        throw error;
     }
 }
 
