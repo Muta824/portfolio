@@ -3,9 +3,11 @@
 import { deleteTodo, getTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
 import { useState, useEffect } from "react";
-import { SelectedTodos } from "./SelectedTodos";
+import { SelectedTodos } from "../organisms/SelectedTodos";
 import { Spinner } from "@/components/atoms/Spinner";
 import { Todo } from "@/features/todo/types/data";
+import { TodosContext } from "@/features/todo/context/TodosContext";
+import { UndoneTodos } from "../organisms/UndoneTodos";
 
 export function TodoPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
@@ -47,7 +49,7 @@ export function TodoPage() {
     };
 
     return (
-        <>
+        <TodosContext value={todos}>
             <div className="flex flex-col sm:flex-row gap-4 mb-5">
                 {/* 日付を選択 */}
                 <input 
@@ -65,6 +67,7 @@ export function TodoPage() {
                 onToggleCompleted={handleToggleCompleted}
                 onDeleteTodo={handleDeleteTodo} 
             />
-        </>
+            <UndoneTodos />
+        </TodosContext>
     )
 }

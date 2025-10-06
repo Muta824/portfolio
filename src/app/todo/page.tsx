@@ -1,6 +1,6 @@
 import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-import { TodoPage } from "@/features/todo/components/organisms/TodoPage";
+import { TodoPage } from "@/features/todo/components/template/TodoPage";
 
 export default function Page() {
     return (
