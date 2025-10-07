@@ -1,5 +1,7 @@
 import { useTodos } from "@/features/todo/context/TodosContext";
 import { useState } from "react";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export function UndoneTodos() {
     const todos = useTodos();
@@ -9,12 +11,17 @@ export function UndoneTodos() {
 
     if (!isOpen) {
         return (
-            <button 
-                className="border m-4 px-2 py-1 rounded" 
-                onClick={() => setIsOpen(true)}
-            >
-                See Undone Todos
-            </button>
+            <div className="mt-8 min-h-screen">
+                <button 
+                    className="border my-4 p-2 rounded w-full flex justify-between items-center cursor-pointer"
+                    onClick={() => setIsOpen(true)}
+                >
+                    <p className="mx-2 font-bold text-2xl">
+                        See Undone Todos
+                    </p>
+                    <ArrowDownwardIcon className="mx-2"/>
+                </button>
+            </div>
         )
     }
 
@@ -34,21 +41,24 @@ export function UndoneTodos() {
     
     return (
         <>
-            <div className="mt-8 p-4 border rounded">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold mb-4">Undone Todos</h2>
+            <div className="mt-8 mb-4 p-4 border rounded">
+                <div className="mb-4 flex justify-between items-center">
+                    <p className="font-bold text-2xl">Undone Todos</p>
                     <button 
-                        className="border mb-4 px-2 py-1 rounded" 
+                        className="border py-1 px-2 rounded flex justify-between items-center cursor-pointer"
                         onClick={() => setIsOpen(false)}
                     >
-                        Close
+                        <p className="font-bold text-xl">
+                            Close
+                        </p>
+                        <ArrowUpwardIcon className="ml-2"/>
                     </button>
                 </div>
                 <ul className="list-disc pl-5">
                     {undoneTodos.map((todo) => (
                         <li key={todo.id} className="mb-2 p-2">
                             <p className="font-bold">{todo.title}</p>
-                            <p className="text-sm text-gray-500">{todo.createdAt.toLocaleDateString()}</p>
+                            <p className="mt-1 text-sm text-gray-400">{todo.createdAt.toLocaleDateString()}</p>
                         </li>
                     ))}
                 </ul>
