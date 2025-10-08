@@ -9,6 +9,10 @@ export function UndoneTodos() {
 
     const [isOpen, setIsOpen] = useState(false);
 
+    if (todos.length === 0) {
+        return null;
+    }
+
     if (!isOpen) {
         return (
             <div className="mt-8 min-h-screen">

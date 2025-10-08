@@ -81,6 +81,10 @@ export async function updateTodo(todo: ClientTodoInput): Promise<void> {
 }
 
 export async function deleteTodo(id: string): Promise<void> {
+    const session = await auth();
+    if (!session?.user) {
+        return;
+    }
     try {
         await prisma.todo.delete({
             where: { id },
