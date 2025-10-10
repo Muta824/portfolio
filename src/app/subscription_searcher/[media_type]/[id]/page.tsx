@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getDetails, getWatchProviders } from "@/features/subscription_searcher/server-actions";
 import NotFound from "./not-found";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-import { GoBackButton } from "@/components/atoms/GoBackLink";
+import { GoBackButton } from "@/features/subscription_searcher/components/atoms/GoBackButton";
 
 export default async function WatchProviderPage({ 
     params 
@@ -22,7 +22,7 @@ export default async function WatchProviderPage({
     return (
         <div className="p-4">
             <div className="mb-4 flex justify-between items-center">
-                <GoBackButton href="subscription_searcher" />
+                <GoBackButton />
                 <ThemeToggle />
             </div>
             <div className="flex flex-col lg:flex-row gap-6 justify-center">

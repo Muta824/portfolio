@@ -8,7 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getContents } from "@/features/subscription_searcher/server-actions";
-import { GoBackButton } from "@/components/atoms/GoBackLink";
+import { GoBackLink } from "@/components/atoms/GoBackLink";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams();
@@ -42,7 +42,7 @@ export default function SubscriptionSearchPage() {
     return (
         <div className="flex flex-col h-full">
             <div className="flex justify-between items-center">
-                <GoBackButton />
+                <GoBackLink />
                 <ThemeToggle />
             </div>
             <div className="pt-2 pb-4 mb-8">

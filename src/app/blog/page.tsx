@@ -1,4 +1,4 @@
-import { GoBackButton } from '@/components/atoms/GoBackLink';
+import { GoBackLink } from '@/components/atoms/GoBackLink';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
 import { CreateLink } from '@/features/blog/components/atoms/CreateLink';
 import { BlogPosts } from '@/features/blog/components/organisms/BlogPosts';
@@ -12,7 +12,7 @@ export default async function BlogPage() {
     return (
         <>
             <div className="flex justify-between items-center mb-8">
-                <GoBackButton />
+                <GoBackLink />
                 <ThemeToggle />
             </div>
             <div className="flex justify-between items-center mb-8">
