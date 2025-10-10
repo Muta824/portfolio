@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "My Portfolio",
-  description: "My Portfolio",
+    title: "Yuta Nakamura | Portfolio",
+    description: "Yuta Nakamura | Portfolio",
 }
 
 export default function RootLayout({
