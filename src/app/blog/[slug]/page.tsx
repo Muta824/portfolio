@@ -17,7 +17,7 @@ export const revalidate = 3600;
 export async function generateStaticParams() {
     const posts = await prisma.post.findMany({
         select: {
-        slug: true,
+            slug: true,
         },
     });
     return posts;
