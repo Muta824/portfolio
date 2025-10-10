@@ -14,7 +14,8 @@ export async function getContents(query: string) {
         if (!res.ok) {
             throw new Error(`API request failed with status: ${res.status}`)
         }
-        const data = await res.json()
+        const data = await res.json()   
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const filteredResults = data.results.filter((result: any) => result.media_type === "movie" || result.media_type === "tv")
         return filteredResults
     } catch (error) {
