@@ -8,21 +8,22 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getContents } from "@/features/subscription_searcher/server-actions";
-import { GoBackLink } from "@/components/atoms/GoBackLink";
+import { GoBackButton } from "@/components/atoms/GoBackLink";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [contents, setContents] = useState<any[]>([]);
 
     const handleSearch = async (query: string) => {
         const params = new URLSearchParams(searchParams);
         if (query) {
-          params.set('q', query);
+            params.set('q', query);
         } else {
-          params.delete('q');
+            params.delete('q');
         }
         router.replace(`${pathname}?${params.toString()}`);
         setIsLoading(true);
@@ -30,16 +31,18 @@ export default function SubscriptionSearchPage() {
         setContents(contents);
         setIsLoading(false);
     }
+
     const debouncedHandleSearch = useDebouncedCallback(handleSearch, 300);
 
     useEffect(() => {
         handleSearch(searchParams.get('q')?.toString() || "");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div className="flex flex-col h-full">
             <div className="flex justify-between items-center">
-                <GoBackLink />
+                <GoBackButton />
                 <ThemeToggle />
             </div>
             <div className="pt-2 pb-4 mb-8">

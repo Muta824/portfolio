@@ -4,10 +4,12 @@ import Link from "next/link";
 export function Contents({ 
     contents
 }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     contents: any[] 
 }) {
     return (
         <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {contents.map((content: any) => (
                 <div key={content.id} className="w-full max-w-xs">
                     <Link href={`/subscription_searcher/${content.media_type}/${content.id}`}>

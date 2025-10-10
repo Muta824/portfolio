@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getDetails, getWatchProviders } from "@/features/subscription_searcher/server-actions";
 import NotFound from "./not-found";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
-import { GoBackLink } from "@/components/atoms/GoBackLink";
+import { GoBackButton } from "@/components/atoms/GoBackLink";
 
 export default async function WatchProviderPage({ 
     params 
@@ -10,8 +10,10 @@ export default async function WatchProviderPage({
     params: Promise<{ media_type: string, id: number }> 
 }) {
     const { media_type, id } = await params;
-    const watchProviders = await getWatchProviders(media_type, id);
-    const content = await getDetails(media_type, id);
+    const [watchProviders, content] = await Promise.all([
+        getWatchProviders(media_type, id),
+        getDetails(media_type, id)
+    ]);
 
     if (!content) {
         return <NotFound />
@@ -20,7 +22,7 @@ export default async function WatchProviderPage({
     return (
         <div className="p-4">
             <div className="mb-4 flex justify-between items-center">
-                <GoBackLink href="subscription_searcher" />
+                <GoBackButton href="subscription_searcher" />
                 <ThemeToggle />
             </div>
             <div className="flex flex-col lg:flex-row gap-6 justify-center">
@@ -69,6 +71,7 @@ export default async function WatchProviderPage({
 
                 {watchProviders && watchProviders.length > 0 ? (
                     <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {watchProviders.map((watchProvider: any) => (
                             <div 
                                 key={watchProvider.provider_id}
