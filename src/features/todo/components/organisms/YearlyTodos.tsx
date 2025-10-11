@@ -91,12 +91,12 @@ export function YearlyTodos() {
             <h2 className="text-center text-2xl font-bold mb-4">Yearly Todos</h2>
             
             {/* 年のナビゲーション */}
-            <div className="flex items-center justify-between mt-4 mb-6">
+            <div className="flex items-center justify-between mb-4">
                 <button 
                     onClick={handlePreviousYear}
                     className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    <ArrowLeftIcon className="w-4 h-4" /> Previous
+                    <ArrowLeftIcon className="w-4 h-4" />
                 </button>
                 
                 <div className="text-lg font-semibold">
@@ -107,7 +107,7 @@ export function YearlyTodos() {
                     onClick={handleNextYear}
                     className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    Next <ArrowRightIcon className="w-4 h-4" />
+                    <ArrowRightIcon className="w-4 h-4" />
                 </button>
             </div>
 

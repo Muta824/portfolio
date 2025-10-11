@@ -92,12 +92,12 @@ export function WeeklyTodos() {
             <h2 className="text-2xl text-center font-bold mb-4">Weekly Todos</h2>
             
             {/* 週のナビゲーション */}
-            <div className="flex items-center justify-between mt-4 mb-6">
+            <div className="flex items-center justify-between mb-4">
                 <button 
                     onClick={handlePreviousWeek}
                     className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    <ArrowLeftIcon className="w-4 h-4" /> Previous
+                    <ArrowLeftIcon className="w-4 h-4" />
                 </button>
                 
                 <div className="text-lg font-semibold">
@@ -108,7 +108,7 @@ export function WeeklyTodos() {
                     onClick={handleNextWeek}
                     className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    Next <ArrowRightIcon className="w-4 h-4" />
+                    <ArrowRightIcon className="w-4 h-4" />
                 </button>
             </div>
 
