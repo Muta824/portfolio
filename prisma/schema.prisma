@@ -112,10 +112,14 @@ model Comment {
 
 // models for todos
 model Todo {
-    id        String   @id @default(cuid())
-    title     String
-    completed Boolean  @default(false)
-    createdAt DateTime @default(now())
-    user      User?     @relation(fields: [userId], references: [id])
-    userId    String?
+    id         String   @id @default(cuid())
+    title      String
+    completed  Boolean  @default(false)
+    createdAt  DateTime @default(now())
+    type       String   @default("daily") // daily, weekly, monthly, yearly
+    weekStart  DateTime? // 週のTodoの場合、その週の開始日（月曜日）
+    monthStart DateTime? // 月のTodoの場合、その月の開始日（1日）
+    yearStart  DateTime? // 年のTodoの場合、その年の開始日（1月1日）
+    user       User?     @relation(fields: [userId], references: [id])
+    userId     String?
 }

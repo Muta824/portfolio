@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteTodo, getTodos } from "@/features/todo/server-actions";
+import { deleteTodo, getDailyTodos } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
 import { useState, useEffect } from "react";
 import { SelectedTodos } from "../organisms/SelectedTodos";
@@ -16,7 +16,7 @@ export function TodoPage() {
 
     // Todoを初回レンダリング時に取得
     useEffect(() => {
-        getTodos()
+        getDailyTodos()
             .then((todos) => setTodos(todos))
             .finally(() => setIsLoading(false));
     }, []);

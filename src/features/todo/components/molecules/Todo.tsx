@@ -47,7 +47,7 @@ export function Todo({
                 />
             </div>
             <button 
-                className="bg-red-500 text-white border px-2 py-1 rounded"
+                className="text-white border px-2 py-1 rounded cursor-pointer bg-red-500 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
                 onClick={() => onDeleteTodo(todo.id)}
             >
                 Delete

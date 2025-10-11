@@ -40,12 +40,12 @@ export function TodoForm({
                 type="text" 
                 value={title} 
                 onChange={(e) => setTitle(e.target.value)}
-                className="flex-1 border px-2 py-1 rounded"
+                className="flex-1 border px-2 py-1 rounded "
                 placeholder="Add a new todo"
             />
             <button 
                 type="submit" 
-                className="border px-2 py-1 rounded"
+                className="border px-4 py-2 rounded cursor-pointer bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white"
                 // 入力が空の場合はボタンを無効化
                 disabled={title.trim() === ''}
             >

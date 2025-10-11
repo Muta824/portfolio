@@ -15,7 +15,7 @@ export function UndoneTodos() {
 
     if (!isOpen) {
         return (
-            <div className="mt-8 min-h-screen">
+            <div className="mt-8">
                 <button 
                     className="border my-4 p-2 rounded w-full flex justify-between items-center cursor-pointer"
                     onClick={() => setIsOpen(true)}
