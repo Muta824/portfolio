@@ -1,30 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { startOfMonth, addMonths, format } from "date-fns";
+import { startOfMonth, addMonths, format, isSameDay } from "date-fns";
 import { getMonthlyTodos, createTodo, updateTodo, deleteTodo } from "@/features/todo/server-actions";
 import { Todo as TodoType } from "@/features/todo/types/data";
 import { Todo } from "@/features/todo/components/molecules/Todo";
 import { TodosSkeleton } from "@/features/todo/components/organisms/TodosSkeleton";
 import cuid from "cuid";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 export function MonthlyTodos() {
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-    const [todos, setTodos] = useState<TodoType[]>([]);
+    const [allTodos, setAllTodos] = useState<TodoType[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
-    // 月の開始日と終了日を計算
+    // 月の開始日を計算
     const monthStart = startOfMonth(currentMonth);
 
-    // 月のTodosを取得（月が変わるたびに再取得）
+    // 全ての月のTodosを初回レンダリング時に取得
     useEffect(() => {
         setIsLoading(true);
-        getMonthlyTodos(monthStart)
-            .then((todos) => setTodos(todos))
+        getMonthlyTodos()
+            .then((todos) => setAllTodos(todos))
             .finally(() => setIsLoading(false));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const filteredTodos = allTodos.filter(todo => todo.monthStart && isSameDay(todo.monthStart, monthStart));
 
     // 月のTodoを追加
     const handleAddTodo = async (e: React.FormEvent) => {
@@ -41,7 +43,7 @@ export function MonthlyTodos() {
         };
 
         // クライアントサイドで即座に反映
-        setTodos(prevTodos => [...prevTodos, newTodo]);
+        setAllTodos(prevTodos => [...prevTodos, newTodo]);
         setNewTodoTitle("");
 
         // サーバーサイドで保存
@@ -50,12 +52,12 @@ export function MonthlyTodos() {
 
     // Todoの完了状態を変更
     const handleToggleCompleted = async (id: string) => {
-        const updatedTodos = todos.map(todo => 
+        const updatedTodos = allTodos.map(todo => 
             todo.id === id 
                 ? { ...todo, completed: !todo.completed } 
                 : todo
         );
-        setTodos(updatedTodos);
+        setAllTodos(updatedTodos);
         
         // サーバーサイドで更新
         const todoToUpdate = updatedTodos.find(t => t.id === id);
@@ -66,7 +68,7 @@ export function MonthlyTodos() {
 
     // Todoを削除
     const handleDeleteTodo = async (id: string) => {
-        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+        setAllTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
         await deleteTodo(id);
     };
 
@@ -92,9 +94,9 @@ export function MonthlyTodos() {
             <div className="flex items-center justify-between mt-4 mb-6">
                 <button 
                     onClick={handlePreviousMonth}
-                    className="px-2 py-1 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600"
+                    className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    Before Month
+                    <ArrowLeftIcon className="w-4 h-4" /> Previous
                 </button>
                 
                 <div className="text-lg font-semibold">
@@ -103,9 +105,9 @@ export function MonthlyTodos() {
                 
                 <button 
                     onClick={handleNextMonth}
-                    className="px-2 py-1 bg-blue-500 text-white cursor-pointer rounded hover:bg-blue-600"
+                    className="px-2 py-1 bg-blue-500 text-white flex items-center gap-1 cursor-pointer rounded hover:bg-blue-600"
                 >
-                    Next Month
+                    Next <ArrowRightIcon className="w-4 h-4" />
                 </button>
             </div>
 
@@ -128,10 +130,10 @@ export function MonthlyTodos() {
 
             {/* Todosリスト */}
             <div className="space-y-2">
-                {todos.length === 0 ? (
+                {filteredTodos.length === 0 ? (
                     <p className="text-xl text-gray-500">No Monthly Todos</p>
                 ) : (
-                    todos.map((todo) => (
+                    filteredTodos.map((todo) => (
                         <Todo 
                             key={todo.id} 
                             todo={todo} 
