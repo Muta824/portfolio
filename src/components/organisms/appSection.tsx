@@ -5,27 +5,27 @@ import Link from 'next/link';
 const apps = [
     {
         title: 'TOEIC',
-        description: 'TOEICの学習をサポートするアプリケーション',
+        description: 'This is an application that allows you to learn TOEIC easily.',
         href: '/toeic',
     },
     {
         title: 'Todo',
-        description: 'タスク管理を簡単に行えるアプリケーション',
+        description: 'This is an application that allows you to manage your tasks easily.',
         href: '/todo',
     },
     {
         title: 'Blog',
-        description: '記事の作成と管理ができるブログアプリケーション',
+        description: 'I post my articles related to programming, technology, books, and whatever I\'ve learned.',
         href: '/blog',
     },
     {
         title: 'Subscription Searcher',
-        description: 'サブスクリプションの検索ができるアプリケーション',
+        description: 'This is an application that allows you to search for what streaming services are availavle for a specific movie or TV show.',
         href: '/subscription_searcher',
     },
     {
         title: 'ChatBot',
-        description: 'ChatBot',
+        description: 'This is a ChatBot that allows you to ask anything about me and etc.',
         href: '/chat_bot',
     }
 ];
@@ -38,7 +38,7 @@ export function AppSection() {
                     My Portfolio
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
                 {apps.map((app) => (
                     <Link key={app.href} href={app.href}>
                         <Card className="hover:shadow-lg transition-shadow dark:bg-gray-800">
