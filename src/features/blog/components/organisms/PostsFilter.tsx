@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BlogPostType, CategoryType } from "../../types/data";
-import { BlogPost } from "../molecules/BlogPost";
+import { BlogPostsList } from "./BlogPostsList";
 import { CategoryTags } from "../molecules/CategoryTags";
 
 export function PostsFilter({
@@ -30,11 +30,7 @@ export function PostsFilter({
                 onCategoryChange={setSelectedCategory}
             />
             {/* filtered blog posts */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredPosts.map((post) => (
-                    <BlogPost key={post.id} post={post} isUserAdmin={isUserAdmin} />
-                ))}
-            </div>
+            <BlogPostsList posts={filteredPosts} isUserAdmin={isUserAdmin} />
         </div>
     )
 }
