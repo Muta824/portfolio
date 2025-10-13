@@ -1,4 +1,4 @@
-import "../globals.css";
+import "../../globals.css";
 import { AnswerProvider } from "@/features/toeic/contexts/AnswerContext";
 import { GradingModeProvider } from "@/features/toeic/contexts/GradingModeContext";
 import { ResultsProvider } from "@/features/toeic/contexts/ResultContext";

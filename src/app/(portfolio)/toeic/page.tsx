@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ScrollToTopButton } from "@/features/toeic/components/atoms/ScrollToTopButton";
 import { Question } from "@/features/toeic/types/data";
-import '../globals.css'
+import '../../globals.css'
 
 //問題データを生成
 const questions: Question[] = []
