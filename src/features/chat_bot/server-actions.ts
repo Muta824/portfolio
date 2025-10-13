@@ -5,7 +5,6 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({});
 
 const systemPrompt = `
-関西弁で話してください。
 `;
 
 export async function generateContent(userPrompt: string) {

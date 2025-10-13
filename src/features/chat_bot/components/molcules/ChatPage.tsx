@@ -14,14 +14,14 @@ const components: Components = {
 }
 
 export function ChatPage() {
-    const [input, setInput] = useState("");
+    const [prompt, setPrompt] = useState("");
     const [output, setOutput] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
 
     const handleGenerate = async () => {
         setIsGenerating(true);
-        const res = await generateContent(input);
-        setInput("");
+        const res = await generateContent(prompt);
+        setPrompt("");
         setOutput(res || "");
         setIsGenerating(false);
     }
@@ -31,9 +31,9 @@ export function ChatPage() {
             <div className="flex items-center justify-center gap-2 mb-8">
                 <input 
                     type="text" 
-                    value={input} 
+                    value={prompt} 
                     className="border border-gray-300 rounded-md p-2 w-3/4 disabled:cursor-not-allowed"
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Enter your prompt..."
                     disabled={isGenerating}
                 />
