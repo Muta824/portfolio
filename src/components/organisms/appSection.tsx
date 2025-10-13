@@ -22,6 +22,11 @@ const apps = [
         title: 'Subscription Searcher',
         description: 'サブスクリプションの検索ができるアプリケーション',
         href: '/subscription_searcher',
+    },
+    {
+        title: 'ChatBot',
+        description: 'ChatBot',
+        href: '/chat_bot',
     }
 ];
 
