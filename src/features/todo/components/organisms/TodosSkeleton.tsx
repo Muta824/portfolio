@@ -1,6 +1,6 @@
 export function TodosSkeleton() {
     return (
-        <div className="mt-8 p-4 border rounded-lg animate-pulse">
+        <div className="mt-8 p-4 border rounded-lg animate-pulse mx-auto w-full">
             {/* タイトルのスケルトン */}
             <div className="h-8 bg-gray-300 rounded w-1/3 mx-auto mb-4"></div>
             
