@@ -88,7 +88,7 @@ export function WeeklyTodos() {
     }
 
     return (
-        <div className="mt-8 p-4 border rounded-lg ">
+        <div className="p-4 border rounded-lg ">
             <h2 className="text-2xl text-center font-bold mb-4">Weekly Todos</h2>
             
             {/* 週のナビゲーション */}

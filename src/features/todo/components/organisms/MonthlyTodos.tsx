@@ -87,7 +87,7 @@ export function MonthlyTodos() {
     }
 
     return (
-        <div className="mt-8 p-4 border rounded-lg">
+        <div className="p-4 border rounded-lg">
             <h2 className="text-center text-2xl font-bold mb-4">Monthly Todos</h2>
             
             {/* 月のナビゲーション */}

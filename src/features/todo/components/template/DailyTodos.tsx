@@ -9,7 +9,7 @@ import { Todo } from "@/features/todo/types/data";
 import { TodosContext } from "@/features/todo/context/TodosContext";
 import { UndoneTodos } from "../organisms/UndoneTodos";
 
-export function TodoPage() {
+export function DailyTodos() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -50,24 +50,26 @@ export function TodoPage() {
 
     return (
         <TodosContext value={todos}>
-            <div className="flex flex-col sm:flex-row gap-4 mb-5">
-                {/* 日付を選択 */}
-                <input 
-                    type="date" 
-                    value={selectedDate.toLocaleDateString('en-CA')}
-                    onChange={(e) => setSelectedDate(new Date(e.target.value))}
-                    className="border px-2 py-1 rounded"
+            <div className="w-full lg:w-2/3">
+                <div className="flex flex-col sm:flex-row gap-4 mb-5">
+                    {/* 日付を選択 */}
+                    <input 
+                        type="date" 
+                        value={selectedDate.toLocaleDateString('en-CA')}
+                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                        className="border px-2 py-1 rounded"
+                    />
+                    {/* Todoを追加 */}
+                    <TodoForm onAddTodo={handleAddTodo} selectedDate={selectedDate} />
+                </div>
+                <SelectedTodos 
+                    todos={todos} 
+                    selectedDate={selectedDate}
+                    onToggleCompleted={handleToggleCompleted}
+                    onDeleteTodo={handleDeleteTodo} 
                 />
-                {/* Todoを追加 */}
-                <TodoForm onAddTodo={handleAddTodo} selectedDate={selectedDate} />
+                <UndoneTodos />
             </div>
-            <SelectedTodos 
-                todos={todos} 
-                selectedDate={selectedDate}
-                onToggleCompleted={handleToggleCompleted}
-                onDeleteTodo={handleDeleteTodo} 
-            />
-            <UndoneTodos />
         </TodosContext>
     )
 }
