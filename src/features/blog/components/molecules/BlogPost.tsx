@@ -22,9 +22,11 @@ export function BlogPost({
             
             <Link href={`/blog/${post.slug}`} className="space-y-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full">
-                        {post.category.name}
-                    </span>
+                    {post.categories.map((category) => (
+                        <span key={category.id} className="px-2 py-1 bg-blue-600 dark:bg-blue-700 text-white rounded-full">
+                            {category.name}
+                        </span>
+                    ))}
                     <time dateTime={post.publishedAt.toISOString()}>
                         {formatDate(post.publishedAt)}
                     </time>
@@ -36,7 +38,7 @@ export function BlogPost({
 
                 <div className="flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
-                        <span key={tag.id} className="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
+                        <span key={tag.id} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full">
                             {tag.name}
                         </span>
                     ))}

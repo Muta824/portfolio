@@ -75,28 +75,26 @@ model Post {
     title        String
     content      String
     authorId     String
-    categoryId   String
+    categoryId   String[]
     publishedAt  DateTime  @default(now())
     slug         String    @unique
     updatedAt    DateTime  @updatedAt
     thumbnailUrl String?
     comments     Comment[]
     author       User      @relation(fields: [authorId], references: [id])
-    category     Category  @relation(fields: [categoryId], references: [id])
+    categories   Category[]  @relation("PostToCategory")
     tags         Tag[]     @relation("PostToTag")
 }
 
 model Category {
     id    String @id @default(cuid())
     name  String @unique
-    slug  String @unique
-    posts Post[]
+    posts Post[] @relation("PostToCategory")
 }
 
 model Tag {
     id    String @id @default(cuid())
     name  String @unique
-    slug  String @unique
     posts Post[] @relation("PostToTag")
 }
 

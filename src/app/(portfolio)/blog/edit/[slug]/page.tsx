@@ -11,7 +11,7 @@ import Loading from './loading';
 function FormContent({ post }: { post: {
     title: string;
     content: string;
-    category: string;
+    categories: string;
     tags: string;
 } }) {
     const { pending } = useFormStatus();
@@ -53,7 +53,7 @@ function FormContent({ post }: { post: {
                 <input
                     type="text"
                     name="category"
-                    defaultValue={post.category}
+                    defaultValue={post.categories}
                     disabled={pending}
                     className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="例: 技術"
@@ -106,7 +106,7 @@ export default function EditBlogPost({
     const [formData, setFormData] = useState({
         title: '',
         content: '',
-        category: '',
+        categories: '',
         tags: '',
     });
 
@@ -122,7 +122,7 @@ export default function EditBlogPost({
             setFormData({
                 title: postData.title,
                 content: postData.content,
-                category: postData.category.name,
+                categories: postData.categories.map(category => category.name).join(','),
                 tags: postData.tags.map(tag => tag.name).join(','),
             });
         })();

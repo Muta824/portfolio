@@ -21,7 +21,7 @@ export async function getPost(slug: string) {
         const post = await prisma.post.findUnique({
             where: { slug },
             include: {
-                category: true,
+                categories: true,
                 tags: true,
                 author: {
                     select: {
@@ -48,9 +48,15 @@ export async function createPost(formData: FormData) {
 
         const title = formData.get('title') as string;
         const content = formData.get('content') as string;
-        const category = formData.get('category') as string;
+        const categoryString = formData.get('category') as string;
         const tagsString = formData.get('tags') as string;
         
+        // カンマ区切りの文字列を配列に変換
+        const categories = categoryString
+            .split(',')
+            .map(category => category.trim())
+            .filter(category => category.length > 0);
+
         // カンマ区切りの文字列を配列に変換
         const tags = tagsString
             .split(',')
@@ -67,14 +73,13 @@ export async function createPost(formData: FormData) {
                 title,
                 slug,
                 content,
-                category: {
-                    connectOrCreate: {
-                        where: { name: category },
+                categories: {
+                    connectOrCreate: categories.map((categoryName: string) => ({
+                        where: { name: categoryName },
                         create: {
-                            name: category,
-                            slug: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                            name: categoryName,
                         },
-                    },
+                    })),
                 },
                 author: {
                     connect: { id: session.user.id },
@@ -83,10 +88,9 @@ export async function createPost(formData: FormData) {
                     // タグが存在しない場合は作成, 存在する場合は紐づけ
                     connectOrCreate: tags.map((tagName: string) => ({
                         // タグのスラッグが存在するかを確認
-                        where: { slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+                        where: { name: tagName },
                         create: {
                             name: tagName,
-                            slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
                         },
                     })),
                 },
@@ -111,9 +115,15 @@ export async function updatePost(formData: FormData) {
         const slug = formData.get('slug') as string;
         const title = formData.get('title') as string;
         const content = formData.get('content') as string;
-        const category = formData.get('category') as string;
+        const categoryString = formData.get('category') as string;
         const tagsString = formData.get('tags') as string;
         
+        // カンマ区切りの文字列を配列に変換
+        const categories = categoryString
+            .split(',')
+            .map(category => category.trim())
+            .filter(category => category.length > 0);
+
         // カンマ区切りの文字列を配列に変換
         const tags = tagsString
             .split(',')
@@ -125,22 +135,19 @@ export async function updatePost(formData: FormData) {
             data: {
                 title,
                 content,
-                category: {
-                    connectOrCreate: {
-                        where: { name: category },
+                categories: {
+                    connectOrCreate: categories.map((categoryName: string) => ({
+                        where: { name: categoryName },
                         create: {
-                            name: category,
-                            slug: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                            name: categoryName,
                         },
-                    },
+                    })),
                 },
                 tags: {
-                    set: [],
                     connectOrCreate: tags.map((tagName: string) => ({
-                        where: { slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+                        where: { name: tagName },
                         create: {
                             name: tagName,
-                            slug: tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
                         },
                     })),
                 },
@@ -157,6 +164,11 @@ export async function updatePost(formData: FormData) {
 
 export async function deletePost(slug: string) {
     try {
+        const session = await auth();
+        if (session?.user?.role !== "admin") {
+            throw new Error('Unauthorized');
+        }
+
         await prisma.post.delete({
             where: { slug },
         })

@@ -78,8 +78,12 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                     <div className="flex flex-wrap items-center gap-2 mb-4">
                         <span className="text-sm text-gray-600 dark:text-gray-400">カテゴリ:</span>
-                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm dark:bg-blue-900 dark:text-blue-200">
-                            {post.category.name}
+                        <span className="flex flex-wrap items-center gap-2">
+                            {post.categories.map((category) => (
+                                <span key={category.id} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm dark:bg-blue-900 dark:text-blue-200">
+                                    {category.name}
+                                </span>
+                            ))}
                         </span>
                     </div>
 

@@ -6,18 +6,16 @@ export const blogPostQuery = {
       slug: true,
       publishedAt: true,
       thumbnailUrl: true,
-      category: {
+      categories: {
         select: {
           id: true,
           name: true,
-          slug: true,
         },
       },
       tags: {
         select: {
           id: true,
           name: true,
-          slug: true,
         },
       },
     },
@@ -31,6 +29,5 @@ export const categoryQuery = {
     select: {
       id: true,
       name: true,
-      slug: true,
     },
 }
