@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import GitHub from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
 import type { JWT } from "next-auth/jwt"
@@ -66,6 +67,10 @@ const providers: Provider[] = [
                 login: profile.login,
             }
         },
+    }),
+    GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
 ]
 
