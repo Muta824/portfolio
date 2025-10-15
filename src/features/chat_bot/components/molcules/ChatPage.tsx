@@ -40,7 +40,7 @@ export function ChatPage() {
                 <button 
                     className="bg-blue-500 text-white rounded-md p-2 cursor-pointer disabled:cursor-not-allowed"
                     onClick={handleGenerate} 
-                    disabled={isGenerating}
+                    disabled={isGenerating || !prompt}
                 >
                     {isGenerating ? "Generating..." : "Generate"}
                 </button>

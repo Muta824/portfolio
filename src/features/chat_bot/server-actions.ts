@@ -16,14 +16,19 @@ Follow the following rules:
 `;
 
 export async function generateContent(userPrompt: string) {
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `${systemPrompt}\n\n${userPrompt}`,
-        config: {
-            thinkingConfig: {
-                thinkingBudget: 0,
-            }
-        },
-    });
-    return response.text;
+    try {
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: `${systemPrompt}\n\n${userPrompt}`,
+            config: {
+                thinkingConfig: {
+                    thinkingBudget: 0,
+                }
+            },
+        });
+        return response.text;
+    } catch (error) {
+        console.error("Error generating content:", error);
+        throw new Error("Failed to generate content");
+    }
 }
