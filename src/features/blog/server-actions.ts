@@ -40,11 +40,11 @@ export async function getPost(slug: string) {
 }
 
 export async function createPost(formData: FormData) {
+    const session = await auth();
+    if (session?.user?.role !== "admin") {
+        throw new Error('Unauthorized');
+    }
     try {
-        const session = await auth();
-        if (session?.user?.role !== "admin") {
-            throw new Error('Unauthorized');
-        }
 
         const title = formData.get('title') as string;
         const content = formData.get('content') as string;
@@ -106,12 +106,11 @@ export async function createPost(formData: FormData) {
 }
 
 export async function updatePost(formData: FormData) {
+    const session = await auth();
+    if (session?.user?.role !== "admin") {
+        throw new Error('Unauthorized');
+    }
     try {
-        const session = await auth();
-        if (session?.user?.role !== "admin") {
-            throw new Error('Unauthorized');
-        }
-
         const slug = formData.get('slug') as string;
         const title = formData.get('title') as string;
         const content = formData.get('content') as string;
@@ -163,11 +162,11 @@ export async function updatePost(formData: FormData) {
 }
 
 export async function deletePost(slug: string) {
+    const session = await auth();
+    if (session?.user?.role !== "admin") {
+        throw new Error('Unauthorized');
+    }
     try {
-        const session = await auth();
-        if (session?.user?.role !== "admin") {
-            throw new Error('Unauthorized');
-        }
 
         await prisma.post.delete({
             where: { slug },
