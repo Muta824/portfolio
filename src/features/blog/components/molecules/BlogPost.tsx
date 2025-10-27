@@ -12,6 +12,8 @@ export function BlogPost({
     post: BlogPostType;
     isUserAdmin: boolean;
 }) {
+    const publishedAtDate = typeof post.publishedAt === 'string' ? new Date(post.publishedAt) : post.publishedAt;
+    
     return (
         <Card className="relative">
             {isUserAdmin && (
@@ -27,7 +29,7 @@ export function BlogPost({
                             {category.name}
                         </span>
                     ))}
-                    <time dateTime={post.publishedAt.toISOString()}>
+                    <time dateTime={publishedAtDate.toISOString()}>
                         {formatDate(post.publishedAt)}
                     </time>
                 </div>

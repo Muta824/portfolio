@@ -2,19 +2,19 @@
 
 import prisma from "@/lib/prisma/prisma";
 import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
-import { BlogPostType } from "./types/data";
-import { revalidatePath } from "next/cache";
+import { BlogPostType, CategoryType } from "./types/data";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { auth } from "@/auth";
 
-export async function getPosts(): Promise<BlogPostType[]> {
+export const getPosts = unstable_cache(async (): Promise<BlogPostType[]> => {
     const posts = await prisma.post.findMany(blogPostQuery);
     return posts;
-}
+}, ['posts'], { tags: ['posts'] });
 
-export async function getCategories() {
+export const getCategories = unstable_cache(async (): Promise<CategoryType[]> => {
     const categories = await prisma.category.findMany(categoryQuery);
     return categories;
-}
+}, ['categories'], { tags: ['categories'] });
 
 export async function getPost(slug: string) {
     try {
@@ -99,6 +99,8 @@ export async function createPost(formData: FormData) {
 
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
+        revalidateTag('posts');
+        revalidateTag('categories');
     } catch(error) {
         console.error('Failed to create post:', error);
         throw error;
@@ -155,6 +157,8 @@ export async function updatePost(formData: FormData) {
 
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
+        revalidateTag('posts');
+        revalidateTag('categories');
     } catch (error) {
         console.error('Failed to update post:', error);
         throw error;
@@ -172,6 +176,8 @@ export async function deletePost(slug: string) {
             where: { slug },
         })
         revalidatePath('/blog');
+        revalidateTag('posts');
+        revalidateTag('categories');
     } catch (error) {
         console.error('Delete error:', error);
         throw new Error('Failed to delete post');

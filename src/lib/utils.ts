@@ -1,4 +1,5 @@
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: Date | string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat('ja-JP', {
     year: 'numeric',
     month: 'long',
@@ -7,5 +8,5 @@ export const formatDate = (date: Date): string => {
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
-  }).format(date);
+  }).format(dateObj);
 }; 
