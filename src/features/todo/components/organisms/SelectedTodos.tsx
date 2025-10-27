@@ -1,13 +1,6 @@
 import { Todo } from "../molecules/Todo";
 import { Todo as TodoType } from "@/features/todo/types/data";
-
-const isSameDay = (d1: Date, d2: Date) => {
-    return (
-        d1.getFullYear() === d2.getFullYear() &&
-        d1.getMonth() === d2.getMonth() &&
-        d1.getDate() === d2.getDate()
-    )
-}
+import { isSameDay } from "date-fns";
 
 export function SelectedTodos({ 
     todos, 

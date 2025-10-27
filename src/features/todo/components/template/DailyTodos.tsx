@@ -17,7 +17,14 @@ export function DailyTodos() {
     // Todoを初回レンダリング時に取得
     useEffect(() => {
         getDailyTodos()
-            .then((todos) => setTodos(todos))
+            .then((todos) => {
+                const adjustedTodos = todos.map((todo) => ({
+                    ...todo,
+                    // サーバーから渡されるデータはシリアライズされてstringになっているのでDateに変換
+                    createdAt: new Date(todo.createdAt),
+                }))
+                setTodos(adjustedTodos)
+            })
             .finally(() => setIsLoading(false));
     }, []);
 
