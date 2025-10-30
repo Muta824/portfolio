@@ -97,10 +97,21 @@ export const config = {
                 token.role = dbUser?.role || "user";
                 token.id = user.id;
             }
+            // token.id が存在しない場合のフォールバック
+            if (!token.id && token.email) {
+                const dbUser = await prisma.user.findUnique({
+                    where: { email: token.email },
+                    select: { id: true, role: true },
+                })
+                if (dbUser) {
+                    token.id = dbUser.id;
+                    token.role = dbUser.role || "user";
+                }
+            }
             return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
-            if (token) {
+            if (token?.id) {
                 session.user.id = token.id as string;
                 session.user.role = token.role;
             }
