@@ -60,16 +60,6 @@ const providers: Provider[] = [
     GitHub({
         clientId: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        /*
-        profile(profile) {
-            return { 
-                id: profile.id.toString(),
-                name: profile.name,
-                email: profile.email,
-                image: profile.avatar_url,
-                login: profile.login,
-            }
-        },*/
     }),
     GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
