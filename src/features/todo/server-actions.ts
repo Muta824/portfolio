@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
-import { unstable_cache } from "next/cache";
 import { revalidateTag } from "next/cache";
 
 type ClientTodoInput = {
@@ -45,37 +44,31 @@ export async function createTodo(todo: ClientTodoInput): Promise<void> {
     }
 }
 
-// タイプごとにTodoを取得する関数
-// unstable_cacheを使用してキャッシュを利用する
-const getTodosByType = (userId: string, type: string) => unstable_cache(
-    async (): Promise<Todo[]> => {
-        try {
-            const todos = await prisma.todo.findMany({
-                where: {
-                    userId,
-                    type,
-                },
-                orderBy: {
-                    createdAt: 'asc',
-                },
-            });
-            // 日本時間に修正
-            const adjustedTodos = todos.map(todo => ({
-                ...todo,
-                createdAt: new Date(todo.createdAt.getTime() - 9 * 60 * 60 * 1000),
-                weekStart: todo.weekStart ? new Date(todo.weekStart.getTime() - 9 * 60 * 60 * 1000) : null,
-                monthStart: todo.monthStart ? new Date(todo.monthStart.getTime() - 9 * 60 * 60 * 1000) : null,
-                yearStart: todo.yearStart ? new Date(todo.yearStart.getTime() - 9 * 60 * 60 * 1000) : null,
-            }));
-            return adjustedTodos;
-        } catch (error) {
-            console.error('Get todos error:', error);
-            throw new Error('Failed to get todos');
-        }
-    },
-    [`${userId}-${type}-todos`],
-    { tags: [`${userId}-${type}-todos`] }
-);
+export const getTodosByType = async (userId: string, type: string): Promise<Todo[]> => {
+    try {
+        const todos = await prisma.todo.findMany({
+            where: {
+                userId,
+                type,
+            },
+            orderBy: {
+                createdAt: 'asc',
+            },
+        });
+        // 日本時間に修正
+        const adjustedTodos = todos.map(todo => ({
+            ...todo,
+            createdAt: new Date(todo.createdAt.getTime() - 9 * 60 * 60 * 1000),
+            weekStart: todo.weekStart ? new Date(todo.weekStart.getTime() - 9 * 60 * 60 * 1000) : null,
+            monthStart: todo.monthStart ? new Date(todo.monthStart.getTime() - 9 * 60 * 60 * 1000) : null,
+            yearStart: todo.yearStart ? new Date(todo.yearStart.getTime() - 9 * 60 * 60 * 1000) : null,
+        }));
+        return adjustedTodos;
+    } catch (error) {
+        console.error('Get todos error:', error);
+        throw new Error('Failed to get todos');
+    }
+}
 
 export async function getDailyTodos(): Promise<Todo[]> {
     const session = await auth();
@@ -83,7 +76,7 @@ export async function getDailyTodos(): Promise<Todo[]> {
     if (!session?.user) {
         return [];
     }
-    return getTodosByType(session.user.id, 'daily')();
+    return getTodosByType(session.user.id, 'daily');
 }
 
 export async function getWeeklyTodos(): Promise<Todo[]> {
@@ -92,7 +85,7 @@ export async function getWeeklyTodos(): Promise<Todo[]> {
     if (!session?.user) {
         return [];
     }
-    return getTodosByType(session.user.id, 'weekly')();
+    return getTodosByType(session.user.id, 'weekly');
 }
 
 export async function getMonthlyTodos(): Promise<Todo[]> {
@@ -101,7 +94,7 @@ export async function getMonthlyTodos(): Promise<Todo[]> {
     if (!session?.user) {
         return [];
     }
-    return getTodosByType(session.user.id, 'monthly')();
+    return getTodosByType(session.user.id, 'monthly');
 }
 
 export async function getYearlyTodos(): Promise<Todo[]> {
@@ -110,7 +103,7 @@ export async function getYearlyTodos(): Promise<Todo[]> {
     if (!session?.user) {
         return [];
     }
-    return getTodosByType(session.user.id, 'yearly')();
+    return getTodosByType(session.user.id, 'yearly');
 }
 
 export async function updateTodo(todo: ClientTodoInput): Promise<void> {
