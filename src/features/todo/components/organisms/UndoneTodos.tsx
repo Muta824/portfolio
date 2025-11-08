@@ -7,7 +7,7 @@ export function UndoneTodos() {
     const todos = useTodos();
     const undoneTodos = todos.filter((todo) => !todo.completed);
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     if (todos.length === 0) {
         return null;
@@ -21,7 +21,7 @@ export function UndoneTodos() {
                     onClick={() => setIsOpen(true)}
                 >
                     <p className="mx-2 font-bold text-2xl">
-                        See Undone Todos
+                        See Undone Daily Todos
                     </p>
                     <ArrowDownwardIcon className="mx-2"/>
                 </button>
@@ -47,7 +47,7 @@ export function UndoneTodos() {
         <>
             <div className="mt-8 mb-4 p-4 border rounded">
                 <div className="mb-4 flex justify-between items-center">
-                    <p className="font-bold text-2xl">Undone Todos</p>
+                    <p className="font-bold text-2xl">Undone Daily Todos</p>
                     <button 
                         className="border py-1 px-2 rounded flex justify-between items-center cursor-pointer"
                         onClick={() => setIsOpen(false)}
