@@ -32,3 +32,31 @@ export async function generateContent(userPrompt: string) {
         throw new Error("Failed to generate content");
     }
 }
+
+export interface Message {
+    role: "user" | "model";
+    text: string;
+}
+
+export async function generateChatMessage(messages: Message[]) {
+    try {
+        const chat = ai.chats.create({
+            model: "gemini-2.5-flash",
+            history: messages.map(message => ({
+                role: message.role,
+                parts: [{ text: message.text }],
+            })),
+        });
+        
+        const lastMessage: Message = messages[messages.length - 1];
+
+        const response = await chat.sendMessage({
+            message: lastMessage.text,
+        });
+        
+        return response.text;
+    } catch (error) {
+        console.error("Error generating chat message:", error);
+        return "エラーが発生しました。再度お試しください。";
+    }
+}
