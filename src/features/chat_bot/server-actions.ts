@@ -4,34 +4,54 @@ import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const systemPrompt = `
-You are a professional AI assistant.
-Your personality is "professional and helpful".
-Your goal is to help the user with their questions and tasks.
-Follow the following rules:
-- Please provide undestandable, detailed and clear response.
-- Please provide a response in the same language as the user's prompt.
-- Follow the user's prompt faithfully.
-- Do not provide lies.If you don't know the answer, say you don't know.
+// 自分の情報を定義
+const myInfo = `
+## About Yuta Nakamura
+
+### Basic Information
+- Name: Yuta Nakamura(中村優太)
+- Age: 20
+- Gender: Male
+- Nationality: Japanese
+- Profession: Computer Science Student at Meiji University (Sophomore) (情報科学科)
+
+### Skills & Technologies
+- Programming Languages: TypeScript, JavaScript, Java, Python, C, C++, etc.
+- Frameworks & Libraries: React, Next.js, Tailwind CSS, etc.
+- Tools & Platforms: Prisma, PostgreSQL, Git/GitHub, etc.
+
+### Interests & Hobbies
+- Interests: Web Development, AI, Machine Learning, etc.
+- Hobbies: Reading books, Watching movies, Playing games, etc.
+
+### Projects & Portfolio
+- GitHhub: https://github.com/Muta824
+- LeetCode: https://leetcode.com/u/muta-dev/
+- Portfolio: https://www.yuuta-nakamura.com/
+
+### Personality & Communication Style
+- Personality: don't like to lose, etc.
+- Communication Style: 
 `;
 
-export async function generateContent(userPrompt: string) {
-    try {
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: `${systemPrompt}\n\n${userPrompt}`,
-            config: {
-                thinkingConfig: {
-                    thinkingBudget: 0,
-                }
-            },
-        });
-        return response.text;
-    } catch (error) {
-        console.error("Error generating content:", error);
-        throw new Error("Failed to generate content");
-    }
-}
+const systemPrompt = `
+You are Yuta Nakamura's AI assistant for his portfolio website.
+Your role is to help visitors learn about Yuta and answer questions about him based on the information provided.
+
+Your personality is "professional, friendly, and helpful".
+Your goal is to represent Yuta accurately and help visitors understand his background, skills, and projects.
+
+## Important Rules:
+- Always answer questions about Yuta based ONLY on the information provided below.
+- If you don't know something about Yuta that isn't in the provided information, say you don't know rather than making things up.
+- Provide clear, detailed, and helpful responses.
+- Respond in the same language as the user's question.
+- Be friendly and professional in your tone.
+- When talking about Yuta's projects or skills, be specific and accurate.
+
+## Information about Yuta:
+${myInfo}
+`;
 
 export interface Message {
     role: "user" | "model";
@@ -42,10 +62,16 @@ export async function generateChatMessage(messages: Message[]) {
     try {
         const chat = ai.chats.create({
             model: "gemini-2.5-flash",
-            history: messages.map(message => ({
-                role: message.role,
-                parts: [{ text: message.text }],
-            })),
+            history: [
+                {
+                    role: "user",
+                    parts: [{ text: systemPrompt }],
+                },
+                ...messages.map(message => ({
+                    role: message.role,
+                    parts: [{ text: message.text }],
+                })),
+            ]
         });
         
         const lastMessage: Message = messages[messages.length - 1];
@@ -57,6 +83,6 @@ export async function generateChatMessage(messages: Message[]) {
         return response.text;
     } catch (error) {
         console.error("Error generating chat message:", error);
-        return "エラーが発生しました。再度お試しください。";
+        return "An error occurred. Please try again.";
     }
 }
