@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// 自分の情報を定義
+// define my information
 const myInfo = `
 ## About Yuta Nakamura
 

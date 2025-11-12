@@ -25,6 +25,9 @@ export function ChatPage() {
     const [isGenerating, setIsGenerating] = useState(false);
 
     const handleSendMessage = async () => {
+        // if prompt is empty or generating, stop sending message process
+        if (!prompt.trim() || isGenerating) return;
+        
         // start sending message process
         setIsGenerating(true);
         
@@ -54,9 +57,18 @@ export function ChatPage() {
         setIsGenerating(false);
     }
 
+    // handle key down event for prompt input
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // if enter key is pressed with ctrl key, send message
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+
     return (
         <div>
-            <div className="border border-gray-300 rounded-md px-4 pt-5 m-4 mb-20">
+            <div className="border border-gray-300 rounded-md px-4 pt-5 mb-20">
                 {messages.map((message, index) => (
                     <div 
                         key={index}
@@ -83,13 +95,14 @@ export function ChatPage() {
             </div>
 
             {/* section for prompt input and sending message button */}
-            <div className="flex items-center justify-center gap-2 mb-8 fixed bottom-0 left-0 right-0">
+            <div className="flex items-center justify-center gap-2 mx-4 mb-8 fixed bottom-0 left-0 right-0">
                 <input 
                     type="text" 
                     value={prompt} 
                     className="bg-white dark:bg-gray-800 border border-gray-300 rounded-md p-2 w-3/4 disabled:cursor-not-allowed"
                     onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="Enter your prompt..."
+                    onKeyDown={handleKeyDown}
+                    placeholder="Enter your prompt... (Ctrl+Enter to send)"
                     disabled={isGenerating}
                 />
                 <button 
