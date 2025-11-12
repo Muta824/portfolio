@@ -28,6 +28,7 @@ const myInfo = `
 - GitHhub: https://github.com/Muta824
 - LeetCode: https://leetcode.com/u/muta-dev/
 - Portfolio: https://www.yuuta-nakamura.com/
+- Application that he made: TOEIC Scoring App, Todo App, Blog, Subscription Searcher, ChatBot. (I will add more details later)
 
 ### Personality & Communication Style
 - Personality: don't like to lose, etc.
