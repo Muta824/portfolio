@@ -2,7 +2,7 @@
 
 import { Spinner } from "@/components/atoms/Spinner";
 import { generateChatMessage, Message } from "@/features/chat_bot/server-actions";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -22,14 +22,22 @@ export function ChatPage() {
             text: "Hello! I'm Yuta&apos;s AI assistant. You can ask me anything about Yuta.",
         },
     ]);
-    const [isGenerating, setIsGenerating] = useState(false);
+    const [isSending, setIsSending] = useState(false);
+    const promptInputRef = useRef<HTMLInputElement>(null);
+
+    // focus on prompt input when not sending message
+    useEffect(() => {
+        if (!isSending) {
+            promptInputRef.current?.focus();
+        }
+    }, [isSending])
 
     const handleSendMessage = async () => {
         // if prompt is empty or generating, stop sending message process
-        if (!prompt.trim() || isGenerating) return;
+        if (!prompt.trim() || isSending) return;
         
         // start sending message process
-        setIsGenerating(true);
+        setIsSending(true);
         
         // create new messages
         const newUserMessage: Message = {
@@ -54,12 +62,11 @@ export function ChatPage() {
         setMessages([...newMessages, newModelMessage]);
         
         // stop sending message process
-        setIsGenerating(false);
+        setIsSending(false);
     }
 
-    // handle key down event for prompt input
+    // if enter key is pressed with ctrl key, send message
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // if enter key is pressed with ctrl key, send message
         if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
             handleSendMessage();
@@ -91,7 +98,7 @@ export function ChatPage() {
                         </div>
                     </div>
                 ))}
-                {isGenerating && <Spinner text="Thinking..." />}
+                {isSending && <Spinner text="Thinking..." />}
             </div>
 
             {/* section for prompt input and sending message button */}
@@ -103,14 +110,15 @@ export function ChatPage() {
                     onChange={(e) => setPrompt(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter your prompt... (Ctrl+Enter to send)"
-                    disabled={isGenerating}
+                    disabled={isSending}
+                    ref={promptInputRef}
                 />
                 <button 
                     className="bg-blue-500 text-white rounded-md p-2 cursor-pointer disabled:cursor-not-allowed"
                     onClick={handleSendMessage} 
-                    disabled={isGenerating || !prompt}
+                    disabled={isSending || !prompt}
                 >
-                    {isGenerating ? "Generating..." : "Generate"}
+                    {isSending ? "Sending..." : "Send"}
                 </button>
             </div>
         </div>
