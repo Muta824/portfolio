@@ -1,7 +1,7 @@
 import { Question } from "../types/data";
 
 // generate questions for test set
-export function generateQuestions(testSetId: number): Question[] {
+export function generateQuestions(testSetId: string): Question[] {
     const questions: Question[] = [];
     for (let i = 1; i <= 200; i++) {
         const part = generatePart(i);

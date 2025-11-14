@@ -1,7 +1,13 @@
+import { TestSetSelector } from "@/features/toeic_scoring_app/components/organisms/TestSetSelector";
+import { UserResult } from "@/features/toeic_scoring_app/components/organisms/UserResult";
+import { AIadvice } from "@/features/toeic_scoring_app/components/organisms/AIadvice";
+
 export default function ToeicScoringAppPage() {
     return (
         <div>
-            <h1>TOEIC Scoring App</h1>
+            <TestSetSelector />
+            <UserResult />
+            <AIadvice />
         </div>
     )
 }

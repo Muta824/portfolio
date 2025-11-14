@@ -1,5 +1,6 @@
 export interface TestSet {
-	id: number; // related to question
+	id: string; // related to question (uuid)
+	name: string; // user can define the name of each test set (e.g. "公式TOEIC Listening & Reading 問題集11")
 	createdAt: Date;
 	updatedAt: Date;
 	
@@ -8,7 +9,7 @@ export interface TestSet {
 }
 
 export interface Question {
-	id: number; // related to test set
+	id: string; // related to test set
 	qId: number; // No. of question
 	choices: string[]; // A ~ D
 	// 1 ~ 7
@@ -23,18 +24,24 @@ export interface Question {
 }
 
 export interface AnswerSet {
-	id: number; // related to TestSet
+	id: string; // related to TestSet
 	name: string; // user can define the name of each test session
-	userId: number;
+	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
-	answers: Qustion[]; // 200 answers of (A ~ D)
+	answers: Answer[]; // 200 answers 
+}
+
+export interface Answer {
+	id: string;
+	qId: number;
+	answer: string;
 }
 
 export interface Result {
-	id: number; // related to TestSet
+	id: string; // related to TestSet
 	name: string; // related to AnswerSet
-	userId: number;
+	userId: string;
 	
 	score: number;
 	percentage: number;
