@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card } from '@/components/molecules/Card';
-import { Text } from '@/components/atoms/Text';
 import { Button } from '@/components/atoms/Button';
 import { Question } from '../../types/data';
-import { QuestionButton } from '../molecules/QuestionButton';
 import { ChoiceModal } from '../molecules/ChoiceModal';
+import { ProgressBar } from '../molecules/ProgressBar';
+import { QuestionPartSection } from '../molecules/QuestionPartSection';
 import { calculateScore, getCorrectAnswers } from '../../utils/scoreCalculator';
+import { getUserAnswerSheet, saveUserAnswerSheet } from '../../utils/userAnswerSheetManager';
 
 interface TestSetQuestionsProps {
     testSetId: string;
+    answerSheetId: string;
     questions: Question[];
 }
 
-export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps) {
+export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSetQuestionsProps) {
     const router = useRouter();
     // this is a user's answers
     const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -24,15 +25,13 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
     // this is a modal that is open when the user is selecting an answer for a question(selectedQuestion)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // TODO: get answers from database
-    // load answers from localStorage
+    // 回答用紙から回答を読み込む
     useEffect(() => {
-        const stored = localStorage.getItem(`toeic_scoring_answers_${testSetId}`);
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            setAnswers(parsed);
+        const answerSheet = getUserAnswerSheet(testSetId, answerSheetId);
+        if (answerSheet) {
+            setAnswers(answerSheet.answers);
         }
-    }, [testSetId]);
+    }, [testSetId, answerSheetId]);
 
     // TODO: get questions from database
     // save answers
@@ -44,7 +43,15 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
             newAnswers[questionId] = answer;
         }
         setAnswers(newAnswers);
-        localStorage.setItem(`toeic_scoring_answers_${testSetId}`, JSON.stringify(newAnswers));
+        
+        // 回答用紙を更新
+        const answerSheet = getUserAnswerSheet(testSetId, answerSheetId);
+        if (answerSheet) {
+            answerSheet.answers = newAnswers;
+            answerSheet.updatedAt = new Date();
+            saveUserAnswerSheet(testSetId, answerSheet);
+        }
+        
         setIsModalOpen(false);
         setSelectedQuestion(null);
     };
@@ -61,15 +68,16 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
         const confirmed = window.confirm('テストを終了しますか？未回答の問題があっても終了できます。');
         if (!confirmed) return;
 
-        // 正解の答えを取得
+        // 正解の答えを取得（AnswerSetから）
         const correctAnswers = getCorrectAnswers(testSetId);
         
         // スコアを計算
         const scoreResult = calculateScore(answers, correctAnswers, questions);
         
-        // 結果を保存
+        // 結果を保存（answerSheetIdを含める）
         const resultData = {
             testSetId,
+            answerSheetId,
             answers,
             correctAnswers,
             score: scoreResult.score,
@@ -79,10 +87,10 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
             completedAt: new Date().toISOString()
         };
         
-        localStorage.setItem(`toeic_scoring_result_${testSetId}`, JSON.stringify(resultData));
+        localStorage.setItem(`toeic_scoring_result_${testSetId}_${answerSheetId}`, JSON.stringify(resultData));
         
         // 結果ページに遷移
-        router.push(`/toeic_scoring_app/${testSetId}/result`);
+        router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
     };
 
     // group questions by part
@@ -97,40 +105,22 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
 
     // count the number of answered questions
     const answeredCount = Object.keys(answers).length;
-    const progress = (answeredCount / 200) * 100;
 
     return (
         <>
             <div className="space-y-6 max-w-6xl mx-auto">
                 {/* progress bar */}
-                <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                        <Text variant="small">回答済み: {answeredCount} / 200</Text>
-                        <Text variant="small">{Math.round(progress)}%</Text>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                        <div 
-                            className="bg-blue-600 h-4 rounded-full transition-all duration-300"
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
-                </div>
+                <ProgressBar answeredCount={answeredCount} totalCount={200} />
 
                 {/* questions list by part */}
                 {Object.entries(questionsByPart).map(([part, partQuestions]) => (
-                    <Card key={part} className="space-y-4">
-                        <Text variant="h3">Part {part}</Text>
-                        <div className="grid grid-cols-5 sm:grid-cols-10 md:grid-cols-10 gap-2">
-                            {partQuestions.map(question => (
-                                <QuestionButton
-                                    key={question.qId}
-                                    questionId={question.qId}
-                                    selectedAnswer={answers[question.qId]}
-                                    onClick={() => handleQuestionClick(question.qId)}
-                                />
-                            ))}
-                        </div>
-                    </Card>
+                    <QuestionPartSection
+                        key={part}
+                        part={Number(part)}
+                        questions={partQuestions}
+                        answers={answers}
+                        onQuestionClick={handleQuestionClick}
+                    />
                 ))}
 
                 {/* finish button */}

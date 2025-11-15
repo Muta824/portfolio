@@ -5,7 +5,7 @@ export interface TestSet {
 	updatedAt: Date;
 	
 	questions: Question[]; // set has Questions 200 problems separated by part
-	answers: AnswerSet; // answers of this test	
+	answers: AnswerSet; // answers of this test (模範解答)
 }
 
 export interface Question {
@@ -29,13 +29,18 @@ export interface AnswerSet {
 	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
-	answers: Record<number, string>; // 200 answers 
+	answers: Record<number, string>; // 200 answers (模範解答)
 }
 
-interface UserAnswer {
-	id: string; // related to TestSet
-	questionId: number;
-	answer: string;
+// ユーザーの回答用紙
+export interface UserAnswerSheet {
+	id: string; // 回答用紙のID
+	testSetId: string; // 関連するTestSetのID
+	name: string; // ユーザーが定義する回答用紙の名前（例: "1回目", "2回目"）
+	userId: string;
+	createdAt: Date;
+	updatedAt: Date;
+	answers: Record<number, string>; // ユーザーの回答
 }
 
 export interface Result {

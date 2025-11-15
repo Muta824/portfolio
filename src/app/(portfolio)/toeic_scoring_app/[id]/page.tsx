@@ -1,12 +1,10 @@
 import { Text } from "@/components/atoms/Text";
-import { generateQuestions } from "@/features/toeic_scoring_app/utils/questionsGenerator";
-import { TestSetQuestions } from "@/features/toeic_scoring_app/components/organisms/TestSetQuestions";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
+import { UserAnswerSheetSelector } from "@/features/toeic_scoring_app/components/organisms/UserAnswerSheetSelector";
 
 export default async function ToeicScoringAppPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const questions = generateQuestions(id);
     
     return (
         <div className="p-4 space-y-6">
@@ -15,7 +13,7 @@ export default async function ToeicScoringAppPage({ params }: { params: Promise<
                 <ThemeToggle />
             </div>
             <Text variant="h1">Test Set {id}</Text>
-            <TestSetQuestions testSetId={id} questions={questions} />
+            <UserAnswerSheetSelector testSetId={id} />
         </div>
     )
 }
