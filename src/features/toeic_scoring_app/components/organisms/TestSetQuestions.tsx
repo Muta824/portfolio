@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/molecules/Card';
 import { Text } from '@/components/atoms/Text';
 import { Button } from '@/components/atoms/Button';
 import { Question } from '../../types/data';
 import { QuestionButton } from '../molecules/QuestionButton';
 import { ChoiceModal } from '../molecules/ChoiceModal';
+import { calculateScore, getCorrectAnswers } from '../../utils/scoreCalculator';
 
 interface TestSetQuestionsProps {
     testSetId: string;
@@ -14,6 +16,7 @@ interface TestSetQuestionsProps {
 }
 
 export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps) {
+    const router = useRouter();
     // this is a user's answers
     const [answers, setAnswers] = useState<Record<number, string>>({});
     // this is a question that the user is currently selecting an answer for
@@ -50,6 +53,36 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
     const handleQuestionClick = (questionId: number) => {
         setSelectedQuestion(questionId);
         setIsModalOpen(true);
+    };
+
+    // finish test handler
+    const handleFinishTest = () => {
+        // 確認ダイアログ
+        const confirmed = window.confirm('テストを終了しますか？未回答の問題があっても終了できます。');
+        if (!confirmed) return;
+
+        // 正解の答えを取得
+        const correctAnswers = getCorrectAnswers(testSetId);
+        
+        // スコアを計算
+        const scoreResult = calculateScore(answers, correctAnswers, questions);
+        
+        // 結果を保存
+        const resultData = {
+            testSetId,
+            answers,
+            correctAnswers,
+            score: scoreResult.score,
+            correctCount: scoreResult.correctCount,
+            totalQuestions: scoreResult.totalQuestions,
+            percentage: scoreResult.percentage,
+            completedAt: new Date().toISOString()
+        };
+        
+        localStorage.setItem(`toeic_scoring_result_${testSetId}`, JSON.stringify(resultData));
+        
+        // 結果ページに遷移
+        router.push(`/toeic_scoring_app/${testSetId}/result`);
     };
 
     // group questions by part
@@ -105,10 +138,7 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
                     variant="primary" 
                     size="lg" 
                     fullWidth
-                    onClick={() => {
-                        // TODO: implement test finish process
-                        alert('テスト完了機能は今後実装予定です');
-                    }}
+                    onClick={handleFinishTest}
                 >
                     Finish Test
                 </Button>
