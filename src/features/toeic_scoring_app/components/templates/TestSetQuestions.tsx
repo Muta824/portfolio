@@ -20,14 +20,14 @@ interface TestSetQuestionsProps {
 
 export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSetQuestionsProps) {
     const router = useRouter();
-    // this is a user's answers
+    // User's answers
     const [answers, setAnswers] = useState<Record<number, string>>({});
-    // this is a question that the user is currently selecting an answer for
+    // Question that the user is currently selecting an answer for
     const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
-    // this is a modal that is open when the user is selecting an answer for a question(selectedQuestion)
+    // Modal is open when the user is selecting an answer for a question(selectedQuestion)
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // 回答用紙から回答を読み込む
+    // Load answers from answer sheet
     useEffect(() => {
         getUserAnswerSheet(testSetId, answerSheetId).then((answerSheet) => {
             if (answerSheet) {
@@ -36,7 +36,7 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         });
     }, [testSetId, answerSheetId]);
 
-    // save answers
+    // Save answers
     const handleAnswer = async (questionId: number, answer: string) => {
         const newAnswers = { ...answers };
         if (answer === "") {
@@ -46,7 +46,7 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         }
         setAnswers(newAnswers);
         
-        // 回答用紙を更新（サーバーアクション経由）
+        // Update answer sheet (via server action)
         await saveUserAnswerSheet(testSetId, answerSheetId, newAnswers);
         
         setIsModalOpen(false);
@@ -59,20 +59,20 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         setIsModalOpen(true);
     };
 
-    // finish test handler
+    // Finish test handler
     const handleFinishTest = async () => {
-        // 確認ダイアログ
-        const confirmed = window.confirm('テストを終了しますか？未回答の問題があっても終了できます。');
+        // Confirmation dialog
+        const confirmed = window.confirm('Finish the test? You can finish even if there are unanswered questions.');
         if (!confirmed) return;
 
         try {
-            // 正解の答えを取得（AnswerSetから）
+            // Get correct answers (from AnswerSet)
             const correctAnswers = await getCorrectAnswers(testSetId);
             
-            // スコアを計算
+            // Calculate score
             const scoreResult = calculateScore(answers, correctAnswers, questions);
             
-            // 結果を保存
+            // Save result
             await saveResult(testSetId, answerSheetId, {
                 score: scoreResult.score,
                 percentage: scoreResult.percentage,
@@ -80,11 +80,11 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
                 totalQuestions: scoreResult.totalQuestions,
             });
             
-            // 結果ページに遷移
+            // Navigate to result page
             router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
         } catch (error) {
-            console.error('エラーが発生しました:', error);
-            alert('エラーが発生しました。もう一度お試しください。');
+            console.error('Error occurred:', error);
+            alert('An error occurred. Please try again.');
         }
     };
 

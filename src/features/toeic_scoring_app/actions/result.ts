@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
 
 /**
- * 結果を保存
+ * Save test result
  */
 export async function saveResult(
     testSetId: string,
@@ -19,11 +19,11 @@ export async function saveResult(
 ) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
-        // 回答用紙の存在確認と権限確認
+        // Check if answer sheet exists and verify permissions
         const answerSheet = await prisma.userAnswerSheet.findFirst({
             where: {
                 id: answerSheetId,
@@ -33,10 +33,10 @@ export async function saveResult(
         });
     
         if (!answerSheet) {
-            throw new Error('回答用紙が見つかりません');
+            throw new Error('Answer sheet not found');
         }
     
-        // 既存の結果を更新または新規作成
+        // Update existing result or create new one
         await prisma.result.upsert({
             where: {
                 answerSheetId,
@@ -68,12 +68,12 @@ export async function saveResult(
 }
 
 /**
- * 結果を取得
+ * Get test result
  */
 export async function getResult(testSetId: string, answerSheetId: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
@@ -96,8 +96,8 @@ export async function getResult(testSetId: string, answerSheetId: string) {
             return null;
         }
     
-        // 回答用紙から正解を取得する必要がある場合は、AnswerSetから取得
-        // ここでは簡略化のため、userAnswersのみを返す
+        // If correct answers are needed, get them from AnswerSet
+        // For simplicity, only return userAnswers here
         return {
             id: result.id,
             testSetId: result.testSetId,

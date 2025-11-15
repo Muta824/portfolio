@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma/prisma';
 
 /**
- * テストセット一覧を取得
+ * Get test sets list
  */
 export async function getTestSets() {
     try {
@@ -27,7 +27,7 @@ export async function getTestSets() {
 }
 
 /**
- * テストセットを取得（IDで）
+ * Get test set by ID
  */
 export async function getTestSet(testSetId: string) {
     try {

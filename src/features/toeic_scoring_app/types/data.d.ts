@@ -34,13 +34,13 @@ export interface AnswerSet {
 
 // ユーザーの回答用紙
 export interface UserAnswerSheet {
-	id: string; // 回答用紙のID
-	testSetId: string; // 関連するTestSetのID
-	name: string; // ユーザーが定義する回答用紙の名前（例: "1回目", "2回目"）
+	id: string; // Answer sheet ID
+	testSetId: string; // Related TestSet ID
+	name: string; // User-defined answer sheet name (e.g., "1st attempt", "2nd attempt")
 	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
-	answers: Record<number, string>; // ユーザーの回答
+	answers: Record<number, string>; // User's answers
 }
 
 export interface Result {

@@ -4,12 +4,12 @@ import { hashPassword } from '../src/lib/auth-utils'
 const prisma = new PrismaClient()
 
 async function main() {
-    console.log('🌱 シードデータを作成中...')
+    console.log('🌱 Creating seed data...')
 
-    // テストユーザーのパスワードをハッシュ化
+    // Hash password for test user
     const hashedPassword = await hashPassword('password123')
 
-    // テストユーザーを作成
+    // Create test user
     const testUser = await prisma.user.upsert({
         where: { email: 'test@example.com' },
         update: {},
@@ -21,9 +21,9 @@ async function main() {
         },
     })
 
-    console.log('✅ テストユーザーを作成しました:', testUser.email)
+    console.log('✅ Created test user:', testUser.email)
 
-    // 管理者ユーザーを作成
+    // Create admin user
     const adminUser = await prisma.user.upsert({
         where: { email: 'admin@example.com' },
         update: {},
@@ -35,9 +35,9 @@ async function main() {
         },
     })
 
-    console.log('✅ 管理者ユーザーを作成しました:', adminUser.email)
+    console.log('✅ Created admin user:', adminUser.email)
 
-    // TestSetを作成（既に存在する場合はスキップ）
+    // Create TestSets (skip if already exists)
     const testSetNames = [
         '公式TOEIC Listening & Reading 問題集11',
         '公式TOEIC Listening & Reading 問題集10',
@@ -54,18 +54,18 @@ async function main() {
                     name,
                 },
             })
-            console.log('✅ テストセットを作成しました:', testSet.name)
+            console.log('✅ Created test set:', testSet.name)
         } else {
-            console.log('⏭️  テストセットは既に存在します:', name)
+            console.log('⏭️  Test set already exists:', name)
         }
     }
 
-    console.log('🎉 シードデータの作成が完了しました！')
+    console.log('🎉 Seed data creation completed!')
 }
 
 main()
     .catch((e) => {
-        console.error('❌ シードデータの作成に失敗しました:', e)
+        console.error('❌ Failed to create seed data:', e)
         process.exit(1)
     })
     .finally(async () => {

@@ -5,12 +5,12 @@ import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
 
 /**
- * ユーザー回答用紙一覧を取得
+ * Get user answer sheets list
  */
 export async function getUserAnswerSheets(testSetId: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
@@ -27,7 +27,7 @@ export async function getUserAnswerSheets(testSetId: string) {
             },
         });
     
-        // UserAnswerSheet型に変換
+        // Transform to UserAnswerSheet type
         return answerSheets.map(sheet => ({
             id: sheet.id,
             testSetId: sheet.testSetId,
@@ -47,12 +47,12 @@ export async function getUserAnswerSheets(testSetId: string) {
 }
 
 /**
- * ユーザー回答用紙を取得（IDで）
+ * Get user answer sheet by ID
  */
 export async function getUserAnswerSheet(testSetId: string, answerSheetId: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
@@ -90,12 +90,12 @@ export async function getUserAnswerSheet(testSetId: string, answerSheetId: strin
 }
 
 /**
- * 新しいユーザー回答用紙を作成
+ * Create a new user answer sheet
  */
 export async function createUserAnswerSheet(testSetId: string, name: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
@@ -109,7 +109,7 @@ export async function createUserAnswerSheet(testSetId: string, name: string) {
     
         revalidatePath(`/toeic_scoring_app/${testSetId}`);
         
-        // UserAnswerSheet型に変換
+        // Transform to UserAnswerSheet type
         return {
             id: answerSheet.id,
             testSetId: answerSheet.testSetId,
@@ -126,7 +126,7 @@ export async function createUserAnswerSheet(testSetId: string, name: string) {
 }
 
 /**
- * ユーザー回答用紙を保存（回答も含む）
+ * Save user answer sheet (including answers)
  */
 export async function saveUserAnswerSheet(
     testSetId: string,
@@ -135,11 +135,11 @@ export async function saveUserAnswerSheet(
 ) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
-        // 回答用紙の存在確認と権限確認
+        // Check if answer sheet exists and verify permissions
         const existingSheet = await prisma.userAnswerSheet.findFirst({
             where: {
                 id: answerSheetId,
@@ -149,23 +149,23 @@ export async function saveUserAnswerSheet(
         });
     
         if (!existingSheet) {
-            throw new Error('回答用紙が見つかりません');
+            throw new Error('Answer sheet not found');
         }
     
-        // トランザクションで回答用紙と回答を更新
+        // Update answer sheet and answers in a transaction
         await prisma.$transaction(async (tx) => {
-            // 回答用紙を更新
+            // Update answer sheet
             await tx.userAnswerSheet.update({
                 where: { id: answerSheetId },
                 data: { updatedAt: new Date() },
             });
     
-            // 既存の回答を削除
+            // Delete existing answers
             await tx.userAnswer.deleteMany({
                 where: { answerSheetId },
             });
     
-            // 新しい回答を一括作成
+            // Create new answers in bulk
             const userAnswers = Object.entries(answers)
                 .filter(([, answer]) => answer !== '')
                 .map(([questionId, userAnswer]) => ({
@@ -189,16 +189,16 @@ export async function saveUserAnswerSheet(
 }
 
 /**
- * ユーザー回答用紙を削除
+ * Delete user answer sheet
  */
 export async function deleteUserAnswerSheet(testSetId: string, answerSheetId: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
-        // 回答用紙の存在確認と権限確認
+        // Check if answer sheet exists and verify permissions
         const existingSheet = await prisma.userAnswerSheet.findFirst({
             where: {
                 id: answerSheetId,
@@ -208,10 +208,10 @@ export async function deleteUserAnswerSheet(testSetId: string, answerSheetId: st
         });
     
         if (!existingSheet) {
-            throw new Error('回答用紙が見つかりません');
+            throw new Error('Answer sheet not found');
         }
     
-        // 関連するResultも削除される（onDelete: Cascade）
+        // Related Results will also be deleted (onDelete: Cascade)
         await prisma.userAnswerSheet.delete({
             where: { id: answerSheetId },
         });

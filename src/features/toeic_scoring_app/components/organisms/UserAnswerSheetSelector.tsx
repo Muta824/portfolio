@@ -25,11 +25,11 @@ export function UserAnswerSheetSelector({ testSetId, onSelect }: UserAnswerSheet
     const loadAnswerSheets = useCallback(async () => {
         try {
             const sheets = await getUserAnswerSheets(testSetId);
-            // 作成日時の新しい順にソート（サーバー側で既にソートされているが、念のため）
+            // Sort by creation date, newest first (already sorted on server side, but just in case)
             sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             setAnswerSheets(sheets);
         } catch (error) {
-            console.error('エラーが発生しました:', error);
+            console.error('Error occurred:', error);
         }
     }, [testSetId]);
 
@@ -46,15 +46,15 @@ export function UserAnswerSheetSelector({ testSetId, onSelect }: UserAnswerSheet
             setNewAnswerSheetName('');
             setIsCreating(false);
             await loadAnswerSheets();
-            // 作成した回答用紙にナビゲーション
+            // Navigate to created answer sheet
             if (onSelect) {
                 onSelect(answerSheet.id);
             } else {
                 router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
             }
         } catch (error) {
-            console.error('エラーが発生しました:', error);
-            alert('エラーが発生しました。もう一度お試しください。');
+            console.error('Error occurred:', error);
+            alert('An error occurred. Please try again.');
         }
     };
 

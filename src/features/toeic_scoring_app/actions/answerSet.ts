@@ -5,17 +5,17 @@ import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
 
 /**
- * 正解の答えを取得（AnswerSetから）
+ * Get correct answers from AnswerSet
  */
 export async function getCorrectAnswers(testSetId: string) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {
-        // まず、TestSetに関連するAnswerSetを取得
-        // デフォルトでは最初のAnswerSetを使用（将来的には選択可能にする）
+        // Get AnswerSet related to TestSet
+        // Use the first AnswerSet by default (can be made selectable in the future)
         const answerSet = await prisma.answerSet.findFirst({
             where: {
                 testSetId,
@@ -29,11 +29,11 @@ export async function getCorrectAnswers(testSetId: string) {
         });
     
         if (!answerSet) {
-            // AnswerSetが存在しない場合は空のオブジェクトを返す
+            // Return empty object if AnswerSet doesn't exist
             return {} as Record<number, string>;
         }
     
-        // Record<number, string>形式に変換
+        // Transform to Record<number, string> format
         return answerSet.answers.reduce((acc, answer) => {
             acc[answer.questionId] = answer.correctAnswer;
             return acc;
@@ -45,7 +45,7 @@ export async function getCorrectAnswers(testSetId: string) {
 }
 
 /**
- * AnswerSetを作成
+ * Create AnswerSet
  */
 export async function createAnswerSet(
     testSetId: string,
@@ -54,7 +54,7 @@ export async function createAnswerSet(
 ) {
     const session = await auth();
     if (!session?.user?.id) {
-        throw new Error('認証が必要です');
+        throw new Error('Authentication required');
     }
 
     try {

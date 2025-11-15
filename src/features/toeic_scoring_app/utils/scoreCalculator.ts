@@ -4,11 +4,11 @@ export interface ScoreResult {
     correctCount: number;
     totalQuestions: number;
     percentage: number;
-    score: number; // TOEICスコア（990点満点）
+    score: number; // TOEIC score (out of 990)
 }
 
 /**
- * ユーザーの回答と正解を比較してスコアを計算
+ * Calculate score by comparing user answers with correct answers
  */
 export function calculateScore(
     userAnswers: Record<number, string>,
@@ -18,7 +18,7 @@ export function calculateScore(
     let correctCount = 0;
     const totalQuestions = questions.length;
 
-    // ユーザーが回答した問題のみを比較
+    // Compare only questions that the user answered
     questions.forEach(question => {
         const userAnswer = userAnswers[question.qId];
         const correctAnswer = correctAnswers[question.qId];
@@ -30,8 +30,8 @@ export function calculateScore(
 
     const percentage = (correctCount / totalQuestions) * 100;
     
-    // TOEICスコアの簡易計算（実際のスコアリング方式に合わせて調整が必要）
-    // 990点満点で、正答率に基づいて計算
+    // Simple TOEIC score calculation (needs adjustment to match actual scoring method)
+    // Out of 990 points, calculated based on correct answer rate
     const score = Math.round((correctCount / totalQuestions) * 990);
 
     return {
