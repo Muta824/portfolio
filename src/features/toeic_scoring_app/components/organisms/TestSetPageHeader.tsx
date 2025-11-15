@@ -18,8 +18,6 @@ export function TestSetPageHeader({ testSetId, answerSheetId }: TestSetPageHeade
     useEffect(() => {
         getUserAnswerSheet(testSetId, answerSheetId).then((sheet) => {
             setAnswerSheet(sheet);
-        }).catch((error) => {
-            console.error('エラーが発生しました:', error);
         });
     }, [testSetId, answerSheetId]);
 

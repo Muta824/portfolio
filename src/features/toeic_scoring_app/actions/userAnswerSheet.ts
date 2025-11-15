@@ -8,12 +8,13 @@ import { revalidatePath } from 'next/cache';
  * Get user answer sheets list
  */
 export async function getUserAnswerSheets(testSetId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return [];
+        }
+
         const answerSheets = await prisma.userAnswerSheet.findMany({
             where: {
                 testSetId,
@@ -50,12 +51,13 @@ export async function getUserAnswerSheets(testSetId: string) {
  * Get user answer sheet by ID
  */
 export async function getUserAnswerSheet(testSetId: string, answerSheetId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return null;
+        }
+
         const answerSheet = await prisma.userAnswerSheet.findFirst({
             where: {
                 id: answerSheetId,
@@ -93,12 +95,13 @@ export async function getUserAnswerSheet(testSetId: string, answerSheetId: strin
  * Create a new user answer sheet
  */
 export async function createUserAnswerSheet(testSetId: string, name: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return null;
+        }
+
         const answerSheet = await prisma.userAnswerSheet.create({
             data: {
                 testSetId,
@@ -133,12 +136,13 @@ export async function saveUserAnswerSheet(
     answerSheetId: string,
     answers: Record<number, string>
 ) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return null;
+        }
+
         // Check if answer sheet exists and verify permissions
         const existingSheet = await prisma.userAnswerSheet.findFirst({
             where: {
@@ -192,12 +196,13 @@ export async function saveUserAnswerSheet(
  * Delete user answer sheet
  */
 export async function deleteUserAnswerSheet(testSetId: string, answerSheetId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return null;
+        }
+
         // Check if answer sheet exists and verify permissions
         const existingSheet = await prisma.userAnswerSheet.findFirst({
             where: {

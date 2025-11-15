@@ -13,24 +13,19 @@ import { getUserAnswerSheets, createUserAnswerSheet, deleteUserAnswerSheet } fro
 
 interface UserAnswerSheetSelectorProps {
     testSetId: string;
-    onSelect?: (answerSheetId: string) => void;
 }
 
-export function UserAnswerSheetSelector({ testSetId, onSelect }: UserAnswerSheetSelectorProps) {
+export function UserAnswerSheetSelector({ testSetId }: UserAnswerSheetSelectorProps) {
     const router = useRouter();
     const [answerSheets, setAnswerSheets] = useState<UserAnswerSheet[]>([]);
     const [newAnswerSheetName, setNewAnswerSheetName] = useState('');
     const [isCreating, setIsCreating] = useState(false);
 
     const loadAnswerSheets = useCallback(async () => {
-        try {
-            const sheets = await getUserAnswerSheets(testSetId);
-            // Sort by creation date, newest first (already sorted on server side, but just in case)
-            sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            setAnswerSheets(sheets);
-        } catch (error) {
-            console.error('Error occurred:', error);
-        }
+        const sheets = await getUserAnswerSheets(testSetId);
+        // Sort by creation date, newest first (already sorted on server side, but just in case)
+        sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setAnswerSheets(sheets);
     }, [testSetId]);
 
     useEffect(() => {
@@ -41,33 +36,23 @@ export function UserAnswerSheetSelector({ testSetId, onSelect }: UserAnswerSheet
     const handleCreate = async () => {
         if (!newAnswerSheetName.trim()) return;
         
-        try {
-            const answerSheet = await createUserAnswerSheet(testSetId, newAnswerSheetName.trim());
-            setNewAnswerSheetName('');
-            setIsCreating(false);
-            await loadAnswerSheets();
-            // Navigate to created answer sheet
-            if (onSelect) {
-                onSelect(answerSheet.id);
-            } else {
-                router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
-            }
-        } catch (error) {
-            console.error('Error occurred:', error);
+        const answerSheet = await createUserAnswerSheet(testSetId, newAnswerSheetName.trim());
+        if (!answerSheet) {
             alert('An error occurred. Please try again.');
+            return;
         }
+        setNewAnswerSheetName('');
+        setIsCreating(false);
+        await loadAnswerSheets();
+        // Navigate to created answer sheet
+        router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
     };
 
     const handleDelete = async (e: React.MouseEvent, answerSheetId: string) => {
         e.stopPropagation();
         if (window.confirm('この回答用紙を削除しますか？')) {
-            try {
-                await deleteUserAnswerSheet(testSetId, answerSheetId);
-                await loadAnswerSheets();
-            } catch (error) {
-                console.error('エラーが発生しました:', error);
-                alert('エラーが発生しました。もう一度お試しください。');
-            }
+            await deleteUserAnswerSheet(testSetId, answerSheetId);
+            await loadAnswerSheets();
         }
     };
 
