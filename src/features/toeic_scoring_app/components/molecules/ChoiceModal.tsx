@@ -3,7 +3,6 @@ import { Button } from '@/components/atoms/Button';
 
 interface ChoiceModalProps {
     questionId: number;
-    choices: string[];
     selectedAnswer?: string;
     onSelect: (answer: string) => void;
     onClose: () => void;
@@ -11,11 +10,12 @@ interface ChoiceModalProps {
 
 export function ChoiceModal({ 
     questionId, 
-    choices, 
     selectedAnswer, 
     onSelect, 
     onClose 
 }: ChoiceModalProps) {
+    const choices = ["A", "B", "C", "D"];
+
     return (
         <div 
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"

@@ -113,7 +113,6 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
             {isModalOpen && selectedQuestion !== null && (
                 <ChoiceModal
                     questionId={selectedQuestion}
-                    choices={questions.find(q => q.qId === selectedQuestion)?.choices || []}
                     selectedAnswer={answers[selectedQuestion]}
                     onSelect={(answer) => handleAnswer(selectedQuestion, answer)}
                     onClose={() => {

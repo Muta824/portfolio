@@ -1,3 +1,5 @@
+import { Text } from "@/components/atoms/Text";
+
 interface QuestionButtonProps {
     questionId: number;
     selectedAnswer?: string;
@@ -9,7 +11,7 @@ export function QuestionButton({ questionId, selectedAnswer, onClick }: Question
         <button
             onClick={onClick}
             className={`
-                aspect-square rounded-lg border-2 font-semibold text-sm
+                aspect-square rounded-lg border-2 font-semibold relative
                 transition-all duration-200 hover:scale-105 cursor-pointer
                 ${selectedAnswer
                     ? 'bg-blue-600 text-white border-blue-700 shadow-md'
@@ -17,9 +19,14 @@ export function QuestionButton({ questionId, selectedAnswer, onClick }: Question
                 }
             `}
         >
-            {questionId}
-            {selectedAnswer && (
-                <div className="text-xs mt-0.5">{selectedAnswer}</div>
+            
+            {selectedAnswer ? (
+                <div className="flex flex-col items-center justify-center">
+                    <Text variant="h4" className="mb-0.5 text-white absolute top-1 left-2">{questionId}</Text>
+                    <Text variant="h3" className="font-bold text-white">{selectedAnswer}</Text>
+                </div>
+            ) : (
+                <Text variant="h3">{questionId}</Text>
             )}
         </button>
     );
