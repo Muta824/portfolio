@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Text } from '@/components/atoms/Text';
 import { GoBackLink } from '@/components/atoms/GoBackLink';
 import { ThemeToggle } from '@/components/atoms/ThemeToggle';
-import { getUserAnswerSheet } from '../../utils/userAnswerSheetManager';
+import { getUserAnswerSheet } from '../../actions/userAnswerSheet';
 import { UserAnswerSheet } from '../../types/data';
 
 interface TestSetPageHeaderProps {
@@ -16,8 +16,11 @@ export function TestSetPageHeader({ testSetId, answerSheetId }: TestSetPageHeade
     const [answerSheet, setAnswerSheet] = useState<UserAnswerSheet | null>(null);
 
     useEffect(() => {
-        const sheet = getUserAnswerSheet(testSetId, answerSheetId);
-        setAnswerSheet(sheet);
+        getUserAnswerSheet(testSetId, answerSheetId).then((sheet) => {
+            setAnswerSheet(sheet);
+        }).catch((error) => {
+            console.error('エラーが発生しました:', error);
+        });
     }, [testSetId, answerSheetId]);
 
     return (

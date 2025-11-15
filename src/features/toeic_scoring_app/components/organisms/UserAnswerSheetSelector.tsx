@@ -9,7 +9,7 @@ import { Button } from '@/components/atoms/Button';
 import { AnswerSheetCard } from '../molecules/AnswerSheetCard';
 import { AnswerSheetCreateForm } from '../molecules/AnswerSheetCreateForm';
 import { UserAnswerSheet } from '../../types/data';
-import { getUserAnswerSheets, createUserAnswerSheet, deleteUserAnswerSheet } from '../../utils/userAnswerSheetManager';
+import { getUserAnswerSheets, createUserAnswerSheet, deleteUserAnswerSheet } from '../../actions/userAnswerSheet';
 
 interface UserAnswerSheetSelectorProps {
     testSetId: string;
@@ -22,37 +22,52 @@ export function UserAnswerSheetSelector({ testSetId, onSelect }: UserAnswerSheet
     const [newAnswerSheetName, setNewAnswerSheetName] = useState('');
     const [isCreating, setIsCreating] = useState(false);
 
-    const loadAnswerSheets = useCallback(() => {
-        const sheets = getUserAnswerSheets(testSetId);
-        // 作成日時の新しい順にソート
-        sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        setAnswerSheets(sheets);
+    const loadAnswerSheets = useCallback(async () => {
+        try {
+            const sheets = await getUserAnswerSheets(testSetId);
+            // 作成日時の新しい順にソート（サーバー側で既にソートされているが、念のため）
+            sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setAnswerSheets(sheets);
+        } catch (error) {
+            console.error('エラーが発生しました:', error);
+        }
     }, [testSetId]);
 
     useEffect(() => {
         loadAnswerSheets();
-    }, [loadAnswerSheets]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [testSetId]);
 
-    const handleCreate = () => {
+    const handleCreate = async () => {
         if (!newAnswerSheetName.trim()) return;
         
-        const answerSheet = createUserAnswerSheet(testSetId, newAnswerSheetName.trim());
-        setNewAnswerSheetName('');
-        setIsCreating(false);
-        loadAnswerSheets();
-        // 作成した回答用紙にナビゲーション
-        if (onSelect) {
-            onSelect(answerSheet.id);
-        } else {
-            router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
+        try {
+            const answerSheet = await createUserAnswerSheet(testSetId, newAnswerSheetName.trim());
+            setNewAnswerSheetName('');
+            setIsCreating(false);
+            await loadAnswerSheets();
+            // 作成した回答用紙にナビゲーション
+            if (onSelect) {
+                onSelect(answerSheet.id);
+            } else {
+                router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
+            }
+        } catch (error) {
+            console.error('エラーが発生しました:', error);
+            alert('エラーが発生しました。もう一度お試しください。');
         }
     };
 
-    const handleDelete = (e: React.MouseEvent, answerSheetId: string) => {
+    const handleDelete = async (e: React.MouseEvent, answerSheetId: string) => {
         e.stopPropagation();
         if (window.confirm('この回答用紙を削除しますか？')) {
-            deleteUserAnswerSheet(testSetId, answerSheetId);
-            loadAnswerSheets();
+            try {
+                await deleteUserAnswerSheet(testSetId, answerSheetId);
+                await loadAnswerSheets();
+            } catch (error) {
+                console.error('エラーが発生しました:', error);
+                alert('エラーが発生しました。もう一度お試しください。');
+            }
         }
     };
 

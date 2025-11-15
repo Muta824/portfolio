@@ -7,8 +7,10 @@ import { Question } from '../../types/data';
 import { ChoiceModal } from '../molecules/ChoiceModal';
 import { ProgressBar } from '../molecules/ProgressBar';
 import { QuestionPartSection } from '../molecules/QuestionPartSection';
-import { calculateScore, getCorrectAnswers } from '../../utils/scoreCalculator';
-import { getUserAnswerSheet, saveUserAnswerSheet } from '../../utils/userAnswerSheetManager';
+import { calculateScore } from '../../utils/scoreCalculator';
+import { getUserAnswerSheet, saveUserAnswerSheet } from '../../actions/userAnswerSheet';
+import { getCorrectAnswers } from '../../actions/answerSet';
+import { saveResult } from '../../actions/result';
 
 interface TestSetQuestionsProps {
     testSetId: string;
@@ -27,15 +29,15 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
 
     // 回答用紙から回答を読み込む
     useEffect(() => {
-        const answerSheet = getUserAnswerSheet(testSetId, answerSheetId);
-        if (answerSheet) {
-            setAnswers(answerSheet.answers);
-        }
+        getUserAnswerSheet(testSetId, answerSheetId).then((answerSheet) => {
+            if (answerSheet) {
+                setAnswers(answerSheet.answers);
+            }
+        });
     }, [testSetId, answerSheetId]);
 
-    // TODO: get questions from database
     // save answers
-    const handleAnswer = (questionId: number, answer: string) => {
+    const handleAnswer = async (questionId: number, answer: string) => {
         const newAnswers = { ...answers };
         if (answer === "") {
             delete newAnswers[questionId];
@@ -44,13 +46,8 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         }
         setAnswers(newAnswers);
         
-        // 回答用紙を更新
-        const answerSheet = getUserAnswerSheet(testSetId, answerSheetId);
-        if (answerSheet) {
-            answerSheet.answers = newAnswers;
-            answerSheet.updatedAt = new Date();
-            saveUserAnswerSheet(testSetId, answerSheet);
-        }
+        // 回答用紙を更新（サーバーアクション経由）
+        await saveUserAnswerSheet(testSetId, answerSheetId, newAnswers);
         
         setIsModalOpen(false);
         setSelectedQuestion(null);
@@ -63,34 +60,32 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
     };
 
     // finish test handler
-    const handleFinishTest = () => {
+    const handleFinishTest = async () => {
         // 確認ダイアログ
         const confirmed = window.confirm('テストを終了しますか？未回答の問題があっても終了できます。');
         if (!confirmed) return;
 
-        // 正解の答えを取得（AnswerSetから）
-        const correctAnswers = getCorrectAnswers(testSetId);
-        
-        // スコアを計算
-        const scoreResult = calculateScore(answers, correctAnswers, questions);
-        
-        // 結果を保存（answerSheetIdを含める）
-        const resultData = {
-            testSetId,
-            answerSheetId,
-            answers,
-            correctAnswers,
-            score: scoreResult.score,
-            correctCount: scoreResult.correctCount,
-            totalQuestions: scoreResult.totalQuestions,
-            percentage: scoreResult.percentage,
-            completedAt: new Date().toISOString()
-        };
-        
-        localStorage.setItem(`toeic_scoring_result_${testSetId}_${answerSheetId}`, JSON.stringify(resultData));
-        
-        // 結果ページに遷移
-        router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
+        try {
+            // 正解の答えを取得（AnswerSetから）
+            const correctAnswers = await getCorrectAnswers(testSetId);
+            
+            // スコアを計算
+            const scoreResult = calculateScore(answers, correctAnswers, questions);
+            
+            // 結果を保存
+            await saveResult(testSetId, answerSheetId, {
+                score: scoreResult.score,
+                percentage: scoreResult.percentage,
+                correctCount: scoreResult.correctCount,
+                totalQuestions: scoreResult.totalQuestions,
+            });
+            
+            // 結果ページに遷移
+            router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
+        } catch (error) {
+            console.error('エラーが発生しました:', error);
+            alert('エラーが発生しました。もう一度お試しください。');
+        }
     };
 
     // group questions by part

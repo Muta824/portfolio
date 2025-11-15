@@ -5,11 +5,11 @@ import { Card } from '@/components/molecules/Card';
 import { Text } from '@/components/atoms/Text';
 import { ScoreDisplay } from '../molecules/ScoreDisplay';
 import { ButtonLink } from '../atoms/ButtonLink';
+import { getResult } from '../../actions/result';
 
 interface TestResultData {
     testSetId: string;
     answers: Record<number, string>;
-    correctAnswers: Record<number, string>;
     score: number;
     correctCount: number;
     totalQuestions: number;
@@ -24,13 +24,35 @@ interface TestResultProps {
 
 export function TestResult({ testSetId, answerSheetId }: TestResultProps) {
     const [result, setResult] = useState<TestResultData | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const stored = localStorage.getItem(`toeic_scoring_result_${testSetId}_${answerSheetId}`);
-        if (stored) {
-            setResult(JSON.parse(stored));
-        }
+        getResult(testSetId, answerSheetId).then((data) => {
+            if (data) {
+                setResult({
+                    testSetId: data.testSetId,
+                    answers: data.answers,
+                    score: data.score,
+                    correctCount: data.correctCount,
+                    totalQuestions: data.totalQuestions,
+                    percentage: data.percentage,
+                    completedAt: data.completedAt,
+                });
+            }
+            setLoading(false);
+        }).catch((error) => {
+            console.error('エラーが発生しました:', error);
+            setLoading(false);
+        });
     }, [testSetId, answerSheetId]);
+
+    if (loading) {
+        return (
+            <Card>
+                <Text>読み込み中...</Text>
+            </Card>
+        );
+    }
 
     if (!result) {
         return (
