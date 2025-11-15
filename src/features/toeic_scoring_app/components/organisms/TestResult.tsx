@@ -74,7 +74,7 @@ export function TestResult({ testSetId, answerSheetId }: TestResultProps) {
 
             <div className="flex gap-4">
                 <ButtonLink 
-                    href={`/toeic_scoring_app/${testSetId}`}
+                    href={`/toeic_scoring_app/${testSetId}/${answerSheetId}`}
                     variant="primary"
                     size="lg"
                 >
