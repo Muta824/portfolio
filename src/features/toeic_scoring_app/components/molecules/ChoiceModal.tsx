@@ -18,11 +18,11 @@ export function ChoiceModal({
 
     return (
         <div 
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/70 dark:bg-black/70 flex items-center justify-center z-50 p-4"
             onClick={onClose}
         >
             <div 
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full space-y-4"
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 max-w-md w-full space-y-4"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between">
@@ -40,6 +40,7 @@ export function ChoiceModal({
                         <Button
                             key={choice}
                             variant={selectedAnswer === choice ? 'primary' : 'secondary'}
+                            className="border border-gray-300 dark:border-gray-700"
                             size="lg"
                             fullWidth
                             onClick={() => onSelect(choice)}
