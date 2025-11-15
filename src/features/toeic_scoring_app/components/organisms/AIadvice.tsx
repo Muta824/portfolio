@@ -1,7 +1,9 @@
+import { Text } from "@/components/atoms/Text";
+
 export function AIadvice() {
     return (
         <div>
-            
+            <Text variant="h2">AI Advice</Text>
         </div>
     )
 }

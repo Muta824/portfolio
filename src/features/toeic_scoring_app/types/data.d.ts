@@ -29,12 +29,12 @@ export interface AnswerSet {
 	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
-	answers: Answer[]; // 200 answers 
+	answers: Record<number, string>; // 200 answers 
 }
 
-export interface Answer {
-	id: string;
-	qId: number;
+interface UserAnswer {
+	id: string; // related to TestSet
+	questionId: number;
 	answer: string;
 }
 

@@ -6,7 +6,7 @@ const apps = [
     {
         title: 'TOEIC',
         description: 'This is an application that allows you to learn TOEIC easily.',
-        href: '/toeic',
+        href: '/toeic_scoring_app',
     },
     {
         title: 'Todo',
