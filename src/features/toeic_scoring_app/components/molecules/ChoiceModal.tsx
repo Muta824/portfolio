@@ -50,9 +50,21 @@ export function ChoiceModal({
                 </div>
 
                 {selectedAnswer && (
-                    <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <Button
+                        variant="ghost"
+                        size="md"
+                        fullWidth
+                        className="mt-2 cursor-pointer"
+                        onClick={() => onSelect("")}
+                    >
+                        Clear Selection
+                    </Button>
+                )}
+
+                {selectedAnswer && (
+                    <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                         <Text variant="small" className="text-center">
-                            選択中: {selectedAnswer}
+                            Selected: {selectedAnswer}
                         </Text>
                     </div>
                 )}

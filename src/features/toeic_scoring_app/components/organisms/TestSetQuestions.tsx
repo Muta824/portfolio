@@ -34,7 +34,12 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
     // TODO: get questions from database
     // save answers
     const handleAnswer = (questionId: number, answer: string) => {
-        const newAnswers = { ...answers, [questionId]: answer };
+        const newAnswers = { ...answers };
+        if (answer === "") {
+            delete newAnswers[questionId];
+        } else {
+            newAnswers[questionId] = answer;
+        }
         setAnswers(newAnswers);
         localStorage.setItem(`toeic_scoring_answers_${testSetId}`, JSON.stringify(newAnswers));
         setIsModalOpen(false);
