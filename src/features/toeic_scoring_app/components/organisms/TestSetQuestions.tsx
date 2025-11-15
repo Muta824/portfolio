@@ -63,7 +63,7 @@ export function TestSetQuestions({ testSetId, questions }: TestSetQuestionsProps
 
     return (
         <>
-            <div className="space-y-6">
+            <div className="space-y-6 max-w-6xl mx-auto">
                 {/* progress bar */}
                 <div className="space-y-2">
                     <div className="flex justify-between items-center">
