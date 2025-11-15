@@ -37,7 +37,7 @@ export function TestSetSelector() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {testSets.map((testSet) => (
                     <Link href={`/toeic_scoring_app/${testSet.id}`} key={testSet.id}>
-                        <Card>
+                        <Card className="cursor-pointer hover:scale-103 transition-all duration-200">
                             <Text variant="h3">{testSet.name}</Text>
                         </Card>
                     </Link>
