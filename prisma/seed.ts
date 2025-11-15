@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { hashPassword } from '../src/lib/auth-utils'
+import * as fs from 'fs'
+import * as path from 'path'
 
 const prisma = new PrismaClient()
 
@@ -39,8 +41,10 @@ async function main() {
 
     // Create TestSets (skip if already exists)
     const testSetNames = [
-        '公式TOEIC Listening & Reading 問題集11',
-        '公式TOEIC Listening & Reading 問題集10',
+        '公式TOEIC Listening & Reading 問題集11 TEST1',
+        '公式TOEIC Listening & Reading 問題集11 TEST2',
+        '公式TOEIC Listening & Reading 問題集10 TEST1',
+        '公式TOEIC Listening & Reading 問題集10 TEST2',
     ]
 
     for (const name of testSetNames) {
@@ -57,6 +61,49 @@ async function main() {
             console.log('✅ Created test set:', testSet.name)
         } else {
             console.log('⏭️  Test set already exists:', name)
+        }
+    }
+
+    // Create AnswerSet for 公式TOEIC Listening & Reading 問題集11 TEST1
+    const testSet11Test1 = await prisma.testSet.findFirst({
+        where: { name: '公式TOEIC Listening & Reading 問題集11 TEST1' },
+    })
+
+    if (testSet11Test1) {
+        const existingAnswerSet = await prisma.answerSet.findFirst({
+            where: { testSetId: testSet11Test1.id },
+        })
+
+        if (!existingAnswerSet) {
+            // Read answer data from JSON file
+            const answerDataPath = path.join(__dirname, 'data', 'answer-set-11-test1.json')
+            const answerData = JSON.parse(fs.readFileSync(answerDataPath, 'utf-8')) as Record<string, string>
+
+            // Filter out empty answers and convert to Record<number, string>
+            const correctAnswers: Record<number, string> = {}
+            for (const [questionId, answer] of Object.entries(answerData)) {
+                if (answer && answer.trim() !== '') {
+                    correctAnswers[parseInt(questionId, 10)] = answer
+                }
+            }
+
+            // Create AnswerSet
+            await prisma.answerSet.create({
+                data: {
+                    testSetId: testSet11Test1.id,
+                    name: '模範解答',
+                    userId: adminUser.id,
+                    answers: {
+                        create: Object.entries(correctAnswers).map(([questionId, correctAnswer]) => ({
+                            questionId: parseInt(questionId, 10),
+                            correctAnswer,
+                        })),
+                    },
+                },
+            })
+            console.log('✅ Created answer set for: 公式TOEIC Listening & Reading 問題集11 TEST1')
+        } else {
+            console.log('⏭️  Answer set already exists for: 公式TOEIC Listening & Reading 問題集11 TEST1')
         }
     }
 

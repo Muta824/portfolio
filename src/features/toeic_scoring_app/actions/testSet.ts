@@ -15,7 +15,7 @@ export async function getTestSets() {
                 updatedAt: true,
             },
             orderBy: {
-                createdAt: 'desc',
+                name: 'asc',
             },
         });
     
