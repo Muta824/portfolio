@@ -17,12 +17,12 @@ export async function saveResult(
         totalQuestions: number;
     }
 ) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            throw new Error('Authentication required');
+        }
+
         // Check if answer sheet exists and verify permissions
         const answerSheet = await prisma.userAnswerSheet.findFirst({
             where: {
@@ -71,12 +71,12 @@ export async function saveResult(
  * Get test result
  */
 export async function getResult(testSetId: string, answerSheetId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            throw new Error('Authentication required');
+        }
+        
         const result = await prisma.result.findFirst({
             where: {
                 answerSheetId,

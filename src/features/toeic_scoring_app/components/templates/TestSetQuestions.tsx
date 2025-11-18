@@ -26,6 +26,8 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
     const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
     // Modal is open when the user is selecting an answer for a question(selectedQuestion)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // Whether the score is being calculated
+    const [isCalculatingScore, setIsCalculatingScore] = useState(false);
 
     // Load answers from answer sheet
     useEffect(() => {
@@ -38,6 +40,9 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
 
     // Save answers
     const handleAnswer = async (questionId: number, answer: string) => {
+        setIsModalOpen(false);
+        setSelectedQuestion(null);
+        
         const newAnswers = { ...answers };
         if (answer === "") {
             delete newAnswers[questionId];
@@ -48,9 +53,6 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         
         // Update answer sheet (via server action)
         await saveUserAnswerSheet(testSetId, answerSheetId, newAnswers);
-        
-        setIsModalOpen(false);
-        setSelectedQuestion(null);
     };
 
     // click a question
@@ -65,27 +67,24 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
         const confirmed = window.confirm('Finish the test? You can finish even if there are unanswered questions.');
         if (!confirmed) return;
 
-        try {
-            // Get correct answers (from AnswerSet)
-            const correctAnswers = await getCorrectAnswers(testSetId);
+        setIsCalculatingScore(true);
+        // Get correct answers (from AnswerSet)
+        const correctAnswers = await getCorrectAnswers(testSetId);
             
-            // Calculate score
-            const scoreResult = calculateScore(answers, correctAnswers, questions);
-            
-            // Save result
-            await saveResult(testSetId, answerSheetId, {
-                score: scoreResult.score,
-                percentage: scoreResult.percentage,
-                correctCount: scoreResult.correctCount,
-                totalQuestions: scoreResult.totalQuestions,
-            });
-            
-            // Navigate to result page
-            router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
-        } catch (error) {
-            console.error('Error occurred:', error);
-            alert('An error occurred. Please try again.');
-        }
+        // Calculate score
+        const scoreResult = calculateScore(answers, correctAnswers, questions);
+        
+        // Save result
+        await saveResult(testSetId, answerSheetId, {
+            score: scoreResult.score,
+            percentage: scoreResult.percentage,
+            correctCount: scoreResult.correctCount,
+            totalQuestions: scoreResult.totalQuestions,
+        });
+
+        setIsCalculatingScore(false);
+        // Navigate to result page
+        router.push(`/toeic_scoring_app/${testSetId}/${answerSheetId}/result`);
     };
 
     // group questions by part
@@ -123,9 +122,11 @@ export function TestSetQuestions({ testSetId, answerSheetId, questions }: TestSe
                     variant="primary" 
                     size="lg" 
                     fullWidth
+                    className="cursor-pointer"
+                    disabled={isCalculatingScore}
                     onClick={handleFinishTest}
                 >
-                    Finish Test
+                    {isCalculatingScore ? 'Calculating...' : 'Finish Test'}
                 </Button>
             </div>
 

@@ -11,7 +11,7 @@ export function ProgressBar({ answeredCount, totalCount }: ProgressBarProps) {
     return (
         <div className="space-y-2">
             <div className="flex justify-between items-center">
-                <Text variant="small">回答済み: {answeredCount} / {totalCount}</Text>
+                <Text variant="small">Answered: {answeredCount} / {totalCount}</Text>
                 <Text variant="small">{Math.round(progress)}%</Text>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">

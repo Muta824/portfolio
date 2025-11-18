@@ -6,6 +6,7 @@ import { Text } from '@/components/atoms/Text';
 import { ScoreDisplay } from '../molecules/ScoreDisplay';
 import { ButtonLink } from '../atoms/ButtonLink';
 import { getResult } from '../../actions/result';
+import { Spinner } from '@/components/atoms/Spinner';
 
 interface TestResultData {
     testSetId: string;
@@ -24,7 +25,7 @@ interface TestResultProps {
 
 export function TestResult({ testSetId, answerSheetId }: TestResultProps) {
     const [result, setResult] = useState<TestResultData | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         getResult(testSetId, answerSheetId).then((data) => {
@@ -39,25 +40,18 @@ export function TestResult({ testSetId, answerSheetId }: TestResultProps) {
                     completedAt: data.completedAt,
                 });
             }
-            setLoading(false);
-        }).catch((error) => {
-            console.error('エラーが発生しました:', error);
-            setLoading(false);
-        });
+            setIsLoading(false);
+        })
     }, [testSetId, answerSheetId]);
 
-    if (loading) {
-        return (
-            <Card>
-                <Text>読み込み中...</Text>
-            </Card>
-        );
+    if (isLoading) {
+        return <Spinner />;
     }
 
     if (!result) {
         return (
             <Card>
-                <Text>結果が見つかりませんでした。</Text>
+                <Text>Result not found.</Text>
             </Card>
         );
     }
@@ -78,14 +72,14 @@ export function TestResult({ testSetId, answerSheetId }: TestResultProps) {
                     variant="primary"
                     size="lg"
                 >
-                    テストに戻る
+                    Back to Test
                 </ButtonLink>
                 <ButtonLink 
                     href="/toeic_scoring_app"
                     variant="secondary"
                     size="lg"
                 >
-                    テスト一覧に戻る
+                    Back to Test List
                 </ButtonLink>
             </div>
         </div>

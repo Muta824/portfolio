@@ -8,12 +8,12 @@ import { revalidatePath } from 'next/cache';
  * Get correct answers from AnswerSet
  */
 export async function getCorrectAnswers(testSetId: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            throw new Error('Authentication required');
+        }
+
         // Get AnswerSet related to TestSet
         // Use the first AnswerSet by default (can be made selectable in the future)
         const answerSet = await prisma.answerSet.findFirst({
@@ -52,12 +52,12 @@ export async function createAnswerSet(
     name: string,
     answers: Record<number, string>
 ) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error('Authentication required');
-    }
-
     try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            throw new Error('Authentication required');
+        }
+    
         const answerSet = await prisma.answerSet.create({
             data: {
                 testSetId,

@@ -23,20 +23,20 @@ export function ScoreDisplay({
                 <div className="text-6xl font-bold text-blue-600 dark:text-blue-400">
                     {score}
                 </div>
-                <Text variant="small">満点: 990点</Text>
+                <Text variant="small">Max Score: 990</Text>
             </div>
             <div className="grid grid-cols-2 gap-4 pt-4 border-t">
                 <div>
-                    <Text variant="small" className="text-gray-600 dark:text-gray-400">正解数</Text>
+                    <Text variant="small" className="text-gray-600 dark:text-gray-400">Correct Count</Text>
                     <Text variant="h3">{correctCount} / {totalQuestions}</Text>
                 </div>
                 <div>
-                    <Text variant="small" className="text-gray-600 dark:text-gray-400">正答率</Text>
+                    <Text variant="small" className="text-gray-600 dark:text-gray-400">Correct Percentage</Text>
                     <Text variant="h3">{Math.round(percentage)}%</Text>
                 </div>
             </div>
             <Text variant="small" className="text-gray-500">
-                完了日時: {new Date(completedAt).toLocaleString('ja-JP')}
+                Completed At: {new Date(completedAt).toLocaleString('ja-JP')}
             </Text>
         </Card>
     );

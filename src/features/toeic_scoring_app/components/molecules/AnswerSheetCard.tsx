@@ -27,7 +27,7 @@ export function AnswerSheetCard({ answerSheet, onDelete }: AnswerSheetCardProps)
                         })}
                     </Text>
                     <Text variant="small" className="text-gray-500">
-                        回答数: {answeredCount} / 200
+                        Answered: {answeredCount} / 200
                     </Text>
                 </div>
                 <button
@@ -37,7 +37,7 @@ export function AnswerSheetCard({ answerSheet, onDelete }: AnswerSheetCardProps)
                         onDelete(e);
                     }}
                     className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-700 px-2 text-xl"
-                    title="削除"
+                    title="Delete"
                 >
                     ×
                 </button>

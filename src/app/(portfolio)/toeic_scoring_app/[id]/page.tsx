@@ -19,7 +19,7 @@ export default async function ToeicScoringAppPage({ params }: { params: Promise<
     return (
         <div className="p-4 space-y-6">
             <div className="flex justify-between items-center">
-                <GoBackLink href="toeic_scoring_app" />
+                <GoBackLink href="toeic_scoring_app" >Back to TOEIC Scoring App</GoBackLink>
                 <ThemeToggle />
             </div>
             <Text variant="h1">{testSet?.name}</Text>
