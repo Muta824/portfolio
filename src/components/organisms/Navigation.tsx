@@ -7,7 +7,7 @@ import UserAvatar from '@/components/atoms/UserAvatar';
 import { auth } from '@/auth';
 
 const links = [
-    { href: '/', label: 'Home' },
+    //{ href: '/', label: 'Home' },
     //{ href: '#about', label: 'About' },
     { href: '#skills', label: 'Skills' },
     { href: '#portfolio', label: 'Portfolio' },
