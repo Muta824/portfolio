@@ -1,4 +1,4 @@
-import { TestSetSelector } from "@/features/toeic_scoring_app/components/organisms/TestSetSelector";
+import { TestSetSelection } from "@/features/toeic_scoring_app/components/organisms/TestSetSelection";
 import { UserResult } from "@/features/toeic_scoring_app/components/organisms/UserResult";
 import { AIadvice } from "@/features/toeic_scoring_app/components/organisms/AIadvice";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
@@ -11,7 +11,7 @@ export default function ToeicScoringAppPage() {
                 <GoBackLink />
                 <ThemeToggle />
             </div>
-            <TestSetSelector />
+            <TestSetSelection />
             <UserResult />
             <AIadvice />
         </div>

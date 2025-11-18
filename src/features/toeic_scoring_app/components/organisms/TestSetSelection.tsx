@@ -3,7 +3,7 @@ import { Text } from "@/components/atoms/Text";
 import Link from "next/link";
 import { getTestSets } from "../../actions/testSet";
 
-export async function TestSetSelector() {
+export async function TestSetSelection() {
     const testSets = await getTestSets();
 
     return (

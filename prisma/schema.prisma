@@ -126,7 +126,7 @@ model Todo {
 // models for TOEIC scoring app
 model TestSet {
   id        String   @id @default(cuid())
-  name      String   // 例: "公式TOEIC Listening & Reading 問題集11"
+  name      String   // user can define the name of each test set (e.g. "公式TOEIC Listening & Reading 問題集11")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -141,9 +141,9 @@ model TestSet {
 model Question {
   id        String   @id @default(cuid())
   testSetId String   @map("test_set_id")
-  qId       Int      // 問題番号 (1-200)
-  part      Int      // パート番号 (1-7)
-  choices   String[] // 選択肢 ["A", "B", "C", "D"]
+  qId       Int      // question number (1-200)
+  part      Int      // part number (1-7)
+  choices   String[] // choices ["A", "B", "C", "D"]
 
   testSet   TestSet  @relation(fields: [testSetId], references: [id], onDelete: Cascade)
 
@@ -154,12 +154,12 @@ model Question {
 model AnswerSet {
   id        String   @id @default(cuid())
   testSetId String   @map("test_set_id")
-  name      String   // 模範解答セットの名前
+  name      String   // name of the answer set (e.g. "模範解答")
   userId    String   @map("user_id")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  answers   Answer[] // 各問題の正解
+  answers   Answer[] // correct answers of each question
 
   testSet   TestSet  @relation(fields: [testSetId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -170,8 +170,8 @@ model AnswerSet {
 model Answer {
   id          String    @id @default(cuid())
   answerSetId String    @map("answer_set_id")
-  questionId  Int       // 問題番号 (qId)
-  correctAnswer String  // 正解 (例: "A", "B", "C", "D")
+  questionId  Int       // question number (qId)
+  correctAnswer String  // correct answer (e.g. "A", "B", "C", "D")
 
   answerSet   AnswerSet @relation(fields: [answerSetId], references: [id], onDelete: Cascade)
 
@@ -182,12 +182,12 @@ model Answer {
 model UserAnswerSheet {
   id        String   @id @default(cuid())
   testSetId String   @map("test_set_id")
-  name      String   // ユーザーが定義する回答用紙の名前（例: "1回目", "2回目"）
+  name      String   // user can define the name of each answer sheet (e.g. "1回目", "2回目")
   userId    String   @map("user_id")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userAnswers UserAnswer[] // ユーザーの回答
+  userAnswers UserAnswer[] // user's answers
   result       Result?
 
   testSet      TestSet @relation(fields: [testSetId], references: [id], onDelete: Cascade)
@@ -199,8 +199,8 @@ model UserAnswerSheet {
 model UserAnswer {
   id              String          @id @default(cuid())
   answerSheetId   String          @map("answer_sheet_id")
-  questionId      Int             // 問題番号 (qId)
-  userAnswer      String?         // ユーザーの回答 (例: "A", "B", "C", "D" または null)
+  questionId      Int             // question number (qId)
+  userAnswer      String?         // user's answer (e.g. "A", "B", "C", "D" or null)
 
   answerSheet     UserAnswerSheet @relation(fields: [answerSheetId], references: [id], onDelete: Cascade)
 
@@ -212,11 +212,11 @@ model Result {
   id            String          @id @default(cuid())
   answerSheetId String          @unique @map("answer_sheet_id")
   testSetId     String          @map("test_set_id")
-  name          String          // 結果の名前（AnswerSheetのnameと関連）
+  name          String          // name of the result (related to AnswerSheet's name)
   userId        String          @map("user_id")
-  score         Int             // TOEICスコア（990点満点）
-  percentage    Float           // 正答率（0-100）
-  correctCount  Int             // 正解数
+  score         Int             // TOEIC score (990 points满分)
+  percentage    Float           // accuracy rate (0-100)
+  correctCount  Int             // number of correct answers
   totalQuestions Int            @default(200) @map("total_questions")
   completedAt   DateTime        @default(now()) @map("completed_at")
   createdAt     DateTime        @default(now())
