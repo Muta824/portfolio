@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Card } from '@/components/molecules/Card';
 import { Text } from '@/components/atoms/Text';
 import { Button } from '@/components/atoms/Button';
+import { Spinner } from '@/components/atoms/Spinner';
+import { Card } from '@/components/molecules/Card';
 import { AnswerSheetCard } from '../molecules/AnswerSheetCard';
 import { AnswerSheetCreateForm } from '../molecules/AnswerSheetCreateForm';
 import { UserAnswerSheet } from '../../types/data';
@@ -20,41 +21,48 @@ export function UserAnswerSheetSelector({ testSetId }: UserAnswerSheetSelectorPr
     const [answerSheets, setAnswerSheets] = useState<UserAnswerSheet[]>([]);
     const [newAnswerSheetName, setNewAnswerSheetName] = useState('');
     const [isCreating, setIsCreating] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
+    // useCallback is used for preventing unnecessary re-creation of the function on every render.
     const loadAnswerSheets = useCallback(async () => {
         const sheets = await getUserAnswerSheets(testSetId);
-        // Sort by creation date, newest first (already sorted on server side, but just in case)
-        sheets.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setAnswerSheets(sheets);
+        setIsLoading(false);
     }, [testSetId]);
 
-    useEffect(() => {
-        loadAnswerSheets();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [testSetId]);
+    // loadAnswerSheets is called only when the component mounts or when testSetId changes.
+    useEffect(() => { loadAnswerSheets(); }, [loadAnswerSheets]);
 
     const handleCreate = async () => {
         if (!newAnswerSheetName.trim()) return;
-        
+
+        setIsLoading(true);
         const answerSheet = await createUserAnswerSheet(testSetId, newAnswerSheetName.trim());
         if (!answerSheet) {
             alert('An error occurred. Please try again.');
+            setIsLoading(false);
             return;
         }
         setNewAnswerSheetName('');
         setIsCreating(false);
         await loadAnswerSheets();
+        
         // Navigate to created answer sheet
         router.push(`/toeic_scoring_app/${testSetId}/${answerSheet.id}`);
     };
 
     const handleDelete = async (e: React.MouseEvent, answerSheetId: string) => {
         e.stopPropagation();
-        if (window.confirm('この回答用紙を削除しますか？')) {
+        if (window.confirm('Are you sure you want to delete this answer sheet?')) {
+            setIsLoading(true);
             await deleteUserAnswerSheet(testSetId, answerSheetId);
             await loadAnswerSheets();
         }
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
