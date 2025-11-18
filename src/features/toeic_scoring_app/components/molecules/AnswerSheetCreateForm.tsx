@@ -15,7 +15,7 @@ export function AnswerSheetCreateForm({
     onCancel 
 }: AnswerSheetCreateFormProps) {
     return (
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
             <Input
                 type="text"
                 value={value}
@@ -28,8 +28,10 @@ export function AnswerSheetCreateForm({
                     if (e.key === 'Escape') onCancel();
                 }}
             />
-            <Button onClick={onSubmit} variant="primary" className="cursor-pointer">Create</Button>
-            <Button onClick={onCancel} variant="secondary" className="cursor-pointer">Cancel</Button>
+            <div className="flex justify-around gap-2">
+                <Button onClick={onSubmit} variant="primary" className="cursor-pointer">Create</Button>
+                <Button onClick={onCancel} variant="secondary" className="cursor-pointer">Cancel</Button>
+            </div>
         </div>
     );
 }

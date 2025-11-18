@@ -67,7 +67,7 @@ export function UserAnswerSheetSelector({ testSetId }: UserAnswerSheetSelectorPr
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
             <Card className="space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                     <Text variant="h2">Select an answer sheet</Text>
                     {!isCreating && 
                         <Button 

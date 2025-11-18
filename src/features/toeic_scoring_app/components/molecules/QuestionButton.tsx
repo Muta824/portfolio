@@ -21,7 +21,9 @@ export function QuestionButton({ questionId, selectedAnswer, onClick }: Question
             
             {selectedAnswer ? (
                 <div className="flex flex-col items-center justify-center">
-                    <Text variant="h4" className="mb-0.5 text-white absolute top-1 left-2">{questionId}</Text>
+                    <Text variant="body" className="text-white absolute top-0 left-1">
+                        {questionId}
+                    </Text>
                     <Text variant="h3" className="font-bold text-white">{selectedAnswer}</Text>
                 </div>
             ) : (
