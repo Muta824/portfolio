@@ -193,6 +193,30 @@ export async function saveUserAnswerSheet(
 }
 
 /**
+ * Update user answer sheet name
+ */
+export async function updateUserAnswerSheetName(testSetId: string, answerSheetId: string, name: string) {
+    try {
+        const session = await auth();
+        if (!session?.user?.id) {
+            console.error('Authentication required');
+            return null;
+        }
+
+        // Update answer sheet name
+        await prisma.userAnswerSheet.update({
+            where: { id: answerSheetId },
+            data: { name },
+        });
+    } catch (error) {
+        console.error('Error updating user answer sheet name:', error);
+        return null;
+    }
+
+    revalidatePath(`/toeic_scoring_app/${testSetId}/${answerSheetId}`);
+}
+
+/**
  * Delete user answer sheet
  */
 export async function deleteUserAnswerSheet(testSetId: string, answerSheetId: string) {
