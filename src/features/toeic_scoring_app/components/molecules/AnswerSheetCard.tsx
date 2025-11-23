@@ -39,7 +39,11 @@ export function AnswerSheetCard({ answerSheet, onDelete }: AnswerSheetCardProps)
                 </div>
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={() => {setIsUpdating(true);}}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setIsUpdating(true);
+                        }}
                         className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-600 hover:text-blue-700 px-2 text-xl"
                         title="Update"
                     >
@@ -60,11 +64,14 @@ export function AnswerSheetCard({ answerSheet, onDelete }: AnswerSheetCardProps)
             </div>
 
             {isUpdating && (
-                <div className="absolute top-0 left-0 w-full h-full bg-white dark:bg-gray-800">
+                <div 
+                    className="fixed inset-0 bg-black/70 dark:bg-black/70 flex items-center justify-center z-50 p-4"
+                    onClick={(e) => {e.stopPropagation();}}
+                >
                     <Input
                         value={newName}
-                        onChange={(e) => setNewName(e.target.value)}
-                        className="w-full dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                        onChange={(e) => {setNewName(e.target.value);}}
+                        className="w-full bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                     />
                     <Button 
                         onClick={() => {
@@ -76,7 +83,13 @@ export function AnswerSheetCard({ answerSheet, onDelete }: AnswerSheetCardProps)
                     >
                         Save
                     </Button>
-                    <Button onClick={() => setIsUpdating(false)} variant="secondary" className="cursor-pointer">Cancel</Button>
+                    <Button 
+                        onClick={() => {setIsUpdating(false);}} 
+                        variant="secondary" 
+                        className="cursor-pointer"
+                    >
+                        Cancel
+                    </Button>
                 </div>
             )}
         </Card>
