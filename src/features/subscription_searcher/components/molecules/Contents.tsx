@@ -2,11 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 export function Contents({ 
-    contents
+    contents,
+    searchQuery,
 }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     contents: any[] 
+    searchQuery: string
 }) {
+    if (contents.length === 0 && searchQuery.trim() !== "") {
+        return (
+            <div className="h-full p-4 flex items-center justify-center text-center text-5xl text-gray-600 font-serif italic tracking-wide leading-relaxed">
+                No results found for &quot;{searchQuery}&quot;
+            </div>
+        )
+    }
+
     return (
         <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}

@@ -3,12 +3,12 @@
 import { Input } from "@/components/atoms/Input";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { Contents } from "@/features/subscription_searcher/components/molecules/Contents";
-import Loading from "@/app/loading";
 import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getContents } from "@/features/subscription_searcher/server-actions";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
+import { Spinner } from "@/components/atoms/Spinner";
 
 export default function SubscriptionSearchPage() {
     const searchParams = useSearchParams();
@@ -60,20 +60,14 @@ export default function SubscriptionSearchPage() {
                     defaultValue={searchParams.get('q')?.toString() || ""}
                 />
             </div>
-            
-            {isLoading ? 
-                <Loading />
-                : !searchParams.get('q') || searchParams.get('q')?.trim() === '' ?
+
+            {contents.length === 0 && (searchParams.get('q')?.toString()?.trim() === "" || searchParams.get('q') === null) && (
                 <p className="h-full p-4 flex items-center justify-center text-center text-5xl text-gray-600 font-serif italic tracking-wide leading-relaxed">
                     Let&apos;s search for your favorite movies and TV shows!
                 </p>
-                : contents.length === 0 ?
-                <p className="h-full p-4 flex items-center justify-center text-center text-5xl text-gray-600 font-serif italic tracking-wide leading-relaxed">
-                    No results found
-                </p>
-                :
-                <Contents contents={contents}/>
-            }
+            )}
+            
+            {isLoading ? <Spinner /> : <Contents contents={contents} searchQuery={searchParams.get('q')?.toString() || ""}/>}
         </div>
     )
 }
