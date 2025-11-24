@@ -46,7 +46,7 @@ export async function createTodo(todo: ClientTodoInput): Promise<void> {
 
 export const getTodosByType = async (userId: string, type: string): Promise<Todo[]> => {
     try {
-        const todos = await prisma.todo.findMany({
+        const todos: Todo[] = await prisma.todo.findMany({
             where: {
                 userId,
                 type,

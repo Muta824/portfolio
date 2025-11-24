@@ -3,6 +3,7 @@
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
+import type { Prisma } from '@prisma/client';
 
 /**
  * Save test result
@@ -109,7 +110,7 @@ export async function getResult(testSetId: string, answerSheetId: string) {
             correctCount: result.correctCount,
             totalQuestions: result.totalQuestions,
             completedAt: result.completedAt.toISOString(),
-            answers: result.answerSheet.userAnswers.reduce((acc, answer) => {
+            answers: result.answerSheet.userAnswers.reduce((acc: Record<number, string>, answer: { questionId: number; userAnswer: string | null }) => {
                 acc[answer.questionId] = answer.userAnswer || '';
                 return acc;
             }, {} as Record<number, string>),

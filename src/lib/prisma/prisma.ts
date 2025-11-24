@@ -1,20 +1,25 @@
 import { PrismaClient } from '@prisma/client'
 import { withAccelerate } from '@prisma/extension-accelerate'
 
-const globalForPrisma = global as unknown as {
-    prisma: PrismaClient
+const accelerateUrl = process.env.ACCELERATE_DATABASE_URL
+
+if (!accelerateUrl) {
+    throw new Error('ACCELERATE_DATABASE_URL is required to initialize PrismaClient.')
 }
 
-// ビルド時はAccelerateを無効化（エンジンのダウンロードが不要になる）
-const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                    process.env.NODE_ENV === 'production'
+const createPrismaClient = () =>
+    new PrismaClient({
+        accelerateUrl,
+    }).$extends(withAccelerate())
 
-const prisma = globalForPrisma.prisma || (
-    isBuildTime 
-        ? new PrismaClient()  // ビルド時は通常のPrisma Client
-        : new PrismaClient().$extends(withAccelerate())  // 実行時はAccelerate使用
-)
+type PrismaClientWithAccelerate = ReturnType<typeof createPrismaClient>
 
-globalForPrisma.prisma = prisma
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClientWithAccelerate }
+
+const prisma = globalForPrisma.prisma ?? createPrismaClient()
+
+if (process.env.NODE_ENV !== 'production') {
+    globalForPrisma.prisma = prisma
+}
 
 export default prisma

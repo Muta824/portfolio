@@ -34,7 +34,7 @@ export async function getCorrectAnswers(testSetId: string) {
         }
     
         // Transform to Record<number, string> format
-        return answerSet.answers.reduce((acc, answer) => {
+        return answerSet.answers.reduce((acc: Record<number, string>, answer: { questionId: number; correctAnswer: string }) => {
             acc[answer.questionId] = answer.correctAnswer;
             return acc;
         }, {} as Record<number, string>);

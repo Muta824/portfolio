@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma/prisma";
+import type { Prisma } from "@prisma/client";
 import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
 import { BlogPostType, CategoryType } from "./types/data";
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
@@ -16,7 +17,21 @@ export const getCategories = unstable_cache(async (): Promise<CategoryType[]> =>
     return categories;
 }, ['categories'], { tags: ['categories'] });
 
-export async function getPost(slug: string) {
+type BlogPostWithRelations = Prisma.PostGetPayload<{
+    include: {
+        categories: true;
+        tags: true;
+        author: {
+            select: {
+                id: true;
+                name: true;
+                email: true;
+            };
+        };
+    };
+}>;
+
+export async function getPost(slug: string): Promise<BlogPostWithRelations | null> {
     try {
         const post = await prisma.post.findUnique({
             where: { slug },

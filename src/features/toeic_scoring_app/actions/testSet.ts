@@ -1,11 +1,12 @@
 'use server';
 
 import prisma from '@/lib/prisma/prisma';
+import type { TestSet } from '../types/data';
 
 /**
  * Get test sets list
  */
-export async function getTestSets() {
+export async function getTestSets(): Promise<TestSet[]> {
     try {
         const testSets = await prisma.testSet.findMany({
             select: {

@@ -3,6 +3,7 @@
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
+import type { Prisma } from '@prisma/client';
 
 /**
  * Get user answer sheets list
@@ -29,14 +30,14 @@ export async function getUserAnswerSheets(testSetId: string) {
         });
     
         // Transform to UserAnswerSheet type
-        return answerSheets.map(sheet => ({
+        return answerSheets.map((sheet: Prisma.UserAnswerSheetGetPayload<{ include: { userAnswers: true } }>) => ({
             id: sheet.id,
             testSetId: sheet.testSetId,
             name: sheet.name,
             userId: sheet.userId,
             createdAt: sheet.createdAt,
             updatedAt: sheet.updatedAt,
-            answers: sheet.userAnswers.reduce((acc, answer) => {
+            answers: sheet.userAnswers.reduce((acc: Record<number, string>, answer: { questionId: number; userAnswer: string | null }) => {
                 acc[answer.questionId] = answer.userAnswer || '';
                 return acc;
             }, {} as Record<number, string>),
@@ -80,7 +81,7 @@ export async function getUserAnswerSheet(testSetId: string, answerSheetId: strin
             userId: answerSheet.userId,
             createdAt: answerSheet.createdAt,
             updatedAt: answerSheet.updatedAt,
-            answers: answerSheet.userAnswers.reduce((acc, answer) => {
+            answers: answerSheet.userAnswers.reduce((acc: Record<number, string>, answer: { questionId: number; userAnswer: string | null }) => {
                 acc[answer.questionId] = answer.userAnswer || '';
                 return acc;
             }, {} as Record<number, string>),
@@ -157,7 +158,7 @@ export async function saveUserAnswerSheet(
         }
     
         // Update answer sheet and answers in a transaction
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: Omit<Prisma.TransactionClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
             // Update answer sheet
             await tx.userAnswerSheet.update({
                 where: { id: answerSheetId },
