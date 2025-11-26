@@ -158,7 +158,7 @@ export async function saveUserAnswerSheet(
         }
     
         // Update answer sheet and answers in a transaction
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             // Update answer sheet
             await tx.userAnswerSheet.update({
                 where: { id: answerSheetId },

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate --no-engine && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
@@ -19,6 +19,7 @@
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
     "@prisma/client": "^7.0.0",
+    "@prisma/config": "^7.0.1",
     "@prisma/extension-accelerate": "^2.0.1",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",

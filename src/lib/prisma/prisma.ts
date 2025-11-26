@@ -9,11 +9,7 @@ if (!accelerateUrl) {
 
 const createPrismaClient = () =>
     new PrismaClient({
-        datasources: {
-            db: {
-                url: accelerateUrl,
-            },
-        },
+        accelerateUrl,
     }).$extends(withAccelerate())
 
 type PrismaClientWithAccelerate = ReturnType<typeof createPrismaClient>
