@@ -3,6 +3,7 @@ import { getDetails, getWatchProviders } from "@/features/subscription_searcher/
 import NotFound from "./not-found";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 import { GoBackButton } from "@/features/subscription_searcher/components/atoms/GoBackButton";
+import type { TMDBWatchProvider } from "@/features/subscription_searcher/types/data";
 
 export default async function WatchProviderPage({ 
     params 
@@ -71,8 +72,7 @@ export default async function WatchProviderPage({
 
                 {watchProviders && watchProviders.length > 0 ? (
                     <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                        {watchProviders.map((watchProvider: any) => (
+                        {watchProviders.map((watchProvider: TMDBWatchProvider) => (
                             <div 
                                 key={watchProvider.provider_id}
                                 className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden"

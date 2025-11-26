@@ -1,4 +1,4 @@
-import { ChatPage } from "@/features/chat_bot/components/molcules/ChatPage";
+import { ChatPage } from "@/features/chat_bot/components/molecules/ChatPage";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
 

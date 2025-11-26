@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { TMDBContent } from "../../types/data";
 
 export function Contents({ 
     contents,
     searchQuery,
 }: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    contents: any[] 
+    contents: TMDBContent[] 
     searchQuery: string
 }) {
     if (contents.length === 0 && searchQuery.trim() !== "") {
@@ -19,12 +19,11 @@ export function Contents({
 
     return (
         <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {contents.map((content: any) => (
+            {contents.map((content) => (
                 <div key={content.id} className="w-full max-w-xs">
                     <Link href={`/subscription_searcher/${content.media_type}/${content.id}`}>
                         <Image 
-                            src={`https://image.tmdb.org/t/p/w500${content.poster_path}`} 
+                            src={`https://image.tmdb.org/t/p/w500${content.poster_path || ''}`} 
                             alt="Sorry, the image is not available"
                             width={500}
                             height={750}

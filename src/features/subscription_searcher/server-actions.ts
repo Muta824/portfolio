@@ -1,6 +1,8 @@
 "use server"
 
-export async function getContents(query: string) {
+import type { TMDBContent, TMDBWatchProvider } from "./types/data";
+
+export async function getContents(query: string): Promise<TMDBContent[]> {
     const url = `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&language=ja-JP`
     const options = {
         method: 'GET',
@@ -14,9 +16,8 @@ export async function getContents(query: string) {
         if (!res.ok) {
             throw new Error(`API request failed with status: ${res.status}`)
         }
-        const data = await res.json()   
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const filteredResults = data.results.filter((result: any) => result.media_type === "movie" || result.media_type === "tv")
+        const data = await res.json() as { results: TMDBContent[] }
+        const filteredResults = data.results.filter((result) => result.media_type === "movie" || result.media_type === "tv")
         return filteredResults
     } catch (error) {
         console.error(error)
@@ -76,7 +77,7 @@ export async function getDetails(media_type: string, id: number) {
     }
 }
 
-export async function getTvWatchProviders(series_id: number) {
+export async function getTvWatchProviders(series_id: number): Promise<TMDBWatchProvider[]> {
     const url = `https://api.themoviedb.org/3/tv/${series_id}/watch/providers`
     const options = {
         method: 'GET',
@@ -91,7 +92,7 @@ export async function getTvWatchProviders(series_id: number) {
             throw new Error(`API request failed with status: ${res.status}`)
         }
         const data = await res.json()
-        const jpProviders = data.results?.JP?.flatrate || []
+        const jpProviders = (data.results?.JP?.flatrate || []) as TMDBWatchProvider[]
         return jpProviders
     } catch (error) {
         console.error(error)
@@ -99,7 +100,7 @@ export async function getTvWatchProviders(series_id: number) {
     }
 }
 
-export async function getMovieWatchProviders(movie_id: number) {
+export async function getMovieWatchProviders(movie_id: number): Promise<TMDBWatchProvider[]> {
     const url = `https://api.themoviedb.org/3/movie/${movie_id}/watch/providers`
     const options = {
         method: 'GET',
@@ -114,7 +115,7 @@ export async function getMovieWatchProviders(movie_id: number) {
             throw new Error(`API request failed with status: ${res.status}`)
         }
         const data = await res.json()
-        const jpProviders = data.results?.JP?.flatrate || []
+        const jpProviders = (data.results?.JP?.flatrate || []) as TMDBWatchProvider[]
         return jpProviders
     } catch (error) {
         console.error(error)

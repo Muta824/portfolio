@@ -19,7 +19,7 @@ export function PostsFilter({
     // filter blog posts by category
     const filteredPosts = selectedCategory === "all"
         ? posts
-        : posts.filter((post) => post.categories.some((category) => category.name === selectedCategory));
+        : posts.filter((post) => post.categories.some((category: CategoryType) => category.name === selectedCategory));
 
     return (
         <div>

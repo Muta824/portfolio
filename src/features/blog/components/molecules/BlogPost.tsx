@@ -1,6 +1,6 @@
 import { Text } from "@/components/atoms/Text";
 import { Card } from "@/components/molecules/Card";
-import { BlogPostType } from "@/features/blog/types/data";
+import { BlogPostType, CategoryType, TagType } from "@/features/blog/types/data";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { EllipsisButton } from "@/features/blog/components/molecules/EllipsisButton";
@@ -24,7 +24,7 @@ export function BlogPost({
             
             <Link href={`/blog/${post.slug}`} className="space-y-4">
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    {post.categories.map((category) => (
+                    {post.categories.map((category: CategoryType) => (
                         <span key={category.id} className="px-2 py-1 bg-blue-600 dark:bg-blue-700 text-white rounded-full">
                             {category.name}
                         </span>
@@ -39,7 +39,7 @@ export function BlogPost({
                 </Text>
 
                 <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
+                    {post.tags.map((tag: TagType) => (
                         <span key={tag.id} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full">
                             {tag.name}
                         </span>
