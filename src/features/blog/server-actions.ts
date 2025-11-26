@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma/prisma";
 import type { Prisma } from "@prisma/client";
 import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
-import { BlogPostType, CategoryType } from "./types/data";
+import { BlogPostType, CategoryType, TagType } from "./types/data";
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { auth } from "@/auth";
 
@@ -29,7 +29,10 @@ type BlogPostWithRelations = Prisma.PostGetPayload<{
             };
         };
     };
-}>;
+}> & {
+    categories: CategoryType[];
+    tags: TagType[];
+};
 
 export async function getPost(slug: string): Promise<BlogPostWithRelations | null> {
     try {
