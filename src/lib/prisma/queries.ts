@@ -31,3 +31,11 @@ export const categoryQuery = {
       name: true,
     },
 }
+
+// TagTypeを追加
+export const tagQuery = {
+  select: {
+      id: true,
+      name: true,
+  },
+}

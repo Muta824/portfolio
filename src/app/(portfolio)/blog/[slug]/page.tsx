@@ -9,6 +9,7 @@ import { ja } from 'date-fns/locale';
 import { getPost } from '@/features/blog/server-actions';
 import prisma from '@/lib/prisma/prisma';
 import type { Components } from 'react-markdown';
+import { CategoryType, TagType } from '@/features/blog/types/data';
 
 // ページの再生成間隔を1時間に設定 (ISR)
 export const revalidate = 3600;
@@ -79,7 +80,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <div className="flex flex-wrap items-center gap-2 mb-4">
                         <span className="text-sm text-gray-600 dark:text-gray-400">カテゴリ:</span>
                         <span className="flex flex-wrap items-center gap-2">
-                            {post.categories.map((category) => (
+                            {post.categories.map((category: CategoryType) => (
                                 <span key={category.id} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm dark:bg-blue-900 dark:text-blue-200">
                                     {category.name}
                                 </span>
@@ -90,7 +91,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     {post.tags.length > 0 && (
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="text-sm text-gray-600 dark:text-gray-400">タグ:</span>
-                            {post.tags.map((tag) => (
+                            {post.tags.map((tag: TagType) => (
                             <span
                                 key={tag.id}
                                 className="px-2 py-1 bg-gray-100 text-gray-800 rounded-md text-sm dark:bg-gray-700 dark:text-gray-200"
