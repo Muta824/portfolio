@@ -1,9 +1,8 @@
 "use server"
 
 import prisma from "@/lib/prisma/prisma";
-import type { Prisma } from "@prisma/client";
 import { blogPostQuery, categoryQuery } from "@/lib/prisma/queries";
-import { BlogPostType, CategoryType, TagType } from "./types/data";
+import { BlogPostType, CategoryType } from "./types/data";
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { auth } from "@/auth";
 
@@ -17,24 +16,7 @@ export const getCategories = unstable_cache(async (): Promise<CategoryType[]> =>
     return categories;
 }, ['categories'], { tags: ['categories'] });
 
-type BlogPostWithRelations = Prisma.PostGetPayload<{
-    include: {
-        categories: true;
-        tags: true;
-        author: {
-            select: {
-                id: true;
-                name: true;
-                email: true;
-            };
-        };
-    };
-}> & {
-    categories: CategoryType[];
-    tags: TagType[];
-};
-
-export async function getPost(slug: string): Promise<BlogPostWithRelations | null> {
+export async function getPost(slug: string) {
     try {
         const post = await prisma.post.findUnique({
             where: { slug },
