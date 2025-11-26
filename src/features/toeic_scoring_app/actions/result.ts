@@ -3,7 +3,6 @@
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma/prisma';
 import { revalidatePath } from 'next/cache';
-import type { Prisma } from '@prisma/client';
 
 /**
  * Save test result

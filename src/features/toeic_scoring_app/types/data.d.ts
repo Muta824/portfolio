@@ -3,9 +3,6 @@ export interface TestSet {
 	name: string; // user can define the name of each test set (e.g. "公式TOEIC Listening & Reading 問題集11")
 	createdAt: Date;
 	updatedAt: Date;
-	
-	questions: Question[]; // set has Questions 200 problems separated by part
-	answers: AnswerSet; // answers of this test (模範解答)
 }
 
 export interface Question {
