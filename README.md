@@ -1,52 +1,104 @@
-## My App Collection
+# Yuta Nakamura | Full-Stack Portfolio
 
-このリポジトリは、自分が作成した複数のアプリケーションやサイトをまとめたコレクションです。  
-主に Next.js、React、TypeScript を使って開発しています。  
-今後もいろいろなアプリを追加していく予定です。
+## Overview
 
----
+This repository contains my full-stack portfolio built with **Next.js**, **TypeScript**, and **PostgreSQL**.  
+認証、データベース、API、UI設計など、フルスタック開発の主要要素を一通り実装しています。
 
-## 各アプリの紹介
+ポートフォリオには以下のアプリを統合しています：
 
-### Todo App
+- TOEICスコア自動計算アプリ
+- Todoアプリ
+- 技術ブログ
+- ストリーミング検索アプリ（TMDB API）
+- AIチャットボット（Gemini API）
 
-- タスクの追加・削除・管理ができるシンプルなToDoリストアプリ
-- タスク管理を日常に取り入れたい人におすすめ！
-
-### TOEIC Scoring App
-
-- TOEICの回答を入力すると自動でスコアを算出するアプリ
-- TOEICの勉強を効率的に進めたい人向け！
+**より詳細な仕様やアーキテクチャの説明は、以下のChatBotに質問できます：**  
+https://www.yuuta-nakamura.com/chat_bot
 
 ---
 
-## Getting Started
+## Key Features 
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+- **フルスタック構成**：Next.js App Router + NextAuth + Prisma + PostgreSQL
+- **認証実装**：Email/Password, GitHub OAuth, Google OAuth
+- **API設計**：Next.js API Routes + Zodでのスキーマバリデーション
+- **DBモデリング**：User / Blog / Todo / TOEIC / Searchログなど複数モデルを管理
+- **UI/UX**：Tailwind CSS + Material UI + Framer Motion
+- **外部API連携**：TMDB、Gemini API
 
-### 開発サーバーの起動
+---
 
-```bash
-npm run dev
-# または
-yarn dev
-# または
-pnpm dev
-# または
-bun dev
+## Tech Stack
+
+**Frontend**
+- Next.js / React
+- TypeScript
+- Tailwind CSS / Material UI / Framer Motion
+
+**Backend**
+- Next.js API Routes
+- NextAuth.js
+- Prisma
+- PostgreSQL
+
+**Other**
+- Zod
+- bcrypt
+- date-fns
+
+---
+
+## Architecture
+
+プロジェクトはAtomic Designおよび機能単位（features-based）で構成されています。
+
+```
+src/  
+├── app/  
+├── components/ (Atomic Design)  
+├── features/  
+├── lib/  
+└── types/
 ```
 
-Open http://localhost:3000 with your browser to see the result.
+**各機能の設計意図やAPIの仕組みなどの詳細はChatBotで解説します：**  
+https://www.yuuta-nakamura.com/chat_bot
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses `next/font` to automatically optimize and load Geist, a new font family for Vercel.
+## Setup
 
-## 使用技術
-- Next.js
-- React
-- TypeScript
+```
+git clone <repo> 
+npm install 
+npm run dev
+```
+環境変数などの詳細はこちら：  
+`/docs/env.md`
 
-## 今後の予定
-- 新しいアプリをどんどん追加していく
-- UIの改善や機能追加も行っていく予定
+---
+
+## Screenshots
+
+
+
+---
+
+## Development Highlights
+
+- Prisma Accelerateを利用した接続最適化
+- データモデリング・マイグレーションの実践
+- 認証ミドルウェアでの保護ルート設計
+- BlogのMarkdownレンダリング
+- TMDBとGemini API連携によるAPI設計
+
+---
+
+## Author
+
+**Yuta Nakamura**  
+Portfolio: [https://www.yuuta-nakamura.com/](https://www.yuuta-nakamura.com/)  
+GitHub: [https://github.com/Muta824](https://github.com/Muta824)
+
+---
