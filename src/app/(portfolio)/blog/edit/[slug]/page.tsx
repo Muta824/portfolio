@@ -7,6 +7,7 @@ import { getPost, updatePost } from '@/features/blog/server-actions';
 import { useFormStatus } from 'react-dom';
 import Link from 'next/link';
 import Loading from './loading';
+import { CategoryType, TagType } from '@/features/blog/types/data';
 
 function FormContent({ post }: { post: {
     title: string;
@@ -122,8 +123,8 @@ export default function EditBlogPost({
             setFormData({
                 title: postData.title,
                 content: postData.content,
-                categories: postData.categories.map(category => category.name).join(','),
-                tags: postData.tags.map(tag => tag.name).join(','),
+                categories: postData.categories.map((category: CategoryType) => category.name).join(','),
+                tags: postData.tags.map((tag: TagType) => tag.name).join(','),
             });
         })();
         setIsLoading(false);
