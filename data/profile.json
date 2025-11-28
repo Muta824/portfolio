@@ -1,0 +1,36 @@
+{
+    "basicInformation": {
+        "name": "Yuta Nakamura(中村優太)",
+        "age": 20,
+        "gender": "Male",
+        "nationality": "Japanese",
+        "profession": "Computer Science Student at Meiji University (Sophomore) (情報科学科)"
+    },
+    "skillsAndTechnologies": {
+        "programmingLanguages": ["TypeScript", "JavaScript", "Java", "Python", "C", "C++"],
+        "frameworksAndLibraries": ["React", "Next.js", "Tailwind CSS"],
+        "toolsAndPlatforms": ["Prisma", "PostgreSQL", "Git/GitHub"]
+    },
+    "interestsAndHobbies": {
+        "interests": ["Web Development", "AI", "Machine Learning"],
+        "hobbies": ["Reading books", "Watching movies", "Playing games"]
+    },
+    "projectsAndPortfolio": {
+        "github": "https://github.com/Muta824",
+        "leetcode": "https://leetcode.com/u/muta-dev/",
+        "portfolio": "https://www.yuuta-nakamura.com/",
+        "applications": [
+            "TOEIC Scoring App",
+            "Todo App",
+            "Blog",
+            "Subscription Searcher",
+            "ChatBot"
+        ],
+        "note": "I will add more details later"
+    },
+    "personalityAndCommunicationStyle": {
+        "personality": "don't like to lose",
+        "communicationStyle": ""
+    }
+}
+

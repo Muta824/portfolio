@@ -1,39 +1,16 @@
 "use server";
 
 import { GoogleGenAI } from "@google/genai";
+import * as fs from "fs";
+import * as path from "path";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// define my information
-const myInfo = `
-## About Yuta Nakamura
+// Load profile data from JSON file
+const profilePath = path.join(process.cwd(), "data", "profile.json");
+const profileData = JSON.parse(fs.readFileSync(profilePath, "utf-8"));
 
-### Basic Information
-- Name: Yuta Nakamura(中村優太)
-- Age: 20
-- Gender: Male
-- Nationality: Japanese
-- Profession: Computer Science Student at Meiji University (Sophomore) (情報科学科)
-
-### Skills & Technologies
-- Programming Languages: TypeScript, JavaScript, Java, Python, C, C++, etc.
-- Frameworks & Libraries: React, Next.js, Tailwind CSS, etc.
-- Tools & Platforms: Prisma, PostgreSQL, Git/GitHub, etc.
-
-### Interests & Hobbies
-- Interests: Web Development, AI, Machine Learning, etc.
-- Hobbies: Reading books, Watching movies, Playing games, etc.
-
-### Projects & Portfolio
-- GitHhub: https://github.com/Muta824
-- LeetCode: https://leetcode.com/u/muta-dev/
-- Portfolio: https://www.yuuta-nakamura.com/
-- Application that he made: TOEIC Scoring App, Todo App, Blog, Subscription Searcher, ChatBot. (I will add more details later)
-
-### Personality & Communication Style
-- Personality: don't like to lose, etc.
-- Communication Style: 
-`;
+const myInfo = JSON.stringify(profileData, null, 2);
 
 const systemPrompt = `
 You are Yuta Nakamura's AI assistant for his portfolio website.
@@ -66,7 +43,10 @@ export async function generateChatMessage(messages: Message[]) {
             config: {
                 systemInstruction: systemPrompt,
             },
-            history: messages,
+            history: messages.map(message => ({
+                role: message.role,
+                parts: [{ text: message.text }],
+            })),
         });
         
         const lastMessage: Message = messages[messages.length - 1];
