@@ -1,30 +1,23 @@
 "use server";
 
 import { GoogleGenAI } from "@google/genai";
-import * as fs from "fs";
-import * as path from "path";
+import profileData from "../../../data/profile.json";
+import toeicScoringApp from "../../../data/applications/toeic-scoring-app.json";
+import todoApp from "../../../data/applications/todo-app.json";
+import blog from "../../../data/applications/blog.json";
+import subscriptionSearcher from "../../../data/applications/subscription-searcher.json";
+import chatbot from "../../../data/applications/chatbot.json";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// Load profile data from JSON file
-const profilePath = path.join(process.cwd(), "data", "profile.json");
-const profileData = JSON.parse(fs.readFileSync(profilePath, "utf-8"));
-
 // Load application details
-const applicationsPath = path.join(process.cwd(), "data", "applications");
-const applications: Record<string, unknown> = {};
-
-// Load application details
-if (profileData.projectsAndPortfolio?.applications) {
-    for (const app of profileData.projectsAndPortfolio.applications) {
-        if (app.detailFile) {
-            const appDetailPath = path.join(applicationsPath, app.detailFile);
-            if (fs.existsSync(appDetailPath)) {
-                applications[app.name] = JSON.parse(fs.readFileSync(appDetailPath, "utf-8"));
-            }
-        }
-    }
-}
+const applications: Record<string, unknown> = {
+    "TOEIC Scoring App": toeicScoringApp,
+    "Todo App": todoApp,
+    "Blog": blog,
+    "Subscription Searcher": subscriptionSearcher,
+    "ChatBot": chatbot,
+};
 
 // Merge profile data with application details
 const detailedProfileData = {
