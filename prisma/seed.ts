@@ -76,7 +76,7 @@ async function main() {
 
         if (!existingAnswerSet) {
             // Read answer data from JSON file
-            const answerDataPath = path.join(__dirname, 'data', 'answer-set-11-test1.json')
+            const answerDataPath = path.join(__dirname, '..', 'data', 'answer-set-11-test1.json')
             const answerData = JSON.parse(fs.readFileSync(answerDataPath, 'utf-8')) as Record<string, string>
 
             // Filter out empty answers and convert to Record<number, string>

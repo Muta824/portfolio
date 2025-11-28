@@ -63,16 +63,10 @@ export async function generateChatMessage(messages: Message[]) {
     try {
         const chat = ai.chats.create({
             model: "gemini-2.5-flash",
-            history: [
-                {
-                    role: "user",
-                    parts: [{ text: systemPrompt }],
-                },
-                ...messages.map(message => ({
-                    role: message.role,
-                    parts: [{ text: message.text }],
-                })),
-            ]
+            config: {
+                systemInstruction: systemPrompt,
+            },
+            history: messages,
         });
         
         const lastMessage: Message = messages[messages.length - 1];
