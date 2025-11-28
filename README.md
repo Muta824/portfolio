@@ -23,7 +23,7 @@ https://www.yuuta-nakamura.com/chat_bot
 - **フルスタック構成**：Next.js App Router + NextAuth + Prisma + PostgreSQL
 - **認証実装**：Email/Password, GitHub OAuth, Google OAuth
 - **API設計**：Next.js API Routes + Zodでのスキーマバリデーション
-- **DBモデリング**：User / Blog / Todo / TOEIC / Searchログなど複数モデルを管理
+- **DBモデリング**：User / Blog / Todo / TOEIC など複数モデルを管理
 - **UI/UX**：Tailwind CSS + Material UI + Framer Motion
 - **外部API連携**：TMDB、Gemini API
 
@@ -74,8 +74,6 @@ git clone <repo>
 npm install 
 npm run dev
 ```
-環境変数などの詳細はこちら：  
-`/docs/env.md`
 
 ---
 
