@@ -10,7 +10,32 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const profilePath = path.join(process.cwd(), "data", "profile.json");
 const profileData = JSON.parse(fs.readFileSync(profilePath, "utf-8"));
 
-const myInfo = JSON.stringify(profileData, null, 2);
+// Load application details
+const applicationsPath = path.join(process.cwd(), "data", "applications");
+const applications: Record<string, unknown> = {};
+
+// Load application details
+if (profileData.projectsAndPortfolio?.applications) {
+    for (const app of profileData.projectsAndPortfolio.applications) {
+        if (app.detailFile) {
+            const appDetailPath = path.join(applicationsPath, app.detailFile);
+            if (fs.existsSync(appDetailPath)) {
+                applications[app.name] = JSON.parse(fs.readFileSync(appDetailPath, "utf-8"));
+            }
+        }
+    }
+}
+
+// Merge profile data with application details
+const detailedProfileData = {
+    ...profileData,
+    projectsAndPortfolio: {
+        ...profileData.projectsAndPortfolio,
+        applicationDetails: applications,
+    },
+};
+
+const myInfo = JSON.stringify(detailedProfileData, null, 2);
 
 const systemPrompt = `
 You are Yuta Nakamura's AI assistant for his portfolio website.

@@ -20,13 +20,27 @@
         "leetcode": "https://leetcode.com/u/muta-dev/",
         "portfolio": "https://www.yuuta-nakamura.com/",
         "applications": [
-            "TOEIC Scoring App",
-            "Todo App",
-            "Blog",
-            "Subscription Searcher",
-            "ChatBot"
-        ],
-        "note": "I will add more details later"
+            {
+                "name": "TOEIC Scoring App",
+                "detailFile": "toeic-scoring-app.json"
+            },
+            {
+                "name": "Todo App",
+                "detailFile": "todo-app.json"
+            },
+            {
+                "name": "Blog",
+                "detailFile": "blog.json"
+            },
+            {
+                "name": "Subscription Searcher",
+                "detailFile": "subscription-searcher.json"
+            },
+            {
+                "name": "ChatBot",
+                "detailFile": "chatbot.json"
+            }
+        ]
     },
     "personalityAndCommunicationStyle": {
         "personality": "don't like to lose",

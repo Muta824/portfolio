@@ -1,0 +1,31 @@
+{
+    "name": "Todo App",
+    "description": "日次・週次・月次・年次のタスクを管理できるTodoアプリケーション。ユーザー認証に対応し、個人のタスクをデータベースに保存します。日本時間（UTC+9）の調整機能を実装しています。",
+    "technologies": [
+        "Next.js 15 (App Router)",
+        "TypeScript",
+        "React 19",
+        "Prisma",
+        "PostgreSQL",
+        "NextAuth.js",
+        "Tailwind CSS",
+        "Server Actions",
+        "React Context API",
+        "date-fns",
+        "cuid",
+        "revalidateTag",
+        "lucide-react"
+    ],
+    "architecture": "Next.js App Router + Server Actionsでデータ操作を実装。PrismaでTodoモデルを管理し、typeフィールド（daily/weekly/monthly/yearly）と期間開始日（weekStart/monthStart/yearStart）で期間別に分類。React Context API（TodosContext）でクライアント側の状態管理を実現。NextAuth.jsでユーザー認証を行い、ユーザーごとのTodoを管理。日本時間の調整（UTC+9）をサーバーサイドで実装（保存時+9時間、取得時-9時間）。revalidateTagでユーザーIDとタイプごとにキャッシュを無効化（`${userId}-${type}-todos`）。cuidでクライアントサイドでID生成し、Optimistic Updatesを実現。",
+    "features": [
+        "日次・週次・月次・年次のTodo管理（typeフィールドと期間開始日で分類）",
+        "Todoの追加・削除・完了状態の切り替え",
+        "ユーザー認証による個人データの管理（NextAuth.js）",
+        "日付選択による過去・未来の日次Todo表示",
+        "未完了Todoの一覧表示（UndoneTodosコンポーネント）",
+        "リアルタイムなUI更新（Optimistic Updates）",
+        "日本時間の自動調整（UTC+9）",
+        "年・月のナビゲーション機能（lucide-reactのアイコン使用）",
+        "ローディング状態の表示（TodosSkeleton）"
+    ]
+}

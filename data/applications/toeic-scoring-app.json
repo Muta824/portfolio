@@ -1,0 +1,30 @@
+{
+    "name": "TOEIC Scoring App",
+    "description": "TOEICの模試問題を解いて、自動でスコアを計算するアプリケーション。複数のテストセットを管理し、解答シートごとにスコアを記録・比較できます。",
+    "technologies": [
+        "Next.js 15 (App Router)",
+        "TypeScript",
+        "React 19",
+        "Prisma",
+        "PostgreSQL",
+        "Prisma Accelerate",
+        "Tailwind CSS",
+        "Server Actions",
+        "cuid"
+    ],
+    "architecture": "Next.js App Routerを使用したフルスタックアプリケーション。Prisma ORMでPostgreSQLに接続し、TestSet、Question、AnswerSet、Answer、UserAnswerSheet、UserAnswer、Resultなどの複雑なリレーションを管理。Server Actionsでデータの取得・更新を実装。Atomic Designパターンとfeatures-based構造でコンポーネントを整理。スコア計算は正答数を基に990点満点で計算（percentage * 990）。",
+    "features": [
+        "複数のテストセット（公式問題集など）の管理",
+        "200問の解答入力機能（Part 1-7対応、qId 1-200）",
+        "自動スコア計算（990点満点、正答率ベース）",
+        "正答率・正答数の表示",
+        "複数の解答シートの作成・管理（UserAnswerSheet）",
+        "解答シートごとの結果比較（Resultモデル）",
+        "模範解答セット（AnswerSet）の管理",
+        "問題ごとの選択肢管理（choices配列）",
+        "Part別の問題表示（QuestionPartSection）",
+        "進捗バーの表示（ProgressBar）",
+        "AIアドバイス機能（開発中：AIadviceコンポーネントは未実装）",
+        "ユーザー結果一覧（開発中：UserResultコンポーネントは未実装）"
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "name": "ChatBot",
+    "description": "ポートフォリオサイトの訪問者向けAIチャットボット。プロフィール情報や各アプリの詳細を学習し、Yutaに関する質問に回答します。Google Gemini APIを使用しています。",
+    "technologies": [
+        "Next.js 15 (App Router)",
+        "TypeScript",
+        "React 19",
+        "@google/genai (Gemini API)",
+        "Google Gemini 2.5 Flash",
+        "Server Actions",
+        "Tailwind CSS",
+        "Node.js fs/path",
+        "react-markdown",
+        "remark-gfm"
+    ],
+    "architecture": "Next.js Server ActionsでGemini APIと通信。起動時にprofile.jsonと各アプリの詳細JSONファイル（data/applications/*.json）をfs.readFileSyncで同期的に読み込み、システムプロンプトに統合。チャット履歴を管理し、コンテキストを保持した会話を実現。エラーハンドリングとフォールバックメッセージを実装。クライアントサイドでreact-markdownとremark-gfmを使用してAIの応答をMarkdown形式でレンダリング。Ctrl+Enter（またはCmd+Enter）でメッセージ送信。",
+    "features": [
+        "プロフィール情報に基づく質問応答（profile.jsonを読み込み）",
+        "各アプリの技術スタック・アーキテクチャの説明（applications/*.jsonを読み込み）",
+        "多言語対応（ユーザーの言語に応じて回答）",
+        "チャット履歴の保持（messages配列で管理）",
+        "プロフェッショナルで親しみやすい応答スタイル",
+        "情報が不明な場合は「分からない」と正直に回答",
+        "Markdown形式での応答表示（react-markdown + remark-gfm）",
+        "Ctrl+Enter（Cmd+Enter）でのメッセージ送信",
+        "送信中のローディング表示（Spinner）",
+        "自動フォーカス機能（送信完了後に入力欄にフォーカス）"
+    ]
+}

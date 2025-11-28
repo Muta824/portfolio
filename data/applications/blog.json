@@ -1,0 +1,33 @@
+{
+    "name": "Blog",
+    "description": "技術ブログシステム。Markdown形式で記事を執筆でき、カテゴリ・タグによる分類機能を備えています。管理者のみが記事の作成・編集・削除が可能です。ISR（Incremental Static Regeneration）により1時間ごとに記事一覧を再生成します。",
+    "technologies": [
+        "Next.js 15 (App Router)",
+        "TypeScript",
+        "React 19",
+        "Prisma",
+        "PostgreSQL",
+        "NextAuth.js",
+        "react-markdown",
+        "remark-gfm",
+        "date-fns",
+        "Tailwind CSS",
+        "Server Actions",
+        "Next.js Cache API (unstable_cache)",
+        "ISR (revalidate: 3600)",
+        "generateStaticParams"
+    ],
+    "architecture": "Next.js App Router + Server ActionsでCRUD操作を実装。PrismaでPost、Category、Tagの多対多リレーションを管理（Commentモデルは定義されているがUI未実装）。react-markdownとremark-gfmでMarkdownをレンダリング。Next.jsのunstable_cacheで記事一覧とカテゴリをキャッシュし、revalidateTag/revalidatePathでキャッシュを無効化。ISR（revalidate: 3600）で1時間ごとに記事一覧ページを再生成。generateStaticParamsでビルド時に全記事の静的ページを生成。管理者権限チェック（session.user.role === 'admin'）をServer Actionsで実装。",
+    "features": [
+        "Markdown形式での記事執筆（react-markdown + remark-gfm）",
+        "カテゴリ・タグによる記事分類（多対多リレーション）",
+        "クライアントサイドでの記事タイトル検索機能",
+        "カテゴリによる記事フィルタリング",
+        "管理者による記事の作成・編集・削除（FormData経由）",
+        "記事一覧のキャッシュによる高速表示（unstable_cache）",
+        "ISRによる1時間ごとの自動再生成",
+        "静的生成によるSEO最適化（generateStaticParams）",
+        "サムネイル画像の表示",
+        "投稿日・更新日の表示（date-fnsで日本語フォーマット）"
+    ]
+}

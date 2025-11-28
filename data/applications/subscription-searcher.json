@@ -1,0 +1,28 @@
+{
+    "name": "Subscription Searcher",
+    "description": "映画やTV番組を検索し、どのストリーミングサービスで視聴できるかを確認できるアプリケーション。TMDB APIを使用してコンテンツ情報と視聴可能なサービスを取得します。",
+    "technologies": [
+        "Next.js 15 (App Router)",
+        "TypeScript",
+        "React 19",
+        "TMDB API",
+        "use-debounce",
+        "Tailwind CSS",
+        "Server Actions",
+        "Next.js useSearchParams",
+        "Next.js Image"
+    ],
+    "architecture": "Next.js App Router + Server ActionsでTMDB APIと通信。use-debounceで検索入力を300msデバウンスし、API呼び出し回数を削減。URLパラメータ（useSearchParams）で検索クエリを管理し、ページリロード時も検索状態を保持。Server Actionsで外部API呼び出しを抽象化し、エラーハンドリングを統一。TMDB APIのmulti searchエンドポイントを使用し、movieとtvのみをフィルタリング。日本国内のストリーミングサービス情報を取得（results.JP.flatrate）。",
+    "features": [
+        "映画・TV番組の検索機能（TMDB multi search API）",
+        "検索結果の一覧表示（ポスター画像付き、Next.js Image最適化）",
+        "作品詳細ページ（あらすじ、評価、初回放送日など）",
+        "日本国内で視聴可能なストリーミングサービスの表示（JP.flatrate）",
+        "検索クエリのURLパラメータ管理（useSearchParams）",
+        "300msデバウンスによる効率的なAPI呼び出し",
+        "レスポンシブデザイン（grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4）",
+        "ローディング状態の表示",
+        "検索結果なし時のメッセージ表示",
+        "作品タイプ（movie/tv）による動的ルーティング（[media_type]/[id]）"
+    ]
+}
