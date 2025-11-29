@@ -1,6 +1,6 @@
 {
     "name": "Subscription Searcher",
-    "description": "映画やTV番組を検索し、どのストリーミングサービスで視聴できるかを確認できるアプリケーション。TMDB APIを使用してコンテンツ情報と視聴可能なサービスを取得します。",
+    "description": "Application that allows you to search for movies and TV shows and check which streaming services they are available on. Uses TMDB API to fetch content information and available streaming services.",
     "technologies": [
         "Next.js 15 (App Router)",
         "TypeScript",
@@ -12,17 +12,17 @@
         "Next.js useSearchParams",
         "Next.js Image"
     ],
-    "architecture": "Next.js App Router + Server ActionsでTMDB APIと通信。use-debounceで検索入力を300msデバウンスし、API呼び出し回数を削減。URLパラメータ（useSearchParams）で検索クエリを管理し、ページリロード時も検索状態を保持。Server Actionsで外部API呼び出しを抽象化し、エラーハンドリングを統一。TMDB APIのmulti searchエンドポイントを使用し、movieとtvのみをフィルタリング。日本国内のストリーミングサービス情報を取得（results.JP.flatrate）。",
+    "architecture": "Communicates with TMDB API via Next.js App Router + Server Actions. Debounces search input by 300ms with use-debounce to reduce API calls. Manages search queries with URL parameters (useSearchParams) to maintain search state on page reload. Abstracts external API calls with Server Actions for unified error handling. Uses TMDB API's multi search endpoint, filtering only movies and TV shows. Retrieves streaming service information for Japan (results.JP.flatrate).",
     "features": [
-        "映画・TV番組の検索機能（TMDB multi search API）",
-        "検索結果の一覧表示（ポスター画像付き、Next.js Image最適化）",
-        "作品詳細ページ（あらすじ、評価、初回放送日など）",
-        "日本国内で視聴可能なストリーミングサービスの表示（JP.flatrate）",
-        "検索クエリのURLパラメータ管理（useSearchParams）",
-        "300msデバウンスによる効率的なAPI呼び出し",
-        "レスポンシブデザイン（grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4）",
-        "ローディング状態の表示",
-        "検索結果なし時のメッセージ表示",
-        "作品タイプ（movie/tv）による動的ルーティング（[media_type]/[id]）"
+        "Movie and TV show search functionality (TMDB multi search API)",
+        "Search results list display (with poster images, Next.js Image optimization)",
+        "Content detail pages (synopsis, rating, first air date, etc.)",
+        "Display of streaming services available in Japan (JP.flatrate)",
+        "URL parameter management for search queries (useSearchParams)",
+        "Efficient API calls with 300ms debounce",
+        "Responsive design (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4)",
+        "Loading state display",
+        "Message display when no search results",
+        "Dynamic routing by content type (movie/tv) ([media_type]/[id])"
     ]
 }

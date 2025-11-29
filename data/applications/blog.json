@@ -1,6 +1,6 @@
 {
     "name": "Blog",
-    "description": "技術ブログシステム。Markdown形式で記事を執筆でき、カテゴリ・タグによる分類機能を備えています。管理者のみが記事の作成・編集・削除が可能です。ISR（Incremental Static Regeneration）により1時間ごとに記事一覧を再生成します。",
+    "description": "Technical blog system. Write articles in Markdown format with category and tag classification features. Only administrators can create, edit, and delete articles. ISR (Incremental Static Regeneration) regenerates the article list every hour.",
     "technologies": [
         "Next.js 15 (App Router)",
         "TypeScript",
@@ -17,17 +17,17 @@
         "ISR (revalidate: 3600)",
         "generateStaticParams"
     ],
-    "architecture": "Next.js App Router + Server ActionsでCRUD操作を実装。PrismaでPost、Category、Tagの多対多リレーションを管理（Commentモデルは定義されているがUI未実装）。react-markdownとremark-gfmでMarkdownをレンダリング。Next.jsのunstable_cacheで記事一覧とカテゴリをキャッシュし、revalidateTag/revalidatePathでキャッシュを無効化。ISR（revalidate: 3600）で1時間ごとに記事一覧ページを再生成。generateStaticParamsでビルド時に全記事の静的ページを生成。管理者権限チェック（session.user.role === 'admin'）をServer Actionsで実装。",
+    "architecture": "Implements CRUD operations with Next.js App Router + Server Actions. Manages many-to-many relationships for Post, Category, and Tag with Prisma (Comment model is defined but UI not implemented). Renders Markdown with react-markdown and remark-gfm. Caches article list and categories with Next.js unstable_cache, invalidates cache with revalidateTag/revalidatePath. Regenerates article list page every hour with ISR (revalidate: 3600). Generates static pages for all articles at build time with generateStaticParams. Implements admin permission checks (session.user.role === 'admin') in Server Actions.",
     "features": [
-        "Markdown形式での記事執筆（react-markdown + remark-gfm）",
-        "カテゴリ・タグによる記事分類（多対多リレーション）",
-        "クライアントサイドでの記事タイトル検索機能",
-        "カテゴリによる記事フィルタリング",
-        "管理者による記事の作成・編集・削除（FormData経由）",
-        "記事一覧のキャッシュによる高速表示（unstable_cache）",
-        "ISRによる1時間ごとの自動再生成",
-        "静的生成によるSEO最適化（generateStaticParams）",
-        "サムネイル画像の表示",
-        "投稿日・更新日の表示（date-fnsで日本語フォーマット）"
+        "Article writing in Markdown format (react-markdown + remark-gfm)",
+        "Article classification by category and tags (many-to-many relationships)",
+        "Client-side article title search functionality",
+        "Article filtering by category",
+        "Article creation, editing, and deletion by administrators (via FormData)",
+        "Fast article list display with caching (unstable_cache)",
+        "Automatic regeneration every hour with ISR",
+        "SEO optimization with static generation (generateStaticParams)",
+        "Thumbnail image display",
+        "Publication and update date display (formatted in Japanese with date-fns)"
     ]
 }
