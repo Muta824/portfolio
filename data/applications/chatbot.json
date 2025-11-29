@@ -9,11 +9,10 @@
         "Google Gemini 2.5 Flash",
         "Server Actions",
         "Tailwind CSS",
-        "Node.js fs/path",
         "react-markdown",
         "remark-gfm"
     ],
-    "architecture": "Communicates with Gemini API via Next.js Server Actions. On startup, synchronously loads profile.json and each app's detailed JSON files (data/applications/*.json) using fs.readFileSync and integrates them into the system prompt. Manages chat history to enable context-aware conversations. Implements error handling and fallback messages. Uses react-markdown and remark-gfm on the client side to render AI responses in Markdown format. Send messages with Ctrl+Enter (or Cmd+Enter).",
+    "architecture": "Communicates with Gemini API via Next.js Server Actions. Imports profile.json and each app's detailed JSON files (data/applications/*.json) directly at build time and integrates them into the system prompt. Manages chat history to enable context-aware conversations. Implements error handling and fallback messages. Uses react-markdown and remark-gfm on the client side to render AI responses in Markdown format. Send messages with Ctrl+Enter (or Cmd+Enter).",
     "features": [
         "Question answering based on profile information (loads profile.json)",
         "Explanation of each app's tech stack and architecture (loads applications/*.json)",
