@@ -55,7 +55,7 @@ export async function fetchGitHubContributions(fromDate: string, toDate: string)
             from: `${fromDate}T00:00:00Z`,
             to: `${toDate}T23:59:59Z`,
             headers: {
-                authorization: `bearer ${GITHUB_API_TOKEN}`,
+                authorization: `Bearer ${GITHUB_API_TOKEN}`,
             },
         }
     );
