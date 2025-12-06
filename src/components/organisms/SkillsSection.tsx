@@ -8,6 +8,7 @@ import { DiPostgresql } from "react-icons/di";
 import { RiTailwindCssFill } from "react-icons/ri";
 import { FaGithub, FaJava } from "react-icons/fa";
 import { BsCCircle } from "react-icons/bs";
+import { FaPython } from "react-icons/fa";
 
 // 公式SVGアイコン
 const Icons = {
@@ -20,9 +21,15 @@ const Icons = {
     GitHub: <FaGithub />,
     C: <BsCCircle />,
     Java: <FaJava />,
+    Python: <FaPython />,
 };
 
 const skillsData = [
+    {
+        name: 'Python',
+        icon: Icons.Python,
+        level: 2,
+    },
     {
         name: 'C',
         icon: Icons.C,
@@ -31,7 +38,7 @@ const skillsData = [
     {
         name: 'Java',
         icon: Icons.Java,
-        level: 2.5,
+        level: 3,
     },
     {
         name: 'TypeScript',

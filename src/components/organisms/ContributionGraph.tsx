@@ -16,6 +16,7 @@ const getLevelColor = (level: number): string => {
 // キャッシュされたデータ取得関数
 const getCachedContributions = unstable_cache(
     async () => {
+        "use server";
         const today = new Date();
         const oneYearAgo = new Date(today);
         oneYearAgo.setFullYear(today.getFullYear() - 1);
