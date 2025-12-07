@@ -99,8 +99,8 @@ export async function createPost(formData: FormData) {
 
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
-        revalidateTag('posts');
-        revalidateTag('categories');
+        revalidateTag('posts', 'max');
+        revalidateTag('categories', 'max');
     } catch(error) {
         console.error('Failed to create post:', error);
         throw error;
@@ -157,8 +157,8 @@ export async function updatePost(formData: FormData) {
 
         revalidatePath('/blog');
         revalidatePath(`/blog/${slug}`);
-        revalidateTag('posts');
-        revalidateTag('categories');
+        revalidateTag('posts', 'max');
+        revalidateTag('categories', 'max');
     } catch (error) {
         console.error('Failed to update post:', error);
         throw error;
@@ -176,8 +176,8 @@ export async function deletePost(slug: string) {
             where: { slug },
         })
         revalidatePath('/blog');
-        revalidateTag('posts');
-        revalidateTag('categories');
+        revalidateTag('posts', 'max');
+        revalidateTag('categories', 'max');
     } catch (error) {
         console.error('Delete error:', error);
         throw new Error('Failed to delete post');
