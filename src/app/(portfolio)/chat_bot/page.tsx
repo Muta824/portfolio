@@ -1,6 +1,6 @@
-import { ChatPage } from "@/features/chat_bot/components/molecules/ChatPage";
 import { GoBackLink } from "@/components/atoms/GoBackLink";
 import { ThemeToggle } from "@/components/atoms/ThemeToggle";
+import { ChatPage } from "@/features/chat_bot/components/organisms/ChatPage";
 
 export default function Page() {
     return (

@@ -5,8 +5,9 @@ import { generateChatMessage, Message } from "@/features/chat_bot/server-actions
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { MessageItem } from "../molecules/MessageItem";
 
-const components: Components = {
+export const components: Components = {
     ul: ({ children }) => (
         <ul className="list-disc">
             {children}
@@ -24,8 +25,16 @@ export function ChatPage() {
     ]);
     const [isSending, setIsSending] = useState(false);
     const promptInputRef = useRef<HTMLInputElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // focus on prompt input when not sending message
+    // when user message is added, scroll to the last message
+    useEffect(() => {
+        if (isSending) {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }, [isSending]);
+
+    // when not sending message, focus on prompt input
     useEffect(() => {
         if (!isSending) {
             promptInputRef.current?.focus();
@@ -73,32 +82,33 @@ export function ChatPage() {
         }
     };
 
+    // calculate if there is a user message and the index of the last user message
+    const hasUserMessage = messages.some(m => m.role === "user");
+    const lastUserIndex = messages.map(m => m.role).lastIndexOf("user");
+
+    // calculate old messages and last exchange
+    const oldMessages = hasUserMessage ? messages.slice(0, lastUserIndex) : messages;
+    const lastExchange = hasUserMessage ? messages.slice(lastUserIndex) : [];
+
     return (
         <div>
-            <div className="border border-gray-300 rounded-md px-4 pt-5 mb-20">
-                {messages.map((message, index) => (
-                    <div 
-                        key={index}
-                        className={`
-                            ${message.role === "model" ? "justify-start" : "justify-end"}
-                        `}
-                    >
-                        {message.role == "model" ? (
-                            <span className="text-sm text-orange-400">Yuta&apos;s AI Assistant</span>
-                        ) : (
-                            <span className="text-sm text-blue-500">You</span>
-                        )}
-                        <div className="markdown-content">
-                            <ReactMarkdown
-                                remarkPlugins={[remarkGfm]}
-                                components={components}
-                            >
-                                {message.text}
-                            </ReactMarkdown>
-                        </div>
-                    </div>
+            <div className="overflow-y-auto border border-gray-300 rounded-md px-4 pt-5 mb-20">
+                {/* old messages */}
+                {oldMessages.map((message, index) => (
+                    <MessageItem key={index} message={message} />
                 ))}
-                {isSending && <Spinner text="Thinking..." />}
+
+                {/* last exchange (user + assistant) in a box with the screen height */}
+                {lastExchange.length > 0 && (
+                    <div className="min-h-[calc(100vh-120px)]">
+                        {lastExchange.map((message, index) => (
+                            <MessageItem key={index} message={message} />
+                        ))}
+                        {isSending && <Spinner text="Thinking..." />}
+                        {/* anchor for scroll position */}
+                        <div ref={messagesEndRef} />
+                    </div>
+                )}
             </div>
 
             {/* section for prompt input and sending message button */}
