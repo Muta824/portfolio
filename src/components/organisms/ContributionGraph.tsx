@@ -16,7 +16,6 @@ const getLevelColor = (level: number): string => {
 // キャッシュされたデータ取得関数
 const getCachedContributions = unstable_cache(
     async () => {
-        "use server";
         const today = new Date();
         const oneYearAgo = new Date(today);
         oneYearAgo.setFullYear(today.getFullYear() - 1);
@@ -29,7 +28,7 @@ const getCachedContributions = unstable_cache(
     ['github-contributions'],
     {
         tags: ['github-contributions'],
-        revalidate: 24 * 60 * 60, // 24 hours
+        revalidate: 3600, // 1 hour
     }
 );
 
