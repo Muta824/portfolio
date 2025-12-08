@@ -4,8 +4,11 @@ import { DailyTodos } from "@/features/todo/components/template/DailyTodos";
 import { WeeklyTodos } from "@/features/todo/components/organisms/WeeklyTodos";
 import { MonthlyTodos } from "@/features/todo/components/organisms/MonthlyTodos";
 import { YearlyTodos } from "@/features/todo/components/organisms/YearlyTodos";
+import { getAllTodos } from "@/features/todo/server-actions";
 
-export default function Page() {
+export default async function Page() {
+    const todos = await getAllTodos();
+    
     return (
         <>
             <div className="flex justify-between items-center">
@@ -14,11 +17,11 @@ export default function Page() {
             </div>
             <h1 className="text-4xl mb-8 font-bold">Todo List</h1>
             <div className="flex flex-col lg:flex-row-reverse justify-center gap-4">
-                <DailyTodos />
+                <DailyTodos initialTodos={todos.daily} />
                 <div className="w-full lg:w-1/3 space-y-8 mb-6">
-                    <WeeklyTodos />
-                    <MonthlyTodos />
-                    <YearlyTodos />
+                    <WeeklyTodos initialTodos={todos.weekly} />
+                    <MonthlyTodos initialTodos={todos.monthly} />
+                    <YearlyTodos initialTodos={todos.yearly} />
                 </div>
             </div>
         </>

@@ -5,7 +5,13 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export function UndoneTodos() {
     const todos = useTodos();
-    const undoneTodos = todos.filter((todo) => !todo.completed);
+    const undoneTodos = todos
+        .filter((todo) => !todo.completed)
+        .map((todo) => ({
+            ...todo,
+            createdAt: new Date(todo.createdAt),
+        }));
+    
 
     const [isOpen, setIsOpen] = useState(true);
 

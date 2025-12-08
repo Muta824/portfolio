@@ -1,30 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { startOfMonth, addMonths, format, isSameDay } from "date-fns";
-import { getMonthlyTodos, createTodo, updateTodo, deleteTodo } from "@/features/todo/server-actions";
+import { createTodo, updateTodo, deleteTodo } from "@/features/todo/server-actions";
 import { Todo as TodoType } from "@/features/todo/types/data";
 import { Todo } from "@/features/todo/components/molecules/Todo";
-import { TodosSkeleton } from "@/features/todo/components/organisms/TodosSkeleton";
 import cuid from "cuid";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
-export function MonthlyTodos() {
+type Props = {
+    initialTodos: TodoType[];
+};
+
+export function MonthlyTodos({ initialTodos }: Props) {
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-    const [allTodos, setAllTodos] = useState<TodoType[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [allTodos, setAllTodos] = useState<TodoType[]>(initialTodos);
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
     // 月の開始日を計算
     const monthStart = startOfMonth(currentMonth);
-
-    // 全ての月のTodosを初回レンダリング時に取得
-    useEffect(() => {
-        setIsLoading(true);
-        getMonthlyTodos()
-            .then((todos) => setAllTodos(todos))
-            .finally(() => setIsLoading(false));
-    }, []);
 
     const filteredTodos = allTodos.filter(todo => todo.monthStart && isSameDay(todo.monthStart, monthStart));
 
@@ -81,10 +75,6 @@ export function MonthlyTodos() {
     const handleNextMonth = () => {
         setCurrentMonth(prevMonth => addMonths(prevMonth, 1));
     };
-
-    if (isLoading) {
-        return <TodosSkeleton />;
-    }
 
     return (
         <div className="p-4 border rounded-lg">

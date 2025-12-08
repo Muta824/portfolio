@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
 import { revalidateTag } from "next/cache";
+import { unstable_cache } from 'next/cache';
 
 type ClientTodoInput = {
     id: string;
@@ -44,68 +45,6 @@ export async function createTodo(todo: ClientTodoInput): Promise<void> {
     }
 }
 
-export const getTodosByType = async (userId: string, type: string): Promise<Todo[]> => {
-    try {
-        const todos: Todo[] = await prisma.todo.findMany({
-            where: {
-                userId,
-                type,
-            },
-            orderBy: {
-                createdAt: 'asc',
-            },
-        });
-        // 日本時間に修正
-        const adjustedTodos = todos.map(todo => ({
-            ...todo,
-            createdAt: new Date(todo.createdAt.getTime() - 9 * 60 * 60 * 1000),
-            weekStart: todo.weekStart ? new Date(todo.weekStart.getTime() - 9 * 60 * 60 * 1000) : null,
-            monthStart: todo.monthStart ? new Date(todo.monthStart.getTime() - 9 * 60 * 60 * 1000) : null,
-            yearStart: todo.yearStart ? new Date(todo.yearStart.getTime() - 9 * 60 * 60 * 1000) : null,
-        }));
-        return adjustedTodos;
-    } catch (error) {
-        console.error('Get todos error:', error);
-        throw new Error('Failed to get todos');
-    }
-}
-
-export async function getDailyTodos(): Promise<Todo[]> {
-    const session = await auth();
-    // ユーザーがログインしていない場合は空の配列を返す
-    if (!session?.user) {
-        return [];
-    }
-    return getTodosByType(session.user.id, 'daily');
-}
-
-export async function getWeeklyTodos(): Promise<Todo[]> {
-    const session = await auth();
-    // ユーザーがログインしていない場合は空の配列を返す
-    if (!session?.user) {
-        return [];
-    }
-    return getTodosByType(session.user.id, 'weekly');
-}
-
-export async function getMonthlyTodos(): Promise<Todo[]> {
-    const session = await auth();
-    // ユーザーがログインしていない場合は空の配列を返す
-    if (!session?.user) {
-        return [];
-    }
-    return getTodosByType(session.user.id, 'monthly');
-}
-
-export async function getYearlyTodos(): Promise<Todo[]> {
-    const session = await auth();
-    // ユーザーがログインしていない場合は空の配列を返す
-    if (!session?.user) {
-        return [];
-    }
-    return getTodosByType(session.user.id, 'yearly');
-}
-
 export async function updateTodo(todo: ClientTodoInput): Promise<void> {
     const session = await auth();
     if (!session?.user) {
@@ -140,4 +79,46 @@ export async function deleteTodo(id: string): Promise<void> {
         console.error('Delete error:', error);
         throw new Error('Failed to delete todo');
     }
+}
+
+type GroupedTodos = {
+    daily: Todo[];
+    weekly: Todo[];
+    monthly: Todo[];
+    yearly: Todo[];
+};
+
+export async function getAllTodos(): Promise<GroupedTodos> {
+    const session = await auth();
+    if (!session?.user) {
+        return { daily: [], weekly: [], monthly: [], yearly: [] };
+    }
+
+    const getCachedTodos = unstable_cache(
+        async (userId: string) => {
+            const todos: Todo[] = await prisma.todo.findMany({
+                where: { userId },
+                orderBy: { createdAt: 'asc' },
+            });
+            
+            return todos.map(todo => ({
+                ...todo,
+                createdAt: new Date(todo.createdAt.getTime() - 9 * 60 * 60 * 1000),
+                weekStart: todo.weekStart ? new Date(todo.weekStart.getTime() - 9 * 60 * 60 * 1000) : null,
+                monthStart: todo.monthStart ? new Date(todo.monthStart.getTime() - 9 * 60 * 60 * 1000) : null,
+                yearStart: todo.yearStart ? new Date(todo.yearStart.getTime() - 9 * 60 * 60 * 1000) : null,
+            }));
+        },
+        [`${session.user.id}-todos`],
+        { tags: [`${session.user.id}-todos`], revalidate: 60 }
+    );
+
+    const todos = await getCachedTodos(session.user.id);
+
+    return {
+        daily: todos.filter(t => t.type === 'daily'),
+        weekly: todos.filter(t => t.type === 'weekly'),
+        monthly: todos.filter(t => t.type === 'monthly'),
+        yearly: todos.filter(t => t.type === 'yearly'),
+    };
 }

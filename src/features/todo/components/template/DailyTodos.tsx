@@ -1,38 +1,21 @@
 "use client";
 
-import { deleteTodo, getDailyTodos } from "@/features/todo/server-actions";
+import { deleteTodo } from "@/features/todo/server-actions";
 import { TodoForm } from "../molecules/TodoForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SelectedTodos } from "../organisms/SelectedTodos";
-import { Spinner } from "@/components/atoms/Spinner";
 import { Todo } from "@/features/todo/types/data";
 import { TodosContext } from "@/features/todo/context/TodosContext";
 import { UndoneTodos } from "../organisms/UndoneTodos";
 
-export function DailyTodos() {
-    const [todos, setTodos] = useState<Todo[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+type Props = {
+    initialTodos: Todo[];
+};
+
+export function DailyTodos({ initialTodos }: Props) {
+    const [todos, setTodos] = useState<Todo[]>(initialTodos);
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-    // Todoを初回レンダリング時に取得
-    useEffect(() => {
-        getDailyTodos()
-            .then((todos) => {
-                const adjustedTodos = todos.map((todo) => ({
-                    ...todo,
-                    // サーバーから渡されるデータはシリアライズされてstringになっているのでDateに変換
-                    createdAt: new Date(todo.createdAt),
-                }))
-                setTodos(adjustedTodos)
-            })
-            .finally(() => setIsLoading(false));
-    }, []);
-
-    // ローディング中
-    if (isLoading) {
-        return <Spinner />;
-    }
-    
     // Todoを追加
     const handleAddTodo = (newTodo: Todo) => {
         setTodos(prevTodos => [...prevTodos, newTodo]);

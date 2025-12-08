@@ -1,31 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { startOfWeek, endOfWeek, addWeeks, format, isSameDay } from "date-fns";
-import { getWeeklyTodos, createTodo, updateTodo, deleteTodo } from "@/features/todo/server-actions";
+import { createTodo, updateTodo, deleteTodo } from "@/features/todo/server-actions";
 import { Todo as TodoType } from "@/features/todo/types/data";
 import { Todo } from "@/features/todo/components/molecules/Todo";
-import { TodosSkeleton } from "@/features/todo/components/organisms/TodosSkeleton";
 import cuid from "cuid";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
-export function WeeklyTodos() {
+type Props = {
+    initialTodos: TodoType[];
+};
+
+export function WeeklyTodos({ initialTodos }: Props) {
     const [currentWeek, setCurrentWeek] = useState<Date>(new Date());
-    const [allTodos, setAllTodos] = useState<TodoType[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [allTodos, setAllTodos] = useState<TodoType[]>(initialTodos);
     const [newTodoTitle, setNewTodoTitle] = useState<string>("");
 
     // 週の開始日と終了日を計算（月曜始まり）
     const weekStart = startOfWeek(currentWeek, { weekStartsOn: 1 });
     const weekEnd = endOfWeek(currentWeek, { weekStartsOn: 1 });
-
-    // 全ての週のTodosを初回レンダリング時に取得
-    useEffect(() => {
-        setIsLoading(true);
-        getWeeklyTodos()
-            .then((todos) => setAllTodos(todos))
-            .finally(() => setIsLoading(false));
-    }, []);
 
     const filteredTodos = allTodos.filter(todo => todo.weekStart && isSameDay(todo.weekStart, weekStart));
 
@@ -82,10 +76,6 @@ export function WeeklyTodos() {
     const handleNextWeek = () => {
         setCurrentWeek(prevWeek => addWeeks(prevWeek, 1));
     };
-
-    if (isLoading) {
-        return <TodosSkeleton />;
-    }
 
     return (
         <div className="p-4 border rounded-lg ">
