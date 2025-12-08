@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma/prisma";
 import { Todo } from "@prisma/client";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { unstable_cache } from 'next/cache';
 
 type ClientTodoInput = {
@@ -38,7 +38,8 @@ export async function createTodo(todo: ClientTodoInput): Promise<void> {
                 userId: session.user.id,
             },
         });
-        revalidateTag(`${session.user.id}-${todo.type}-todos`, 'max');
+        revalidateTag(`${session.user.id}-todos`, 'max');
+        revalidatePath('/todo');
     } catch (error) {
         console.error('Create error:', error);
         throw new Error('Failed to create todo');
@@ -58,7 +59,8 @@ export async function updateTodo(todo: ClientTodoInput): Promise<void> {
                 completed: todo.completed,
             },
         });
-        revalidateTag(`${session.user.id}-${todo.type}-todos`, 'max');
+        revalidateTag(`${session.user.id}-todos`, 'max');
+        revalidatePath('/todo');
     } catch (error) {
         console.error('Update error:', error);
         throw new Error('Failed to update todo');
@@ -71,10 +73,11 @@ export async function deleteTodo(id: string): Promise<void> {
         return;
     }
     try {
-        const todo = await prisma.todo.delete({
+        await prisma.todo.delete({
             where: { id },
         });
-        revalidateTag(`${session.user.id}-${todo.type}-todos`, 'max');
+        revalidateTag(`${session.user.id}-todos`, 'max');
+        revalidatePath('/todo');
     } catch (error) {
         console.error('Delete error:', error);
         throw new Error('Failed to delete todo');
