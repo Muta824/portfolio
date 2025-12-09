@@ -3,8 +3,7 @@
 import { Spinner } from "@/components/atoms/Spinner";
 import { generateChatMessage, Message } from "@/features/chat_bot/server-actions";
 import { useEffect, useRef, useState } from "react";
-import ReactMarkdown, { Components } from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Components } from "react-markdown";
 import { MessageItem } from "../molecules/MessageItem";
 
 export const components: Components = {
@@ -28,18 +27,14 @@ export function ChatPage() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // when user message is added, scroll to the last message
+    // when not sending message, focus on prompt input
     useEffect(() => {
         if (isSending) {
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-    }, [isSending]);
-
-    // when not sending message, focus on prompt input
-    useEffect(() => {
-        if (!isSending) {
+        } else {
             promptInputRef.current?.focus();
         }
-    }, [isSending])
+    }, [isSending]);
 
     const handleSendMessage = async () => {
         // if prompt is empty or generating, stop sending message process
@@ -47,7 +42,7 @@ export function ChatPage() {
         
         // start sending message process
         setIsSending(true);
-        
+
         // create new messages
         const newUserMessage: Message = {
             role: "user",
@@ -59,7 +54,7 @@ export function ChatPage() {
         setMessages(newMessages);
         // clear prompt
         setPrompt("");
-
+        
         // receive response from chatbot
         const response = await generateChatMessage(newMessages);
         // create new model message
@@ -101,12 +96,12 @@ export function ChatPage() {
                 {/* last exchange (user + assistant) in a box with the screen height */}
                 {lastExchange.length > 0 && (
                     <div className="min-h-[calc(100vh-120px)]">
+                        {/* anchor for scroll position */}
+                        <div ref={messagesEndRef} />
                         {lastExchange.map((message, index) => (
                             <MessageItem key={index} message={message} />
                         ))}
                         {isSending && <Spinner text="Thinking..." />}
-                        {/* anchor for scroll position */}
-                        <div ref={messagesEndRef} />
                     </div>
                 )}
             </div>
