@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
-    "start": "next start",
+    "dev": "dotenvx run -f .env.enc -- next dev --turbopack",
+    "build": "dotenvx run -f .env.enc -- sh -c 'prisma generate && next build'",
+    "start": "dotenvx run -f .env.enc -- next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
+    "postinstall": "dotenvx run -f .env.enc -- prisma generate",
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
