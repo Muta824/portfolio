@@ -15,7 +15,7 @@ export const Card = ({
     return (
         <div
             className={twMerge(
-                'p-6 rounded-lg shadow-md overflow-hidden transition-transform border border-gray-200 dark:white',
+                'p-6 rounded-lg shadow-md overflow-hidden transition-transform border border-gray-200 dark:border-white',
                 className
             )}
             onClick={onClick}

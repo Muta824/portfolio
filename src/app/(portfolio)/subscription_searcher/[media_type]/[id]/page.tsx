@@ -27,13 +27,22 @@ export default async function WatchProviderPage({
                 <ThemeToggle />
             </div>
             <div className="flex flex-col lg:flex-row gap-6 justify-center">
-                <Image 
-                    src={`https://image.tmdb.org/t/p/w500${content.poster_path}`} 
-                    alt={content.original_name || "Content poster"}
-                    width={300}
-                    height={450}
-                    className="m-auto rounded-xl shadow-lg border dark:border-white"
-                />
+                {content.poster_path ? (
+                    <Image 
+                        src={`https://image.tmdb.org/t/p/w500${content.poster_path}`} 
+                        alt={content.original_name || content.original_title || "Content poster"}
+                        width={300}
+                        height={450}
+                        className="m-auto rounded-xl shadow-lg border dark:border-white"
+                    />
+                ) : (
+                    <div 
+                        className="flex items-center justify-center w-[300px] h-[450px] m-auto rounded-xl shadow-lg border dark:border-white bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-center p-4"
+                        aria-label="No poster available"
+                    >
+                        <span>No poster</span>
+                    </div>
+                )}
                 <div className="flex flex-col gap-4 m-auto items-center relative">
                     <h1 className="my-4 text-4xl lg:text-5xl font-bold">
                         {content.original_name || content.original_title}
@@ -75,7 +84,7 @@ export default async function WatchProviderPage({
                         {watchProviders.map((watchProvider: TMDBWatchProvider) => (
                             <div 
                                 key={watchProvider.provider_id}
-                                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden"
+                                className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 overflow-hidden"
                             >
                                 <div className="p-6 text-center">
                                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -95,13 +104,13 @@ export default async function WatchProviderPage({
                     </div>
                 ) : (
                     <div className="text-center mb-2">
-                        <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.562M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No Providers Available</h3>
-                        <p className="max-w-md mx-auto">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">No Providers Available</h3>
+                        <p className="max-w-md mx-auto text-gray-600 dark:text-gray-300">
                             This content is not currently available on any subscription streaming services in your region.
                         </p>
                     </div>
