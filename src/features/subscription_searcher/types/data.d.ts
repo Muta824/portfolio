@@ -2,6 +2,7 @@ export interface TMDBContent {
     id: number;
     media_type: "movie" | "tv";
     poster_path: string | null;
+    backdrop_path?: string | null;
     title?: string;
     name?: string;
     original_title?: string;

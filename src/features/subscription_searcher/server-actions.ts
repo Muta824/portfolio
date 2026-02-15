@@ -39,20 +39,109 @@ async function fetchTmdbOrThrow<T>(path: string): Promise<T> {
     return (await res.json()) as T;
 }
 
-export async function getContents(query: string): Promise<TMDBContent[]> {
-    const fetchContents = async () => {
+export interface GetContentsResult {
+    results: TMDBContent[];
+    totalPages: number;
+    totalResults: number;
+}
+
+export async function getTrendingMovies(): Promise<TMDBContent[]> {
+    const fetchTrending = async () => {
         try {
-            const path = `/search/multi?query=${encodeURIComponent(query)}&include_adult=false&language=ja-JP`;
-            const data = await fetchTmdbOrThrow<{ results: TMDBContent[] }>(path);
-            return data.results.filter(
-                (result) => result.media_type === "movie" || result.media_type === "tv"
-            );
+            const data = await fetchTmdb<{
+                results?: Array<{
+                    id: number;
+                    poster_path: string | null;
+                    backdrop_path: string | null;
+                    title?: string;
+                    original_title?: string;
+                    overview?: string;
+                    release_date?: string;
+                    vote_average?: number;
+                }>;
+            }>("/trending/movie/week?language=ja-JP");
+            if (!data?.results) return [];
+            return data.results.map((item) => ({
+                id: item.id,
+                media_type: "movie" as const,
+                poster_path: item.poster_path ?? null,
+                backdrop_path: item.backdrop_path ?? null,
+                title: item.title,
+                original_title: item.original_title,
+                overview: item.overview,
+                release_date: item.release_date,
+                vote_average: item.vote_average,
+            }));
         } catch (error) {
             console.error(error);
             return [];
         }
     };
-    return unstable_cache(fetchContents, ["tmdb-contents", query], {
+    return unstable_cache(fetchTrending, ["tmdb-trending-movies"], {
+        revalidate: 3600,
+    })();
+}
+
+export async function getTrendingTV(): Promise<TMDBContent[]> {
+    const fetchTrending = async () => {
+        try {
+            const data = await fetchTmdb<{
+                results?: Array<{
+                    id: number;
+                    poster_path: string | null;
+                    backdrop_path: string | null;
+                    name?: string;
+                    original_name?: string;
+                    overview?: string;
+                    first_air_date?: string;
+                    vote_average?: number;
+                }>;
+            }>("/trending/tv/week?language=ja-JP");
+            if (!data?.results) return [];
+            return data.results.map((item) => ({
+                id: item.id,
+                media_type: "tv" as const,
+                poster_path: item.poster_path ?? null,
+                backdrop_path: item.backdrop_path ?? null,
+                name: item.name,
+                original_name: item.original_name,
+                overview: item.overview,
+                first_air_date: item.first_air_date,
+                vote_average: item.vote_average,
+            }));
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    };
+    return unstable_cache(fetchTrending, ["tmdb-trending-tv"], {
+        revalidate: 3600,
+    })();
+}
+
+export async function getContents(query: string, page = 1): Promise<GetContentsResult> {
+    const fetchContents = async () => {
+        try {
+            const path = `/search/multi?query=${encodeURIComponent(query)}&include_adult=false&language=ja-JP&page=${page}`;
+            const data = await fetchTmdbOrThrow<{
+                results: TMDBContent[];
+                total_pages: number;
+                total_results: number;
+            }>(path);
+            const filteredResults = data.results.filter(
+                (result) => result.media_type === "movie" || result.media_type === "tv"
+            );
+            return {
+                results: filteredResults,
+                totalPages: data.total_pages,
+                totalResults: data.total_results,
+            };
+        } catch (error) {
+            console.error(error);
+            return { results: [], totalPages: 0, totalResults: 0 };
+        }
+    };
+    return unstable_cache(fetchContents, ["tmdb-contents", query, String(page)], {
         revalidate: 3600,
     })();
 }

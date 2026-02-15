@@ -11,7 +11,7 @@ export function Contents({
 }) {
     if (contents.length === 0 && searchQuery.trim() !== "") {
         return (
-            <div className="h-full p-4 flex items-center justify-center text-center text-5xl text-gray-600 dark:text-gray-400 font-serif italic tracking-wide leading-relaxed">
+            <div className="h-full p-4 flex items-center justify-center text-center text-2xl sm:text-5xl text-gray-600 dark:text-gray-400 font-serif italic tracking-wide leading-relaxed">
                 No results found for &quot;{searchQuery}&quot;
             </div>
         )
@@ -21,15 +21,16 @@ export function Contents({
         path ? `https://image.tmdb.org/t/p/w500${path}` : null;
 
     return (
-        <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 w-full">
             {contents.map((content) => {
                 const title = content.title || content.name || content.original_title || content.original_name || "Unknown";
                 const src = posterUrl(content.poster_path);
                 return (
-                    <div key={content.id} className="w-full max-w-xs">
+                    <div key={content.id} className="w-full min-w-0">
                         <Link 
                             href={`/subscription_searcher/${content.media_type}/${content.id}`}
                             aria-label={`View details for ${title}`}
+                            className="block min-h-[44px]"
                         >
                             {src ? (
                                 <Image 
@@ -47,7 +48,7 @@ export function Contents({
                                     <span className="text-sm">{title}</span>
                                 </div>
                             )}
-                            <p className="mt-2 text-center font-medium line-clamp-2">{title}</p>
+                            <p className="mt-2 text-center font-medium line-clamp-2 text-sm sm:text-base">{title}</p>
                         </Link>
                     </div>
                 );
