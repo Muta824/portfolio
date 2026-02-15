@@ -6,7 +6,7 @@
         "TypeScript",
         "React 19",
         "@google/genai (Gemini API)",
-        "Google Gemini 2.5 Flash",
+        "gemini-3-flash-preview",
         "Server Actions",
         "Tailwind CSS",
         "react-markdown",

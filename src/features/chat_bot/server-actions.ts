@@ -57,7 +57,7 @@ export interface Message {
 export async function generateChatMessage(messages: Message[]) {
     try {
         const chat = ai.chats.create({
-            model: "gemini-2.5-flash",
+            model: "gemini-3-flash-preview",
             config: {
                 systemInstruction: systemPrompt,
             },
