@@ -23,9 +23,9 @@ export function useInfiniteScroll(
     const { enabled, root = null, rootMargin = ROOT_MARGIN, threshold = THRESHOLD } = options;
     const sentinelRef = useRef<HTMLDivElement>(null);
     const onLoadMoreRef = useRef(onLoadMore);
-    onLoadMoreRef.current = onLoadMore;
 
     useEffect(() => {
+        onLoadMoreRef.current = onLoadMore;
         if (!enabled) return;
 
         const el = sentinelRef.current;
@@ -44,7 +44,7 @@ export function useInfiniteScroll(
 
         observer.observe(el);
         return () => observer.disconnect();
-    }, [enabled, root, rootMargin, threshold]);
+    }, [enabled, onLoadMore, root, rootMargin, threshold]);
 
     return sentinelRef;
 }

@@ -1,5 +1,5 @@
 import { getTrendingMovies, getTrendingTV } from "@/features/subscription_searcher/server-actions";
-import { SubscriptionSearchClient } from "@/features/subscription_searcher/components/SubscriptionSearchClient";
+import { SubscriptionSearchClient } from "@/features/subscription_searcher/components/templates/SubscriptionSearchClient";
 
 export default async function SubscriptionSearchPage() {
     const [initialTrendingMovies, initialTrendingTV] = await Promise.all([

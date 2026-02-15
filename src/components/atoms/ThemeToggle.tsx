@@ -7,7 +7,7 @@ export const ThemeToggle = () => {
 
   useEffect(() => {
     const isDarkMode = localStorage.getItem('theme') === 'dark';
-    setIsDark(isDarkMode);
+    queueMicrotask(() => setIsDark(isDarkMode));
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     }

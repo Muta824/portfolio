@@ -31,7 +31,9 @@ export function UserAnswerSheetSelector({ testSetId }: UserAnswerSheetSelectorPr
     }, [testSetId]);
 
     // loadAnswerSheets is called only when the component mounts or when testSetId changes.
-    useEffect(() => { loadAnswerSheets(); }, [loadAnswerSheets]);
+    useEffect(() => {
+        queueMicrotask(() => { loadAnswerSheets(); });
+    }, [loadAnswerSheets]);
 
     const handleCreate = async () => {
         if (!newAnswerSheetName.trim()) return;

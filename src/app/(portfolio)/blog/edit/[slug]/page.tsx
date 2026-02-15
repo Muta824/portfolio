@@ -126,8 +126,8 @@ export default function EditBlogPost({
                 categories: postData.categories.map((category: CategoryType) => category.name).join(','),
                 tags: postData.tags.map((tag: TagType) => tag.name).join(','),
             });
+            setIsLoading(false);
         })();
-        setIsLoading(false);
     }, [slug]);
 
     if (isLoading) {
