@@ -6,7 +6,7 @@
     "dev": "dotenvx run -f .env.enc -- next dev --turbopack",
     "build": "dotenvx run -f .env.enc -- sh -c 'prisma generate && next build'",
     "start": "dotenvx run -f .env.enc -- next start",
-    "lint": "next lint",
+    "lint": "eslint src",
     "postinstall": "dotenvx run -f .env.enc -- prisma generate",
     "db:seed": "tsx prisma/seed.ts"
   },
